@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura - Kementerian Imigrasi dan Pemasyarakatan RI</title>
+    <title>Rutan Kelas IIB Siak Sri Indrapura — Portal Resmi Berbasis Digital</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -17,18 +17,21 @@
             theme: {
                 extend: {
                     colors: {
-                        kemenkumham: {
-                            navy: '#0F172A',
-                            gold: '#D97706',
-                            red: '#991B1B',
-                            lightRed: '#DC2626',
-                            blue: '#1E3A8A',
-                            accent: '#2563EB',
-                            bgGray: '#F8FAFC'
+                        cyber: {
+                            dark: '#070B14',
+                            card: '#0D1527',
+                            cardHover: '#131F38',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            gold: '#F59E0B',
+                            goldGlow: '#D97706',
+                            cyan: '#06B6D4',
+                            emerald: '#10B981',
+                            blue: '#1E3A8A'
                         }
                     },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Space Grotesk"', 'monospace'],
                     }
                 }
             }
@@ -36,20 +39,54 @@
     </script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .hero-bg {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.90) 0%, rgba(30, 58, 138, 0.85) 100%),
+        
+        /* AI Mesh & Ambient Glows */
+        .ai-mesh-bg {
+            background-color: #070b14;
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(245, 158, 11, 0.12) 0px, transparent 50%),
+                radial-gradient(at 85% 20%, rgba(6, 182, 212, 0.10) 0px, transparent 50%),
+                radial-gradient(at 50% 80%, rgba(30, 58, 138, 0.15) 0px, transparent 60%);
+        }
+        
+        .cyber-grid {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .glass-card {
+            background: rgba(13, 21, 39, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(245, 158, 11, 0.35);
+            box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.15);
+        }
+
+        .glass-nav {
+            background: rgba(7, 11, 20, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-banner-bg {
+            background: linear-gradient(135deg, rgba(7, 11, 20, 0.94) 0%, rgba(13, 21, 39, 0.88) 100%),
                         url('rutansiak') center/cover no-repeat;
         }
-        .pattern-overlay {
-            background-image: radial-gradient(#d97706 0.75px, transparent 0.75px);
-            background-size: 16px 16px;
-            opacity: 0.15;
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
-        .tab-btn.active {
-            border-bottom-color: #D97706;
-            color: #D97706;
-            font-weight: 700;
+        .animate-pulse-glow {
+            animation: pulseGlow 4s ease-in-out infinite;
         }
+
         @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
@@ -57,82 +94,120 @@
         .animate-marquee {
             display: inline-block;
             white-space: nowrap;
-            animation: marquee 28s linear infinite;
+            animation: marquee 30s linear infinite;
         }
         .animate-marquee:hover {
             animation-play-state: paused;
         }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: #070B14;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070b14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d97706;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen selection:bg-amber-500 selection:text-white">
+<body class="ai-mesh-bg text-slate-100 flex flex-col min-h-screen selection:bg-amber-500 selection:text-slate-950">
 
-    <!-- Top Bar Info & Announcement -->
-    <div class="bg-kemenkumham-navy text-slate-300 text-xs py-2.5 px-4 border-b border-amber-600/30">
+    <!-- ================= TOP BAR: LIVE AI TELEMETRY & CLOCK ================= -->
+    <div class="bg-slate-950/90 text-slate-300 text-xs py-2 px-4 border-b border-white/5 relative z-50">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
-            <div class="flex items-center gap-4 flex-wrap justify-center md:justify-start">
-                <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-building-columns text-amber-500"></i> Kementerian Imigrasi dan Pemasyarakatan RI</span>
-                <span class="hidden sm:inline text-slate-600">|</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-amber-500"></i> Ditjen Pemasyarakatan</span>
-                <span class="hidden sm:inline text-slate-600">|</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-amber-500"></i> Siak Sri Indrapura, Riau</span>
+            <div class="flex items-center gap-3 flex-wrap justify-center md:justify-start">
+                <span class="flex items-center gap-1.5 font-bold text-amber-400">
+                    <i class="fa-solid fa-shield-halved"></i> Ditjen Pemasyarakatan • Kemenimipas RI
+                </span>
+                <span class="hidden sm:inline text-slate-700">|</span>
+                <span class="flex items-center gap-1.5 text-slate-400">
+                    <i class="fa-solid fa-location-dot text-cyan-400"></i> Siak Sri Indrapura, Riau
+                </span>
+                <span class="hidden sm:inline text-slate-700">|</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-0.5"></span> Sistem Operasional Aktif
+                </span>
             </div>
-            <div class="flex items-center gap-4">
-                <span class="flex items-center gap-1.5 text-emerald-400 font-medium"><i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Layanan: Sen - Kam (09:00 - 12:00 WIB)</span>
-                <span class="hidden md:inline text-slate-600">|</span>
-                <a href="tel:+6276420280" class="hover:text-amber-400 transition-colors flex items-center gap-1"><i class="fa-solid fa-phone"></i> (0764) 20280</a>
+            <div class="flex items-center gap-4 text-slate-400">
+                <span class="font-mono text-amber-300 font-semibold flex items-center gap-1.5" id="realtime-clock">
+                    <i class="fa-regular fa-clock text-xs"></i> Memuat Waktu...
+                </span>
+                <span class="hidden md:inline text-slate-700">|</span>
+                <a href="tel:+6276420280" class="hover:text-amber-400 transition-colors flex items-center gap-1 text-slate-300">
+                    <i class="fa-solid fa-phone text-xs text-amber-500"></i> (0764) 20280
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- Running Text Pengumuman -->
-    <div class="bg-amber-600/10 border-b border-amber-500/20 text-amber-900 text-xs py-1.5 px-4 overflow-hidden relative">
+    <!-- ================= RUNNING TICKER PENGUMUMAN ================= -->
+    <div class="bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-slate-950/40 border-b border-amber-500/20 text-amber-200 text-xs py-1.5 px-4 overflow-hidden relative">
         <div class="max-w-7xl mx-auto flex items-center gap-3">
-            <span class="bg-amber-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider shrink-0">PENGUMUMAN</span>
+            <span class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider shrink-0 shadow-sm">
+                <i class="fa-solid fa-bolt mr-1"></i> WARTA LIVE
+            </span>
             <div class="overflow-hidden w-full relative">
-                <div class="animate-marquee font-medium">
-                    Selamat Datang di Website Resmi Rutan Kelas IIB Siak Sri Indrapura • Layanan Kunjungan Tatap Muka Dibuka Setiap Hari Senin s/d Kamis Pukul 09.00 - 12.00 WIB • Seluruh Layanan Pemasyarakatan 100% GRATIS Bebas Pungli • Hotline WhatsApp Pengaduan: +62 821-7642-0280.
+                <div class="animate-marquee font-medium text-slate-300">
+                    Selamat Datang di Portal Resmi Rutan Kelas IIB Siak Sri Indrapura • Layanan Tatap Muka Dibuka Senin s/d Kamis (09.00 - 12.00 WIB) • Seluruh Layanan Pemasyarakatan 100% GRATIS Bebas Pungli • Hotline Aduan WhatsApp: +62 821-7642-0280 • Asisten Cerdas Virtual SI-RUTAN AI Siap Membantu 24/7.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Navigation Header -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-md border-b border-slate-200">
+    <!-- ================= MAIN NAVIGATION HEADER (GLASSMORPHISM) ================= -->
+    <header class="sticky top-0 z-40 glass-nav shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Dual Logos & Brand Title -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('beranda')">
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="switchTab('beranda')">
                     <div class="flex items-center gap-2">
-                        <img src="/logokemenimipas" alt="Logo Kementerian Imigrasi dan Pemasyarakatan" class="w-11 h-11 md:w-12 md:h-12 object-contain drop-shadow-md transition-transform hover:scale-105">
-                        <img src="/logopemasyarakatan" alt="Logo Pemasyarakatan" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-md transition-transform hover:scale-105">
+                        <img src="logokemenimipas" alt="Logo Kementerian Imigrasi dan Pemasyarakatan" class="w-11 h-11 md:w-12 md:h-12 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.3)] transition-transform group-hover:scale-105">
+                        <img src="logopemasyarakatan" alt="Logo Pemasyarakatan" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_12px_rgba(6,182,212,0.3)] transition-transform group-hover:scale-105">
                     </div>
-                    <div class="pl-1 border-l-2 border-slate-200">
-                        <h1 class="text-base md:text-xl font-extrabold text-slate-900 tracking-tight leading-none uppercase">
-                            RUTAN KELAS IIB SIAK SRI INDRAPURA
+                    <div class="pl-1 border-l border-white/10">
+                        <h1 class="text-base md:text-lg font-black text-white tracking-tight leading-none uppercase flex items-center gap-2">
+                            RUTAN KELAS IIB SIAK <span class="hidden sm:inline text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">DIGITAL</span>
                         </h1>
-                        <p class="text-[11px] md:text-xs text-amber-700 font-bold uppercase tracking-wider mt-0.5">
-                            • Wilayah Bebas dari Korupsi
+                        <p class="text-[11px] md:text-xs text-amber-400 font-bold uppercase tracking-wider mt-0.5">
+                            • Wilayah Bebas dari Korupsi (WBK)
                         </p>
                     </div>
                 </div>
 
                 <!-- Desktop Navigation Menu -->
-                <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
-                    <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-link px-3 py-2 rounded-lg text-sm font-semibold transition-all text-amber-600 bg-amber-50">Beranda</button>
-                    <button onclick="switchTab('profil')" id="nav-profil" class="nav-link px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-amber-600 hover:bg-slate-100 transition-all">Profil</button>
-                    <button onclick="switchTab('layanan')" id="nav-layanan" class="nav-link px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-amber-600 hover:bg-slate-100 transition-all">Layanan Publik</button>
-                    <a href="berita.html" id="nav-berita" class="nav-link px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-amber-600 hover:bg-slate-100 transition-all">Berita & Publikasi</a>
-                    <button onclick="switchTab('galeri')" id="nav-galeri" class="nav-link px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-amber-600 hover:bg-slate-100 transition-all">Galeri</button>
-                    <button onclick="switchTab('kontak')" id="nav-kontak" class="nav-link px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-amber-600 hover:bg-slate-100 transition-all">Kontak</button>
+                <nav class="hidden lg:flex items-center gap-1.5 bg-slate-900/60 p-1.5 rounded-2xl border border-white/5">
+                    <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-link px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-amber-400 bg-amber-500/10 border border-amber-500/30">Beranda</button>
+                    <button onclick="switchTab('profil')" id="nav-profil" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all">Profil</button>
+                    <button onclick="switchTab('layanan')" id="nav-layanan" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all">Layanan Publik</button>
+                    <a href="berita.html" id="nav-berita" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all flex items-center gap-1">
+                        <span>Berita & Publikasi</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                    </a>
+                    <button onclick="switchTab('galeri')" id="nav-galeri" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all">Galeri</button>
+                    <button onclick="switchTab('kontak')" id="nav-kontak" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all">Kontak</button>
                 </nav>
 
-                <!-- Action Button & Mobile Toggle -->
+                <!-- Action CTA & Mobile Toggle -->
                 <div class="flex items-center gap-3">
-                    <button onclick="openBookingModal()" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all transform active:scale-95">
-                        <i class="fa-solid fa-calendar-check"></i> Daftar Antrean
+                    <button onclick="openBookingModal()" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all transform active:scale-95">
+                        <i class="fa-solid fa-ticket"></i> Daftar Antrean
                     </button>
                     
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-slate-700 hover:text-amber-600 p-2 text-xl focus:outline-none">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-slate-300 hover:text-amber-400 p-2 text-xl focus:outline-none">
                         <i class="fa-solid fa-bars" id="menu-icon"></i>
                     </button>
                 </div>
@@ -140,15 +215,15 @@
         </div>
 
         <!-- Mobile Navigation Drawer -->
-        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-xl">
-            <button onclick="switchTab('beranda'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">Beranda</button>
-            <button onclick="switchTab('profil'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">Profil</button>
-            <button onclick="switchTab('layanan'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">Layanan Publik</button>
-            <a href="berita.html" class="block w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">Berita & Publikasi</a>
-            <button onclick="switchTab('galeri'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">Galeri Kegiatan</button>
-            <button onclick="switchTab('kontak'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">Kontak & Lokasi</button>
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-slate-950 px-4 pt-3 pb-5 space-y-1 shadow-2xl">
+            <button onclick="switchTab('beranda'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Beranda</button>
+            <button onclick="switchTab('profil'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Profil</button>
+            <button onclick="switchTab('layanan'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Layanan Publik</button>
+            <a href="berita.html" class="block w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-amber-400 bg-amber-500/10">Berita & Publikasi (Baru)</a>
+            <button onclick="switchTab('galeri'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Galeri Kegiatan</button>
+            <button onclick="switchTab('kontak'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Kontak & Lokasi</button>
             <div class="pt-2">
-                <button onclick="openBookingModal(); toggleMobileMenu()" class="w-full flex items-center justify-center gap-2 bg-amber-600 text-white font-bold py-2.5 rounded-lg shadow">
+                <button onclick="openBookingModal(); toggleMobileMenu()" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-2.5 rounded-xl shadow-lg">
                     <i class="fa-solid fa-calendar-check"></i> Daftar Antrean Kunjungan
                 </button>
             </div>
@@ -156,120 +231,199 @@
     </header>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-grow">
+    <main class="flex-grow cyber-grid">
 
         <!-- ================= TAB 1: BERANDA ================= -->
         <section id="tab-beranda" class="tab-content block">
-            <!-- Hero Banner with Actual Gedung Rutan Siak Background -->
-            <div class="relative hero-bg text-white py-20 lg:py-28 overflow-hidden">
-                <div class="absolute inset-0 pattern-overlay"></div>
+            
+            <!-- AI Hero Banner -->
+            <div class="relative hero-banner-bg py-20 lg:py-28 overflow-hidden border-b border-white/5">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/60 to-[#070b14]"></div>
+                
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="grid lg:grid-cols-12 gap-8 items-center">
+                    <div class="grid lg:grid-cols-12 gap-10 items-center">
                         <div class="lg:col-span-8 space-y-6 text-center lg:text-left">
-                            <div class="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/40 backdrop-blur-md px-3 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-wider">
-                                <i class="fa-solid fa-award"></i> ZI Menuju WBBM • Kemenimipas RI
+                            
+                            <!-- Smart Pill Tag -->
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-amber-500/40 backdrop-blur-xl text-xs font-bold text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                                <span class="flex h-2 w-2 relative">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                </span>
+                                Zona Integritas WBBM • Kemenimipas Republik Indonesia
                             </div>
-                            <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-                                Portal Resmi <br/>
-                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-yellow-400">
-                                    Rumah Tahanan Negara Kelas IIB Siak
+
+                            <!-- Main Headline with Gradient Text -->
+                            <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white">
+                                Pelayanan Pemasyarakatan <br/>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 drop-shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+                                    Modern, Humanis & PASTI
                                 </span>
                             </h2>
-                            <p class="text-base sm:text-lg text-slate-200 max-w-2xl font-light leading-relaxed drop-shadow">
-                                Mewujudkan Pelayanan Pemasyarakatan yang PASTI (Profesional, Akuntabel, Sinergi, Transparan, dan Inovatif) serta Humanis di Negeri Istana Siak Sri Indrapura.
+                            
+                            <p class="text-base sm:text-lg text-slate-300 max-w-2xl font-light leading-relaxed">
+                                Transformasi digital keterbukaan informasi dan pelayanan publik Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. Cepat, transparan, dan 100% bebas biaya pungli.
                             </p>
-                            <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-2">
-                                <button onclick="switchTab('layanan')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2">
-                                    <i class="fa-solid fa-concierge-bell"></i> Layanan Kunjungan
+
+                            <!-- AI Quick Prompts Action Chips -->
+                            <div class="pt-2 flex flex-wrap gap-2.5 justify-center lg:justify-start">
+                                <button onclick="switchTab('layanan')" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-amber-500/20 border border-white/10 hover:border-amber-500/40 text-xs font-semibold text-slate-200 hover:text-amber-300 transition-all flex items-center gap-1.5 backdrop-blur-md">
+                                    <i class="fa-solid fa-calendar-days text-amber-400"></i> Jadwal Layanan
                                 </button>
-                                <button onclick="openBookingModal()" class="bg-slate-900/80 hover:bg-slate-800 border border-slate-600 text-white font-semibold px-6 py-3.5 rounded-xl transition-all flex items-center gap-2 backdrop-blur-sm">
-                                    <i class="fa-solid fa-ticket"></i> Ambil Antrean Online
+                                <button onclick="switchServiceSubTab('integrasi'); switchTab('layanan')" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 border border-white/10 hover:border-emerald-500/40 text-xs font-semibold text-slate-200 hover:text-emerald-300 transition-all flex items-center gap-1.5 backdrop-blur-md">
+                                    <i class="fa-solid fa-scale-balanced text-emerald-400"></i> Syarat Bebas Bersyarat (PB/CB)
+                                </button>
+                                <a href="berita.html" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-500/40 text-xs font-semibold text-slate-200 hover:text-cyan-300 transition-all flex items-center gap-1.5 backdrop-blur-md">
+                                    <i class="fa-solid fa-newspaper text-cyan-400"></i> Berita Pisah Sambut 29 Agt
+                                </a>
+                                <button onclick="toggleAiModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/40 text-xs font-bold text-cyan-300 hover:text-white transition-all flex items-center gap-1.5 shadow-[0_0_12px_rgba(6,182,212,0.2)]">
+                                    <i class="fa-solid fa-robot text-cyan-400"></i> Tanya SI-RUTAN AI
+                                </button>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-4">
+                                <button onclick="switchTab('layanan')" class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-7 py-3.5 rounded-xl shadow-[0_0_25px_rgba(245,158,11,0.4)] transition-all flex items-center gap-2 transform active:scale-95">
+                                    <i class="fa-solid fa-concierge-bell"></i> Panduan Kunjungan
+                                </button>
+                                <button onclick="openBookingModal()" class="glass-card text-white font-bold px-7 py-3.5 rounded-xl transition-all flex items-center gap-2 border border-white/15 hover:border-amber-400">
+                                    <i class="fa-solid fa-ticket text-amber-400"></i> Ambil Nomor Antrean
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Hero Quick Info Card -->
+                        <!-- Hero Live Operational Dashboard Card -->
                         <div class="lg:col-span-4">
-                            <div class="bg-slate-900/85 backdrop-blur-md border border-slate-700/60 p-6 rounded-2xl shadow-2xl space-y-4">
-                                <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2 border-b border-slate-700 pb-3">
-                                    <i class="fa-solid fa-clock"></i> Jadwal Layanan Kunjungan
-                                </h3>
-                                <ul class="space-y-3 text-sm text-slate-300">
-                                    <li class="flex justify-between items-center bg-slate-800/60 p-2.5 rounded-lg">
-                                        <span class="font-medium">Senin - Kamis</span>
-                                        <span class="bg-emerald-500/20 text-emerald-400 px-2.5 py-0.5 rounded font-bold text-xs">09:00 - 12:00 WIB</span>
+                            <div class="glass-card p-6 rounded-3xl space-y-5 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                                    <h3 class="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                                        <i class="fa-solid fa-bolt"></i> Live Pelayanan Terpadu
+                                    </h3>
+                                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">ONLINE</span>
+                                </div>
+
+                                <ul class="space-y-2.5 text-xs">
+                                    <li class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl border border-white/5">
+                                        <span class="text-slate-300 font-medium"><i class="fa-regular fa-calendar-check text-amber-400 mr-1.5"></i> Senin & Rabu</span>
+                                        <span class="text-amber-300 font-bold">Kunjungan Tahanan</span>
                                     </li>
-                                    <li class="flex justify-between items-center bg-slate-800/60 p-2.5 rounded-lg">
-                                        <span class="font-medium">Jumat - Minggu</span>
-                                        <span class="bg-red-500/20 text-red-400 px-2.5 py-0.5 rounded font-bold text-xs">Tutup Layanan</span>
+                                    <li class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl border border-white/5">
+                                        <span class="text-slate-300 font-medium"><i class="fa-regular fa-calendar-check text-emerald-400 mr-1.5"></i> Selasa & Kamis</span>
+                                        <span class="text-emerald-300 font-bold">Kunjungan Narapidana</span>
+                                    </li>
+                                    <li class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl border border-white/5">
+                                        <span class="text-slate-300 font-medium"><i class="fa-regular fa-clock text-cyan-400 mr-1.5"></i> Jam Buka</span>
+                                        <span class="font-mono text-white font-bold">09:00 - 12:00 WIB</span>
                                     </li>
                                 </ul>
-                                <div class="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-xl text-xs text-amber-200 flex items-start gap-2.5">
+
+                                <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs text-amber-200 flex items-start gap-2.5">
                                     <i class="fa-solid fa-circle-info text-amber-400 text-base shrink-0 mt-0.5"></i>
-                                    <span>Wajib membawa e-KTP/Kartu Keluarga asli dan mendaftar antrean sebelum batas kuota harian terpenuhi.</span>
+                                    <span>Pendaftaran dibuka di loket kunjungan atau online. Wajib membawa e-KTP dan KK Asli.</span>
                                 </div>
+
+                                <button onclick="openBookingModal()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs py-3 rounded-xl transition-all shadow-md">
+                                    Daftar Tiket Antrean Sekarang
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Stats Bar -->
-            <div class="bg-slate-900 text-white border-y border-amber-600/30 py-8">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                        <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                            <div class="text-3xl lg:text-4xl font-extrabold text-amber-400 mb-1">573</div>
-                            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Total Penghuni WBP</div>
+            <!-- ================= BENTO GRID: STATISTIK & KINERJA ================= -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    
+                    <!-- Bento 1: Penghuni -->
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden group">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Kapasitas Hunian</span>
+                            <span class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-sm"><i class="fa-solid fa-users"></i></span>
                         </div>
-                        <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                            <div class="text-3xl lg:text-4xl font-extrabold text-emerald-400 mb-1">100%</div>
-                            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Layanan Bebas Pungli</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                            <div class="text-3xl lg:text-4xl font-extrabold text-blue-400 mb-1">12+</div>
-                            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Program Kemandirian</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                            <div class="text-3xl lg:text-4xl font-extrabold text-purple-400 mb-1">24/7</div>
-                            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Pengamanan Siaga</div>
+                        <div class="text-3xl lg:text-4xl font-black text-white group-hover:text-amber-400 transition-colors font-mono">573</div>
+                        <p class="text-xs text-slate-400 mt-1">Total Warga Binaan Pemasyarakatan</p>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-amber-400 h-full rounded-full w-[85%]"></div>
                         </div>
                     </div>
+
+                    <!-- Bento 2: Bebas Pungli -->
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden group">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Integritas Pelayanan</span>
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm"><i class="fa-solid fa-shield-check"></i></span>
+                        </div>
+                        <div class="text-3xl lg:text-4xl font-black text-emerald-400 font-mono">100%</div>
+                        <p class="text-xs text-slate-400 mt-1">Gratis Bebas Pungli & Gratifikasi</p>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-emerald-400 h-full rounded-full w-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bento 3: Kemandirian -->
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden group">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Program Pembinaan</span>
+                            <span class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm"><i class="fa-solid fa-seedling"></i></span>
+                        </div>
+                        <div class="text-3xl lg:text-4xl font-black text-cyan-400 font-mono">12+</div>
+                        <p class="text-xs text-slate-400 mt-1">Kemandirian & Keterampilan Kerja</p>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-cyan-400 h-full rounded-full w-[90%]"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bento 4: Keamanan -->
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden group">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Stabilitas Kamtib</span>
+                            <span class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm"><i class="fa-solid fa-clock"></i></span>
+                        </div>
+                        <div class="text-3xl lg:text-4xl font-black text-purple-400 font-mono">24/7</div>
+                        <p class="text-xs text-slate-400 mt-1">Pengamanan Siaga & Deteksi Dini</p>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-purple-400 h-full rounded-full w-full"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Sambutan Karutan Section -->
-            <div class="py-16 bg-white">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="grid md:grid-cols-12 gap-10 items-center">
+            <!-- ================= SAMBUTAN KEPALA RUTAN SIAK ================= -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden border border-white/10">
+                    <div class="grid md:grid-cols-12 gap-8 items-center">
                         <div class="md:col-span-4 text-center">
                             <div class="relative inline-block">
-                                <div class="w-64 h-80 rounded-2xl bg-gradient-to-tr from-amber-600 via-slate-800 to-blue-900 p-1 shadow-2xl mx-auto overflow-hidden">
-                                    <img src="assets/gedung-rutan-siak.jpg" alt="Rumah Tahanan Negara Kelas IIB Siak" class="w-full h-full object-cover rounded-xl hover:scale-105 transition-all duration-500">
+                                <div class="w-64 h-80 rounded-2xl p-1 bg-gradient-to-tr from-amber-500 via-slate-800 to-cyan-500 shadow-2xl mx-auto overflow-hidden">
+                                    <img src="rutansiak" alt="Gedung Rutan Kelas IIB Siak" class="w-full h-full object-cover rounded-xl hover:scale-105 transition-all duration-500">
                                 </div>
-                                <div class="mt-4 bg-slate-900 text-white py-2.5 px-4 rounded-xl shadow-md inline-block">
-                                    <h4 class="font-bold text-sm text-amber-400">Kepala Rutan Kelas IIB Siak</h4>
+                                <div class="mt-4 glass-card py-2.5 px-4 rounded-2xl inline-block border border-amber-500/30">
+                                    <h4 class="font-extrabold text-sm text-amber-400">Kepala Rutan Kelas IIB Siak</h4>
                                     <p class="text-xs text-slate-300">Rumah Tahanan Negara Siak Sri Indrapura</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="md:col-span-8 space-y-4">
-                            <div class="inline-block bg-amber-100 text-amber-800 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wide">
-                                Sambutan Karutan
+                            <div class="inline-flex items-center gap-2 bg-amber-500/15 text-amber-400 border border-amber-500/30 font-bold text-xs px-3.5 py-1 rounded-full uppercase tracking-wider">
+                                <i class="fa-solid fa-quote-left"></i> Sambutan Karutan
                             </div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900">
-                                "Komitmen Memberikan Pelayanan Terbaik & Pembinaan Berkelanjutan"
+                            <h3 class="text-2xl sm:text-3xl font-black text-white leading-snug">
+                                "Komitmen Pelayanan Prima, Menjaga Integritas, dan Membina Insan yang Bermartabat"
                             </h3>
-                            <p class="text-slate-600 leading-relaxed">
-                                Assalamu’alaikum Warahmatullahi Wabarakatuh. Selamat datang di portal resmi Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. Melalui platform digital ini, kami berikhtiar memberikan transparansi informasi serta kemudahan akses layanan pemasyarakatan bagi seluruh masyarakat Kabupaten Siak dan sekitarnya.
+                            <p class="text-slate-300 leading-relaxed text-sm">
+                                Assalamu’alaikum Warahmatullahi Wabarakatuh. Selamat datang di portal resmi Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. Melalui inovasi digital ini, kami berikhtiar menyajikan transparansi informasi serta kemudahan akses layanan pemasyarakatan bagi seluruh lapisan masyarakat.
                             </p>
-                            <p class="text-slate-600 leading-relaxed">
-                                Kami senantiasa berkomitmen menjaga integritas, mewujudkan lingkungan kerja bebas dari korupsi, gratifikasi, dan pungutan liar, serta membina Warga Binaan Pemasyarakatan (WBP) agar siap kembali ke tengah masyarakat menjadi insan yang mandiri dan berakhlak mulia.
+                            <p class="text-slate-300 leading-relaxed text-sm">
+                                Kami senantiasa berkomitmen menjaga integritas, menolak segala bentuk pungutan liar dan gratifikasi, serta menyelenggarakan pembinaan bagi Warga Binaan Pemasyarakatan (WBP) agar berdaya guna dan siap kembali ke tengah masyarakat.
                             </p>
-                            <div class="pt-2 flex items-center gap-4">
-                                <button onclick="switchTab('profil')" class="text-amber-700 font-bold hover:text-amber-800 text-sm flex items-center gap-1 group">
-                                    Pelajari Selengkapnya Profil Kami <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            <div class="pt-3 flex items-center gap-4">
+                                <button onclick="switchTab('profil')" class="text-amber-400 font-bold hover:text-amber-300 text-sm flex items-center gap-2 group">
+                                    Pelajari Selengkapnya Profil Lembaga <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </div>
                         </div>
@@ -277,273 +431,211 @@
                 </div>
             </div>
 
-            <!-- Featured Services Cards -->
-            <div class="py-16 bg-slate-100 border-t border-slate-200">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center max-w-2xl mx-auto mb-12">
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Layanan Unggulan Masyarakat</h2>
-                        <p class="text-slate-600 mt-2">Akses cepat ke berbagai fasilitas dan program pelayanan publik Rutan Siak Sri Indrapura.</p>
+            <!-- ================= FEATURED HEADLINE NEWS (PISAH SAMBUT) ================= -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                            <span class="text-amber-400 font-mono font-bold text-xs uppercase tracking-wider">Warta Terkini</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Berita & Publikasi Kegiatan</h2>
                     </div>
+                    <a href="berita.html" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs px-5 py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.25)] flex items-center gap-2">
+                        Buka Portal Berita Lengkap <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
 
-                    <div class="grid md:grid-cols-3 gap-8">
-                        <!-- Service Card 1 -->
-                        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-slate-200/80 flex flex-col justify-between group">
-                            <div>
-                                <div class="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center text-amber-700 text-2xl mb-5 group-hover:bg-amber-600 group-hover:text-white transition-all">
-                                    <i class="fa-solid fa-users-line"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-slate-900 mb-2">Kunjungan Tatap Muka</h3>
-                                <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                                    Layanan tatap muka keluarga WBP dengan prosedur pendaftaran antrean teratur, nyaman, dan aman.
-                                </p>
+                <!-- Featured Highlight Banner -->
+                <div class="glass-card rounded-3xl p-6 md:p-8 border border-amber-500/30 mb-8 relative overflow-hidden">
+                    <div class="grid md:grid-cols-12 gap-8 items-center">
+                        <div class="md:col-span-5">
+                            <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/10 group cursor-pointer" onclick="window.location.href='berita.html'">
+                                <img src="assets/pisahsambut1.jpg" alt="Pisah Sambut Pejabat Eselon V" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-amber-600 text-slate-950 font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                                    BERITA UTAMA • 29 AGT 2026
+                                </span>
                             </div>
-                            <button onclick="switchTab('layanan')" class="text-amber-700 font-bold text-sm flex items-center gap-2 hover:underline">
-                                Lihat Syarat & Prosedur <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </button>
                         </div>
-
-                        <!-- Service Card 2 -->
-                        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-slate-200/80 flex flex-col justify-between group">
-                            <div>
-                                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-blue-700 text-2xl mb-5 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                    <i class="fa-solid fa-box-archive"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-slate-900 mb-2">Titipan Barang & Makanan</h3>
-                                <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                                    Pengiriman barang atau makanan secara transparan melalui pemeriksaan ketat dan efisien.
-                                </p>
+                        <div class="md:col-span-7 space-y-3.5">
+                            <div class="flex items-center gap-2 text-xs font-mono text-amber-400">
+                                <i class="fa-solid fa-calendar-day"></i> 29 Agustus 2026 • Aula Rutan Siak
                             </div>
-                            <button onclick="switchTab('layanan')" class="text-blue-700 font-bold text-sm flex items-center gap-2 hover:underline">
-                                Ketentuan Titipan <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </button>
-                        </div>
-
-                        <!-- Service Card 3 -->
-                        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-slate-200/80 flex flex-col justify-between group">
-                            <div>
-                                <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-700 text-2xl mb-5 group-hover:bg-emerald-600 group-hover:text-white transition-all">
-                                    <i class="fa-solid fa-scale-balanced"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-slate-900 mb-2">Layanan Integrasi Gratis</h3>
-                                <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                                    Pengurusan Pembebasan Bersyarat (PB), Cuti Bersyarat (CB), CMB, dan Asimilasi tanpa dipungut biaya 100%.
-                                </p>
+                            <h3 class="text-xl sm:text-2xl font-black text-white leading-tight hover:text-amber-400 transition-colors cursor-pointer" onclick="window.location.href='berita.html'">
+                                SETIAP ORANG ADA MASANYA: Rutan Siak Gelar Acara Pisah Sambut Kepada Pejabat Eselon V
+                            </h3>
+                            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                                Suasana penuh keakraban dan haru mewarnai pelepasan Singgih Praja Kusuma, S.H., M.H. dan penyambutan Okta Adi Putra, S.H. sebagai estafet pengabdian pemasyarakatan di Rutan Siak.
+                            </p>
+                            <div class="pt-2 flex flex-wrap gap-3">
+                                <a href="berita.html" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2 hover:scale-[1.02]">
+                                    <i class="fa-solid fa-newspaper"></i> Baca Selengkapnya & Galeri 7 Foto
+                                </a>
+                                <button onclick="openNewsModal(1)" class="glass-card hover:bg-white/10 text-slate-200 font-bold text-xs px-4 py-3 rounded-xl border border-white/10 transition-all flex items-center gap-2">
+                                    <i class="fa-solid fa-eye"></i> Pratinjau Cepat
+                                </button>
                             </div>
-                            <button onclick="switchTab('layanan')" class="text-emerald-700 font-bold text-sm flex items-center gap-2 hover:underline">
-                                Alur Syarat Integrasi <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Home News Highlight Section -->
-            <div class="py-16 bg-white">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
-                        <div>
-                            <span class="text-amber-600 font-bold text-xs uppercase tracking-wider">Kabar Utama</span>
-                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Berita Harian & Bulanan Terkini</h2>
-                        </div>
-                        <a href="berita.html" class="bg-slate-900 hover:bg-amber-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm hover:shadow-md">
-                            Lihat Semua Berita <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
-
-                    <div class="grid md:grid-cols-3 gap-8" id="home-news-grid">
-                        <!-- Injected via JS dynamically -->
-                    </div>
+                <!-- Dynamic News Grid Container -->
+                <div class="grid md:grid-cols-3 gap-6" id="home-news-grid">
+                    <!-- Injected dynamically via JS -->
                 </div>
             </div>
+
         </section>
 
 
         <!-- ================= TAB 2: PROFIL ================= -->
-        <section id="tab-profil" class="tab-content hidden">
-            <!-- Header Banner -->
-            <div class="bg-slate-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-black">Profil Rutan Kelas IIB Siak Sri Indrapura</h2>
-                    <p class="text-slate-400 text-sm mt-2">Mengenal lebih dekat sejarah, visi misi, dan struktur kedinasan kami.</p>
+        <section id="tab-profil" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                <!-- Header Title -->
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="text-xs font-mono text-amber-400 uppercase tracking-widest bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Identitas Kedinasan</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Profil Rutan Kelas IIB Siak Sri Indrapura</h2>
+                    <p class="text-slate-400 text-sm">Mengenal lebih dekat visi, misi, dan struktur kedinasan kami.</p>
                 </div>
-            </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
-                <!-- Visi & Misi -->
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-8 shadow-sm">
-                        <div class="w-12 h-12 bg-amber-600 text-white rounded-xl flex items-center justify-center text-xl mb-4 font-bold">
+                <!-- Visi & Misi Holographic Cards -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-card rounded-3xl p-8 border border-amber-500/30 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold">
                             <i class="fa-solid fa-eye"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-amber-950 mb-3">Visi</h3>
-                        <p class="text-amber-900 leading-relaxed font-medium">
+                        <h3 class="text-2xl font-black text-amber-400">Visi Institusi</h3>
+                        <p class="text-slate-200 text-sm leading-relaxed">
                             "Mewujudkan Pelayanan Pemasyarakatan yang Berintegritas, Profesional, dan Terdepan dalam Pembinaan Warga Binaan untuk Menciptakan Lingkungan yang Aman, Tertib, dan Bermanfaat bagi Masyarakat."
                         </p>
                     </div>
 
-                    <div class="bg-slate-900 text-white rounded-2xl p-8 shadow-sm">
-                        <div class="w-12 h-12 bg-amber-500 text-slate-950 rounded-xl flex items-center justify-center text-xl mb-4 font-bold">
+                    <div class="glass-card rounded-3xl p-8 border border-cyan-500/30 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl font-bold">
                             <i class="fa-solid fa-bullseye"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-amber-400 mb-3">Misi Utama</h3>
-                        <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside leading-relaxed">
-                            <li>Melaksanakan perawatan tahanan dan pembinaan warga binaan sesuai regulasi hak asasi manusia.</li>
-                            <li>Menyelenggarakan penegakan keamanan dan ketertiban rutan secara preventif dan persuasif.</li>
-                            <li>Meningkatkan kualitas SDM petugas pemasyarakatan yang berakhlak dan kompeten.</li>
-                            <li>Membangun koordinasi sinergis bersama APH (Aparat Penegak Hukum) dan Pemkab Siak.</li>
+                        <h3 class="text-2xl font-black text-cyan-400">Misi Utama</h3>
+                        <ul class="space-y-2 text-slate-300 text-xs sm:text-sm list-disc list-inside leading-relaxed">
+                            <li>Melaksanakan perawatan dan pembinaan WBP berbasis hak asasi manusia.</li>
+                            <li>Menyelenggarakan penegakan keamanan dan ketertiban secara preventif.</li>
+                            <li>Meningkatkan kualitas SDM aparatur pemasyarakatan yang berintegritas.</li>
+                            <li>Membangun sinergi kokoh bersama Forkopimda dan Aparat Penegak Hukum.</li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Sejarah Singkat & Tugas Fungsi -->
-                <div class="bg-white rounded-2xl p-8 shadow-md border border-slate-200 space-y-6">
-                    <h3 class="text-2xl font-bold text-slate-900 border-b pb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-landmark text-amber-600"></i> Sejarah & Gambaran Umum
+                <!-- Subseksi Breakdown Bento -->
+                <div class="glass-card rounded-3xl p-8 space-y-6">
+                    <h3 class="text-xl font-black text-white border-b border-white/10 pb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-sitemap text-amber-400"></i> Struktur & Tugas Pokok
                     </h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura berlokasi di pusat kebudayaan Melayu Kabupaten Siak, Riau, persisnya di Jalan Pengadilan No. 1, Kampung Rempak, Kecamatan Siak. Rutan ini bertugas mengayomi, merawat para tahanan, serta melaksanakan pembinaan bagi terpidana tingkat pertama maupun rujukan di wilayah hukum Kabupaten Siak.
-                    </p>
-                    <div class="grid md:grid-cols-3 gap-6 pt-4">
-                        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-amber-500 transition-colors">
-                            <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2"><i class="fa-solid fa-shield text-amber-600"></i> Subseksi Pengelolaan</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed">Mengelola tata usaha, kepegawaian, keuangan, dan pemeliharaan perlengkapan sarana rutan.</p>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="p-6 rounded-2xl bg-slate-950/60 border border-white/5 hover:border-amber-500/40 transition-colors space-y-2">
+                            <div class="text-amber-400 text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-folder-tree"></i> Subseksi Pengelolaan</div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Mengelola ketatausahaan, kepegawaian, pengelolaan keuangan, dan perlengkapan sarana rutan.</p>
                         </div>
-                        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-amber-500 transition-colors">
-                            <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2"><i class="fa-solid fa-user-gear text-amber-600"></i> Subseksi Pelayanan Tahanan</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed">Mengadministrasikan data tahanan, registrasi, perawatan kesehatan, dan program pembinaan.</p>
+                        <div class="p-6 rounded-2xl bg-slate-950/60 border border-white/5 hover:border-cyan-500/40 transition-colors space-y-2">
+                            <div class="text-cyan-400 text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-user-gear"></i> Subseksi Pelayanan Tahanan</div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Mengadministrasikan registrasi tahanan, perawatan kesehatan, dan program pembinaan kemandirian.</p>
                         </div>
-                        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 hover:border-amber-500 transition-colors">
-                            <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2"><i class="fa-solid fa-lock text-amber-600"></i> Kesatuan Pengamanan (KPR)</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed">Bertanggung jawab atas stabilitas keamanan, pengawalan, dan pemeliharaan ketertiban internal.</p>
+                        <div class="p-6 rounded-2xl bg-slate-950/60 border border-white/5 hover:border-emerald-500/40 transition-colors space-y-2">
+                            <div class="text-emerald-400 text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Kesatuan Pengamanan (KPR)</div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Bertanggung jawab atas stabilitas keamanan, pengawalan, dan pemeliharaan ketertiban internal.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Banner Komitmen WBK -->
-                <div class="bg-gradient-to-r from-red-900 via-amber-800 to-slate-900 text-white rounded-2xl p-8 shadow-xl text-center space-y-4">
-                    <span class="bg-amber-400 text-slate-950 font-black text-xs px-3 py-1 rounded-full uppercase">Pemberitahuan Resmi</span>
-                    <h3 class="text-2xl font-black">KOMITMEN REFORMASI BUKAN HANYA SLOGAN</h3>
-                    <p class="text-slate-200 max-w-2xl mx-auto text-sm leading-relaxed">
-                        Seluruh pelayanan di Rutan Kelas IIB Siak TIDAK DIPUNGUT BIAYA (GRATIS). Apabila Anda menemukan oknum yang meminta imbalan atau pungli, segera laporkan melalui layanan pengaduan resmi kami.
-                    </p>
                 </div>
             </div>
         </section>
 
 
         <!-- ================= TAB 3: LAYANAN PUBLIK ================= -->
-        <section id="tab-layanan" class="tab-content hidden">
-            <!-- Header Banner -->
-            <div class="bg-slate-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-black">Informasi & Layanan Masyarakat</h2>
-                    <p class="text-slate-400 text-sm mt-2">Panduan kunjungan, syarat dokumen, serta pengajuan antrean online.</p>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <!-- Services Sub-Tabs -->
-                <div class="flex border-b border-slate-200 mb-8 overflow-x-auto gap-2">
-                    <button onclick="switchServiceSubTab('kunjungan')" id="subtab-btn-kunjungan" class="tab-btn active py-3 px-5 text-sm font-semibold border-b-2 border-transparent text-slate-600 whitespace-nowrap">
-                        <i class="fa-solid fa-users mr-2"></i> Kunjungan Tatap Muka
-                    </button>
-                    <button onclick="switchServiceSubTab('titipan')" id="subtab-btn-titipan" class="tab-btn py-3 px-5 text-sm font-semibold border-b-2 border-transparent text-slate-600 whitespace-nowrap">
-                        <i class="fa-solid fa-box mr-2"></i> Titipan Makanan & Barang
-                    </button>
-                    <button onclick="switchServiceSubTab('integrasi')" id="subtab-btn-integrasi" class="tab-btn py-3 px-5 text-sm font-semibold border-b-2 border-transparent text-slate-600 whitespace-nowrap">
-                        <i class="fa-solid fa-file-contract mr-2"></i> Layanan Integrasi (PB/CB)
-                    </button>
+        <section id="tab-layanan" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                <!-- Header -->
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="text-xs font-mono text-amber-400 uppercase tracking-widest bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Akses Terpadu</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Layanan Publik & Syarat Kunjungan</h2>
+                    <p class="text-slate-400 text-sm">Informasi lengkap prosedur kunjungan, titipan barang, dan pengurusan integrasi.</p>
                 </div>
 
-                <!-- Subtab Content 1: Kunjungan -->
-                <div id="subtab-kunjungan" class="subtab-content space-y-8">
-                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-clipboard-check text-amber-600"></i> Syarat & Ketentuan Kunjungan
-                        </h3>
-                        <ul class="grid md:grid-cols-2 gap-4 text-sm text-slate-700">
-                            <li class="flex items-start gap-2 bg-slate-50 p-3.5 rounded-lg border">
-                                <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                                <span>Pengunjung merupakan <strong>Keluarga Inti</strong> WBP (Orang Tua, Suami/Istri, Anak, Kakak/Adik Kandung) dibuktikan KK/KTP.</span>
-                            </li>
-                            <li class="flex items-start gap-2 bg-slate-50 p-3.5 rounded-lg border">
-                                <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                                <span>Wajib menunjukkan identitas diri resmi berfoto (e-KTP / SIM / Paspor) asli.</span>
-                            </li>
-                            <li class="flex items-start gap-2 bg-slate-50 p-3.5 rounded-lg border">
-                                <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                                <span>Untuk Tahanan yang masih berstatus proses sidang, <strong>WAJIB membawa Surat Izin Kunjungan</strong> dari Pihak Penahan (Kejaksaan/Pengadilan).</span>
-                            </li>
-                            <li class="flex items-start gap-2 bg-slate-50 p-3.5 rounded-lg border">
-                                <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                                <span>Berpakaian rapi, sopan (tidak memakai celana pendek/singlet/pakaian transparan), serta mematuhi aturan keamanan.</span>
-                            </li>
-                        </ul>
-                    </div>
+                <!-- Sub-Tabs Switcher -->
+                <div class="flex gap-2 border-b border-white/10 pb-3 overflow-x-auto">
+                    <button onclick="switchServiceSubTab('kunjungan')" id="subtab-btn-kunjungan" class="tab-btn active py-2.5 px-5 rounded-xl text-xs font-bold whitespace-nowrap transition-all">
+                        <i class="fa-solid fa-users mr-1.5"></i> Kunjungan Tatap Muka
+                    </button>
+                    <button onclick="switchServiceSubTab('titipan')" id="subtab-btn-titipan" class="tab-btn py-2.5 px-5 rounded-xl text-xs font-bold text-slate-400 hover:text-white whitespace-nowrap transition-all">
+                        <i class="fa-solid fa-box mr-1.5"></i> Titipan Makanan & Barang
+                    </button>
+                    <button onclick="switchServiceSubTab('integrasi')" id="subtab-btn-integrasi" class="tab-btn py-2.5 px-5 rounded-xl text-xs font-bold text-slate-400 hover:text-white whitespace-nowrap transition-all">
+                        <i class="fa-solid fa-file-signature mr-1.5"></i> Layanan Integrasi (PB/CB 100% Gratis)
+                    </button>
+                </div>
 
-                    <!-- Flow Schedule -->
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-md">
-                            <h4 class="font-bold text-amber-400 text-lg mb-4"><i class="fa-solid fa-calendar-days"></i> Pembagian Hari Kunjungan</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between border-b border-slate-800 pb-2">
-                                    <span class="font-medium">Senin & Rabu</span>
-                                    <span class="text-amber-300 font-semibold">Khusus Kunjungan Tahanan</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-800 pb-2">
-                                    <span class="font-medium">Selasa & Kamis</span>
-                                    <span class="text-emerald-300 font-semibold">Khusus Kunjungan Narapidana</span>
-                                </div>
-                                <div class="flex justify-between pt-1 text-slate-400">
-                                    <span>Jumat, Sabtu, Minggu & Hari Libur</span>
-                                    <span class="text-red-400">LIBUR LAYANAN</span>
-                                </div>
-                            </div>
+                <!-- Subtab 1: Kunjungan -->
+                <div id="subtab-kunjungan" class="subtab-content space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4">
+                            <h3 class="text-lg font-black text-amber-400 flex items-center gap-2">
+                                <i class="fa-solid fa-clipboard-check"></i> Syarat & Ketentuan Kunjungan
+                            </h3>
+                            <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+                                <li class="flex items-start gap-2 bg-slate-950/60 p-3 rounded-xl border border-white/5">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
+                                    <span>Pengunjung adalah <strong>Keluarga Inti</strong> WBP (Orang Tua, Suami/Istri, Anak, Saudara Kandung) dibuktikan KK asli.</span>
+                                </li>
+                                <li class="flex items-start gap-2 bg-slate-950/60 p-3 rounded-xl border border-white/5">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
+                                    <span>Wajib membawa identitas diri resmi berfoto asli (e-KTP / SIM / Paspor).</span>
+                                </li>
+                                <li class="flex items-start gap-2 bg-slate-950/60 p-3 rounded-xl border border-white/5">
+                                    <i class="fa-solid fa-circle-check text-emerald-400 mt-1"></i>
+                                    <span>Untuk Tahanan tahap sidang, wajib melampirkan Surat Izin Kunjungan dari Pihak Penahan.</span>
+                                </li>
+                            </ul>
                         </div>
 
-                        <div class="bg-amber-600 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                        <div class="glass-card p-6 md:p-8 rounded-3xl flex flex-col justify-between space-y-4">
                             <div>
-                                <h4 class="font-bold text-lg mb-2"><i class="fa-solid fa-mobile-screen"></i> Pendaftaran Antrean Online</h4>
-                                <p class="text-amber-100 text-sm leading-relaxed mb-4">
-                                    Hindari antrean panjang di lokasi dengan mendaftarkan nomor kunjungan Anda terlebih dahulu secara digital.
+                                <h3 class="text-lg font-black text-cyan-400 flex items-center gap-2 mb-2">
+                                    <i class="fa-solid fa-ticket"></i> Pendaftaran Antrean Digital
+                                </h3>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                                    Ambil nomor tiket kunjungan secara digital sebelum datang ke Rutan untuk memangkas waktu tunggu di ruang pendaftaran.
                                 </p>
                             </div>
-                            <button onclick="openBookingModal()" class="bg-slate-950 hover:bg-slate-900 text-amber-400 font-bold py-3 px-6 rounded-xl transition-all shadow text-center">
-                                Klik Untuk Daftar Antrean
+                            <button onclick="openBookingModal()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3.5 px-6 rounded-xl shadow-lg transition-all text-center text-sm">
+                                <i class="fa-solid fa-calendar-check mr-1"></i> Klik Untuk Ambil Tiket Antrean
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Subtab Content 2: Titipan -->
-                <div id="subtab-titipan" class="subtab-content hidden space-y-6">
-                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Ketentuan Titipan Makanan & Barang</h3>
-                        <div class="space-y-4 text-slate-600 text-sm">
-                            <p>1. Pengiriman barang/makanan dibuka pada jam operasional layanan (Senin - Kamis, 09.00 - 12.00 WIB).</p>
-                            <p>2. Makanan wajib dibungkus wadah transparan agar memudahkan proses penggeledahan petugas.</p>
-                            <p>3. <strong>Dilarang keras membawa:</strong> Senjata tajam, narkoba, HP/elektronik, obat-obatan tanpa resep dokter, rokok berlebihan, dan makanan yang berpotensi menyembunyikan barang terlarang (seperti tulang keras utuh, buah bertempurung keras, dsb).</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Subtab Content 3: Integrasi -->
-                <div id="subtab-integrasi" class="subtab-content hidden space-y-6">
-                    <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Persyaratan Layanan Integrasi (PB, CB, CMB, Asimilasi)</h3>
-                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                            Seluruh pengurusan program integrasi dilakukan secara transparan dan <strong>GRATIS tanpa pungutan uang sepeserpun</strong>. Penjamin adalah keluarga kandung WBP.
+                <!-- Subtab 2: Titipan -->
+                <div id="subtab-titipan" class="subtab-content hidden">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4">
+                        <h3 class="text-lg font-black text-amber-400">Ketentuan Titipan Makanan & Barang</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            1. Makanan wajib dibungkus dalam wadah transparan guna mempermudah proses pemeriksaan petugas.<br/>
+                            2. <strong>Dilarang keras:</strong> Senjata tajam, narkotika, obat-obatan tanpa resep dokter, HP/elektronik, dan makanan bertempurung keras.
                         </p>
-                        <div class="grid md:grid-cols-2 gap-4 text-xs text-slate-700">
-                            <div class="p-3.5 bg-slate-50 rounded-lg border">
-                                <span class="font-bold text-slate-900 block mb-1">1. Pembebasan Bersyarat (PB)</span>
-                                - Telah menjalani minimal 2/3 masa pidana.<br/>
-                                - Berkelakuan baik minimal 9 bulan terakhir.
+                    </div>
+                </div>
+
+                <!-- Subtab 3: Integrasi -->
+                <div id="subtab-integrasi" class="subtab-content hidden">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4">
+                        <h3 class="text-lg font-black text-emerald-400">Persyaratan Layanan Integrasi (PB, CB, CMB, Asimilasi)</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Seluruh pengurusan program integrasi dilakukan secara transparan dan <strong>100% GRATIS tanpa pungutan biaya apapun</strong>. Penjamin adalah keluarga kandung WBP.
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-4 text-xs pt-2">
+                            <div class="p-4 bg-slate-950/60 rounded-xl border border-white/5">
+                                <strong class="text-amber-400 block mb-1 text-sm">1. Pembebasan Bersyarat (PB)</strong>
+                                Menjalani sekurang-kurangnya 2/3 masa pidana dan berkelakuan baik minimal 9 bulan terakhir.
                             </div>
-                            <div class="p-3.5 bg-slate-50 rounded-lg border">
-                                <span class="font-bold text-slate-900 block mb-1">2. Cuti Bersyarat (CB)</span>
-                                - Pidana singkat (kurang dari 1 tahun 6 bulan).<br/>
-                                - Telah menjalani minimal 1/2 masa pidana.
+                            <div class="p-4 bg-slate-950/60 rounded-xl border border-white/5">
+                                <strong class="text-cyan-400 block mb-1 text-sm">2. Cuti Bersyarat (CB)</strong>
+                                Pidana singkat (kurang dari 1 tahun 6 bulan) dan telah menjalani sekurang-kurangnya 1/2 masa pidana.
                             </div>
                         </div>
                     </div>
@@ -552,211 +644,75 @@
         </section>
 
 
-        <!-- ================= TAB 4: BERITA & PUBLIKASI (HARIAN & BULANAN) ================= -->
-        <section id="tab-berita" class="tab-content hidden">
-            <!-- Header Banner -->
-            <div class="bg-slate-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-black">Portal Berita & Publikasi Kegiatan</h2>
-                    <p class="text-slate-400 text-sm mt-2">Pemberitaan harian serta rangkuman kegiatan bulanan Rutan Kelas IIB Siak Sri Indrapura.</p>
+        <!-- ================= TAB 4: GALERI ================= -->
+        <section id="tab-galeri" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="text-xs font-mono text-amber-400 uppercase tracking-widest bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Dokumentasi</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Galeri Kegiatan & Publikasi</h2>
+                    <p class="text-slate-400 text-sm">Potret kegiatan kedinasan, pembinaan kemandirian, dan operasional Rutan Siak.</p>
                 </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <!-- Featured News Banner Card -->
-                <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-6 md:p-8 shadow-2xl border border-amber-500/30 mb-10 overflow-hidden relative">
-                    <div class="grid md:grid-cols-12 gap-8 items-center relative z-10">
-                        <div class="md:col-span-5">
-                            <div class="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] border border-slate-700">
-                                <img src="assets/pisahsambut1.jpg" alt="Pisah Sambut Pejabat Eselon V" class="w-full h-full object-cover">
-                                <span class="absolute top-3 left-3 bg-amber-600 text-white font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider shadow">
-                                    Warta Utama Terkini
-                                </span>
-                            </div>
-                        </div>
-                        <div class="md:col-span-7 space-y-3">
-                            <span class="text-xs text-amber-400 font-bold"><i class="fa-solid fa-calendar mr-1"></i> 29 Agustus 2026 • Aula Rutan Siak</span>
-                            <h3 class="text-xl md:text-2xl font-black text-white leading-tight">
-                                SETIAP ORANG ADA MASANYA: Rutan Siak Gelar Acara Pisah Sambut Kepada Pejabat Eselon V
-                            </h3>
-                            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                                Kegiatan pisah sambut pelepasan Singgih Praja Kusuma, S.H., M.H. dan penyambutan Okta Adi Putra, S.H. berlangsung penuh keakraban dan haru dalam rangka estafet pengabdian pemasyarakatan.
-                            </p>
-                            <div class="pt-2 flex flex-wrap gap-3">
-                                <a href="berita.html" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2">
-                                    <i class="fa-solid fa-newspaper"></i> Buka Portal Berita & Galeri Foto Lengkap
-                                </a>
-                                <button onclick="openNewsModal(1)" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs px-4 py-3 rounded-xl border border-slate-600 transition-all flex items-center gap-2">
-                                    <i class="fa-solid fa-book-open"></i> Baca Cepat
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Search & Filter Controls -->
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <!-- Filters -->
-                    <div class="flex items-center gap-2 flex-wrap w-full md:w-auto">
-                        <button onclick="filterNews('all')" class="news-filter-btn active bg-amber-600 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all">Semua</button>
-                        <button onclick="filterNews('harian')" class="news-filter-btn bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-lg hover:bg-slate-200 transition-all">Berita Harian</button>
-                        <button onclick="filterNews('bulanan')" class="news-filter-btn bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-lg hover:bg-slate-200 transition-all">Rangkuman Bulanan</button>
-                        <button onclick="filterNews('pembinaan')" class="news-filter-btn bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-lg hover:bg-slate-200 transition-all">Pembinaan WBP</button>
-                    </div>
-
-                    <!-- Search Input -->
-                    <div class="relative w-full md:w-72">
-                        <input type="text" id="news-search" onkeyup="searchNews()" placeholder="Cari berita..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-600">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                    </div>
-                </div>
-
-                <!-- News Grid Container -->
-                <div class="grid md:grid-cols-3 gap-8" id="all-news-grid">
-                    <!-- Dynamic rendering via JS -->
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= TAB 5: GALERI ================= -->
-        <section id="tab-galeri" class="tab-content hidden">
-            <!-- Header Banner -->
-            <div class="bg-slate-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-black">Galeri Dokumentasi</h2>
-                    <p class="text-slate-400 text-sm mt-2">Potret kegiatan kemandirian, kerohanian, dan operasional Rutan Siak Sri Indrapura.</p>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6" id="gallery-grid">
-                    <!-- Dynamic Gallery Rendering -->
+                    <!-- Injected via JS dynamically -->
                 </div>
             </div>
         </section>
 
 
-        <!-- ================= TAB 6: KONTAK & LOKASI ================= -->
-        <section id="tab-kontak" class="tab-content hidden">
-            <!-- Header Banner -->
-            <div class="bg-slate-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-black">Kontak & Lokasi Kantor</h2>
-                    <p class="text-slate-400 text-sm mt-2">Hubungi kami atau kunjungi alamat resmi Rutan Kelas IIB Siak Sri Indrapura.</p>
+        <!-- ================= TAB 5: KONTAK & LOKASI ================= -->
+        <section id="tab-kontak" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                <div class="text-center max-w-3xl mx-auto space-y-2">
+                    <span class="text-xs font-mono text-amber-400 uppercase tracking-widest bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Hubungi Kami</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Kontak & Lokasi Kantor</h2>
+                    <p class="text-slate-400 text-sm">Saluran aduan resmi dan peta lokasi Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura.</p>
                 </div>
-            </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div class="grid lg:grid-cols-12 gap-10">
-                    <!-- Info Detail Sidebar -->
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <!-- Info Detail -->
                     <div class="lg:col-span-5 space-y-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
-                            <h3 class="text-xl font-bold text-slate-900 border-b pb-3">Informasi Kontak Official</h3>
-                            
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center shrink-0 font-bold">
+                        <div class="glass-card p-6 rounded-3xl space-y-5">
+                            <h3 class="text-lg font-black text-white border-b border-white/10 pb-3">Informasi Kontak Official</h3>
+                            <div class="flex items-start gap-4 text-xs">
+                                <div class="w-10 h-10 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center shrink-0 text-base">
                                     <i class="fa-solid fa-location-dot"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-slate-900 text-sm">Alamat Kantor</h4>
-                                    <p class="text-slate-600 text-xs mt-1 leading-relaxed">
-                                        Jl. Pengadilan No. 1, Kampung Rempak, Kec. Siak, Kabupaten Siak, Riau 28671, Indonesia.
-                                    </p>
+                                    <h4 class="font-bold text-white text-sm">Alamat Kantor</h4>
+                                    <p class="text-slate-400 mt-1 leading-relaxed">Jl. Pengadilan No. 1, Kampung Rempak, Kec. Siak, Kab. Siak, Riau 28671.</p>
                                 </div>
                             </div>
 
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center shrink-0 font-bold">
+                            <div class="flex items-start gap-4 text-xs">
+                                <div class="w-10 h-10 bg-cyan-500/20 text-cyan-400 rounded-xl flex items-center justify-center shrink-0 text-base">
                                     <i class="fa-solid fa-phone"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-slate-900 text-sm">Telepon & WhatsApp Pengaduan</h4>
-                                    <p class="text-slate-600 text-xs mt-1">(0764) 20280 / +62 821-7642-0280</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 bg-purple-100 text-purple-700 rounded-xl flex items-center justify-center shrink-0 font-bold">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-slate-900 text-sm">Email Resmi</h4>
-                                    <p class="text-slate-600 text-xs mt-1">rutan.siak@kemenkumham.go.id</p>
-                                </div>
-                            </div>
-
-                            <div class="pt-2 border-t">
-                                <h4 class="font-bold text-slate-900 text-sm mb-3">Media Sosial Resmi</h4>
-                                <div class="flex items-center gap-3">
-                                    <a href="#" class="w-9 h-9 bg-slate-100 hover:bg-amber-600 hover:text-white text-slate-700 rounded-lg flex items-center justify-center transition-all"><i class="fa-brands fa-instagram"></i></a>
-                                    <a href="#" class="w-9 h-9 bg-slate-100 hover:bg-amber-600 hover:text-white text-slate-700 rounded-lg flex items-center justify-center transition-all"><i class="fa-brands fa-facebook-f"></i></a>
-                                    <a href="#" class="w-9 h-9 bg-slate-100 hover:bg-amber-600 hover:text-white text-slate-700 rounded-lg flex items-center justify-center transition-all"><i class="fa-brands fa-youtube"></i></a>
+                                    <h4 class="font-bold text-white text-sm">Telepon & WhatsApp Pengaduan</h4>
+                                    <p class="text-slate-400 mt-1 font-mono">(0764) 20280 / +62 821-7642-0280</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-6 rounded-2xl shadow-md">
-                            <h4 class="font-bold text-base mb-2"><i class="fa-solid fa-circle-exclamation"></i> Layanan Pengaduan (WBS)</h4>
-                            <p class="text-xs text-amber-100 leading-relaxed">
-                                Temukan pelanggaran atau keluhan terhadap pelayanan kami? Sampaikan melalui kanal aduan resmi atau Layanan Lapor!
+                        <div class="glass-card p-6 rounded-3xl border border-emerald-500/30">
+                            <h4 class="font-bold text-emerald-400 text-sm mb-2"><i class="fa-solid fa-shield-halved"></i> Whistleblowing System (WBS)</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Temukan indikasi pelanggaran atau keluhan pelayanan publik? Laporkan langsung melalui saluran pengaduan kami secara rahasia dan aman.
                             </p>
                         </div>
                     </div>
 
-                    <!-- Map & Contact Form -->
+                    <!-- Map & Form -->
                     <div class="lg:col-span-7 space-y-6">
-                        <!-- Google Maps Embed -->
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                            <h3 class="font-bold text-slate-900 text-sm mb-3 flex items-center justify-between">
-                                <span><i class="fa-solid fa-map text-amber-600 mr-1"></i> Peta Lokasi Google Maps Official</span>
-                                <a href="https://www.google.com/maps/place/Rutan+Kelas+IIB+Siak+Sri+Indrapura/@0.8010027,102.0433758,18z" target="_blank" class="text-amber-600 text-xs hover:underline flex items-center gap-1">
-                                    Buka di Google Maps <i class="fa-solid fa-up-right-from-square"></i>
+                        <div class="glass-card p-4 rounded-3xl border border-white/10 overflow-hidden">
+                            <h3 class="font-bold text-xs text-amber-400 mb-3 flex items-center justify-between">
+                                <span><i class="fa-solid fa-map-location-dot mr-1.5"></i> Google Maps Official</span>
+                                <a href="https://www.google.com/maps/place/Rutan+Kelas+IIB+Siak+Sri+Indrapura/@0.8010027,102.0433758,18z" target="_blank" class="hover:underline flex items-center gap-1 text-[11px]">
+                                    Buka Peta Penuh <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </h3>
-                            <div class="w-full h-72 rounded-xl bg-slate-200 overflow-hidden relative border">
-                                <iframe 
-                                    class="w-full h-full border-0" 
-                                    src="https://maps.google.com/maps?q=0.8010027,102.0433758&hl=id&z=17&output=embed" 
-                                    allowfullscreen="" 
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                        </div>
-
-                        <!-- Form Pengaduan / Pesan -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                            <h3 class="text-lg font-bold text-slate-900 mb-4">Kirim Pesan / Pengaduan Masyarakat</h3>
-                            <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                                <div class="grid sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap</label>
-                                        <input type="text" required placeholder="Masukkan nama..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nomor WhatsApp / HP</label>
-                                        <input type="tel" required placeholder="0812xxxx" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori Pesan</label>
-                                    <select class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                                        <option>Pertanyaan Informasi Kunjungan</option>
-                                        <option>Layanan Integrasi / Pembebasan Bersyarat</option>
-                                        <option>Pengaduan Pelayanan Publik</option>
-                                        <option>Lainnya</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Pesan / Pengaduan</label>
-                                    <textarea rows="4" required placeholder="Tuliskan detail pesan Anda..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-                                </div>
-                                <button type="submit" class="w-full bg-slate-900 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all shadow">
-                                    Kirim Pesan Sekarang
-                                </button>
-                            </form>
-                            <div id="form-alert" class="hidden mt-4 p-3 bg-emerald-100 text-emerald-800 text-xs rounded-lg border border-emerald-300">
-                                <i class="fa-solid fa-circle-check mr-1"></i> Pesan Anda telah berhasil terkirim! Tim kehumasan Rutan Siak akan segera memproses tanggapan.
+                            <div class="w-full h-72 rounded-2xl bg-slate-900 overflow-hidden border border-white/5">
+                                <iframe class="w-full h-full border-0" src="https://maps.google.com/maps?q=0.8010027,102.0433758&hl=id&z=17&output=embed" allowfullscreen="" loading="lazy"></iframe>
                             </div>
                         </div>
                     </div>
@@ -766,88 +722,181 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-400 text-xs border-t border-slate-800 pt-12 pb-8">
+    <!-- ================= MODERN FOOTER ================= -->
+    <footer class="bg-slate-950 text-slate-400 text-xs border-t border-white/10 pt-12 pb-8 relative z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-white/10">
                 <div class="space-y-3">
                     <div class="flex items-center gap-2 mb-2">
                         <img src="logokemenimipas" class="w-8 h-8 object-contain" alt="Logo Kemenimipas">
                         <img src="logopemasyarakatan" class="w-7 h-8 object-contain" alt="Logo PAS">
                     </div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Rutan Kelas IIB Siak</h4>
-                    <p class="leading-relaxed">
+                    <h4 class="text-sm font-black text-white uppercase tracking-wider">Rutan Kelas IIB Siak</h4>
+                    <p class="leading-relaxed text-slate-400">
                         Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura di bawah naungan Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia.
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Tautan Cepat</h4>
+                    <h4 class="text-sm font-black text-white uppercase tracking-wider mb-3">Tautan Cepat</h4>
                     <ul class="space-y-2">
+                        <li><a href="#" onclick="switchTab('beranda')" class="hover:text-amber-400 transition-colors">Beranda Utama</a></li>
                         <li><a href="#" onclick="switchTab('profil')" class="hover:text-amber-400 transition-colors">Profil & Visi Misi</a></li>
                         <li><a href="#" onclick="switchTab('layanan')" class="hover:text-amber-400 transition-colors">Jadwal & Syarat Kunjungan</a></li>
-                        <li><a href="berita.html" class="hover:text-amber-400 transition-colors">Berita & Publikasi</a></li>
+                        <li><a href="berita.html" class="hover:text-amber-400 transition-colors font-bold text-amber-400">Berita & Publikasi (Baru)</a></li>
                         <li><a href="#" onclick="switchTab('kontak')" class="hover:text-amber-400 transition-colors">Peta Lokasi & Pengaduan</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Tata Nilai PASTI</h4>
-                    <p class="leading-relaxed text-slate-400">
+                    <h4 class="text-sm font-black text-white uppercase tracking-wider mb-3">Tata Nilai PASTI</h4>
+                    <p class="leading-relaxed text-slate-300">
                         <strong class="text-amber-400">P</strong>rofesional • <strong class="text-amber-400">A</strong>kuntabel • <strong class="text-amber-400">S</strong>inergi • <strong class="text-amber-400">T</strong>ransparan • <strong class="text-amber-400">I</strong>novatif
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Alamat Singkat</h4>
+                    <h4 class="text-sm font-black text-white uppercase tracking-wider mb-3">Alamat Singkat</h4>
                     <p class="leading-relaxed">
-                        Jl. Pengadilan No. 1, Kp. Rempak, Kec. Siak, Kab. Siak, Riau 28671.
+                        Jl. Pengadilan No. 1, Kp. Rempak, Kec. Siak, Kab. Siak, Riau 28671.<br/>
+                        Telepon: (0764) 20280
                     </p>
                 </div>
             </div>
 
             <div class="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
                 <p>© 2026 Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. All rights reserved.</p>
-                <p class="text-slate-500">Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia</p>
+                <p class="text-slate-500 font-mono text-[11px]">Kementerian Imigrasi dan Pemasyarakatan RI</p>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL: Booking Antrean Online -->
-    <div id="booking-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative transform transition-all">
-            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">
+
+    <!-- ================= VIRTUAL AI ASSISTANT: "SI-RUTAN AI" ================= -->
+    <div id="ai-assistant-widget" class="fixed bottom-6 right-6 z-50">
+        <!-- Floating Trigger Button -->
+        <button onclick="toggleAiModal()" id="ai-trigger-btn" class="relative group flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-cyan-500 text-slate-950 font-black p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] transition-all transform hover:scale-105 active:scale-95">
+            <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-cyan-400 rounded-full animate-ping"></span>
+            <i class="fa-solid fa-robot text-lg"></i>
+            <span class="hidden sm:inline text-xs tracking-wider uppercase">Tanya SI-RUTAN AI</span>
+        </button>
+
+        <!-- Expandable AI Chat Modal -->
+        <div id="ai-chat-modal" class="hidden absolute bottom-16 right-0 w-[90vw] sm:w-96 glass-card rounded-3xl shadow-2xl border border-amber-500/30 overflow-hidden flex flex-col transition-all">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-4 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-cyan-400 text-slate-950 flex items-center justify-center font-bold text-sm shadow">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-white flex items-center gap-1.5">
+                            SI-RUTAN AI <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ONLINE</span>
+                        </h4>
+                        <p class="text-[10px] text-slate-400">Asisten Cerdas Informasi Pemasyarakatan</p>
+                    </div>
+                </div>
+                <button onclick="toggleAiModal()" class="text-slate-400 hover:text-white p-1 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Chat History Body -->
+            <div id="ai-chat-messages" class="p-4 space-y-3 h-80 overflow-y-auto text-xs">
+                <!-- Bot Welcome Bubble -->
+                <div class="flex items-start gap-2">
+                    <div class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-[10px] shrink-0">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-slate-900/90 border border-white/10 text-slate-200 leading-relaxed shadow-sm">
+                        Halo! Saya <strong>SI-RUTAN AI</strong>. Ada yang bisa saya bantu terkait jadwal kunjungan, syarat bebas bersyarat (PB/CB), atau informasi terkini Rutan Siak?
+                    </div>
+                </div>
+
+                <!-- Quick Prompts Chips -->
+                <div class="space-y-1.5 pt-2" id="ai-quick-prompts">
+                    <span class="text-[10px] font-mono text-slate-400 block">Pilih Pertanyaan Populer:</span>
+                    <button onclick="sendQuickPrompt('Jadwal Kunjungan Tatap Muka')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-amber-500/10 text-slate-300 hover:text-amber-300 border border-white/5 transition-all">
+                        📅 Jam & Hari Kunjungan Tatap Muka?
+                    </button>
+                    <button onclick="sendQuickPrompt('Syarat Pembebasan Bersyarat')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-300 border border-white/5 transition-all">
+                        ⚖️ Syarat Bebas Bersyarat (PB/CB) Gratis?
+                    </button>
+                    <button onclick="sendQuickPrompt('Berita Pisah Sambut')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-cyan-500/10 text-slate-300 hover:text-cyan-300 border border-white/5 transition-all">
+                        📰 Info Berita Pisah Sambut 29 Agustus?
+                    </button>
+                    <button onclick="sendQuickPrompt('Hotline Pengaduan')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-purple-500/10 text-slate-300 hover:text-purple-300 border border-white/5 transition-all">
+                        📞 Nomor Telepon & WhatsApp Pengaduan?
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Bar -->
+            <form onsubmit="handleAiSubmit(event)" class="p-3 border-t border-white/10 bg-slate-950/80 flex items-center gap-2">
+                <input type="text" id="ai-user-input" placeholder="Ketik pertanyaan Anda..." class="flex-grow px-3.5 py-2 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
+                <button type="submit" class="w-9 h-9 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl flex items-center justify-center font-bold text-sm shadow transition-transform active:scale-95">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ================= MODAL: DETAIL BERITA ================= -->
+    <div id="news-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto border border-amber-500/30">
+            <button onclick="closeNewsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
-            <h3 class="text-xl font-extrabold text-slate-900 mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-ticket text-amber-600"></i> Pendaftaran Antrean Online
-            </h3>
-            <p class="text-xs text-slate-500 mb-6">Silakan isi formulir untuk mendapatkan nomor tiket antrean kunjungan digital.</p>
+            <span id="modal-news-tag" class="inline-block bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold text-[10px] px-3 py-1 rounded-full uppercase mb-2">Berita Harian</span>
+            <h3 id="modal-news-title" class="text-xl md:text-2xl font-bold text-white mb-3 leading-snug">Judul Berita</h3>
+            <p id="modal-news-date" class="text-xs text-slate-400 mb-4 flex items-center gap-1 font-mono"><i class="fa-solid fa-calendar"></i> Tanggal Publikasi</p>
 
-            <form id="booking-form" onsubmit="submitBooking(event)" class="space-y-4">
+            <img id="modal-news-img" src="" class="w-full h-64 object-cover rounded-2xl mb-4 border border-white/10" alt="Berita Detail">
+
+            <div id="modal-news-content" class="text-slate-300 text-sm leading-relaxed space-y-3">
+                <!-- Content dynamically injected -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= MODAL: BOOKING ANTREAN ONLINE ================= -->
+    <div id="booking-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl relative border border-amber-500/30">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <h3 class="text-xl font-extrabold text-white mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-ticket text-amber-400"></i> Pendaftaran Antrean Online
+            </h3>
+            <p class="text-xs text-slate-400 mb-6">Silakan isi formulir untuk mendapatkan nomor tiket digital.</p>
+
+            <form id="booking-form" onsubmit="submitBooking(event)" class="space-y-4 text-xs">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Pengunjung</label>
-                    <input type="text" required placeholder="Sesuai e-KTP" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <label class="block font-bold text-slate-300 mb-1">Nama Lengkap Pengunjung</label>
+                    <input type="text" required placeholder="Sesuai e-KTP" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">NIK (e-KTP)</label>
-                        <input type="text" required maxlength="16" placeholder="16 digit NIK" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <label class="block font-bold text-slate-300 mb-1">NIK (16 Digit)</label>
+                        <input type="text" required maxlength="16" placeholder="16 digit NIK" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">No. WhatsApp</label>
-                        <input type="tel" required placeholder="0812xxxx" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <label class="block font-bold text-slate-300 mb-1">No. WhatsApp</label>
+                        <input type="tel" required placeholder="0812xxxx" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama WBP Yang Dikunjungi</label>
-                        <input type="text" required placeholder="Nama WBP" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <label class="block font-bold text-slate-300 mb-1">Nama WBP</label>
+                        <input type="text" required placeholder="Nama WBP" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Hubungan Keluarga</label>
-                        <select class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <label class="block font-bold text-slate-300 mb-1">Hubungan</label>
+                        <select class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                             <option>Orang Tua (Ayah/Ibu)</option>
                             <option>Suami / Istri</option>
                             <option>Anak Kandung</option>
@@ -856,52 +905,36 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Rencana Tanggal Kunjungan</label>
-                    <input type="date" required class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <label class="block font-bold text-slate-300 mb-1">Rencana Tanggal Kunjungan</label>
+                    <input type="date" required class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                 </div>
 
-                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl transition-all shadow mt-2">
-                    Cetak Nomor Antrean Digital
+                <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-3.5 rounded-xl transition-all shadow-lg text-sm">
+                    Cetak Tiket Antrean Digital
                 </button>
             </form>
 
             <div id="booking-success" class="hidden text-center py-6 space-y-4">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-3xl mx-auto border border-emerald-500/40">
                     <i class="fa-solid fa-check"></i>
                 </div>
-                <h4 class="text-lg font-bold text-slate-900">Pendaftaran Berhasil!</h4>
-                <div class="bg-slate-100 p-4 rounded-xl border font-mono">
-                    <span class="text-xs text-slate-500 block">NOMOR ANTREAN KUNJUNGAN DIGITAL</span>
-                    <span class="text-3xl font-black text-amber-600" id="queue-number">A-024</span>
+                <h4 class="text-lg font-black text-white">Pendaftaran Antrean Berhasil!</h4>
+                <div class="p-4 rounded-2xl bg-slate-950/80 border border-amber-500/30 font-mono">
+                    <span class="text-xs text-slate-400 block">NOMOR ANTREAN DIGITAL</span>
+                    <span class="text-4xl font-black text-amber-400" id="queue-number">A-024</span>
                 </div>
-                <p class="text-xs text-slate-600">Simpan bukti antrean ini dan tunjukkan kepada petugas di Loket Pendaftaran Rutan Siak pada hari H.</p>
-                <button onclick="closeBookingModal()" class="bg-slate-900 text-white font-bold text-xs py-2.5 px-6 rounded-lg">
-                    Tutup Window
+                <p class="text-xs text-slate-300">Tunjukkan bukti antrean ini kepada petugas loket Rutan Siak pada hari kunjungan.</p>
+                <button onclick="closeBookingModal()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-6 rounded-xl border border-white/10">
+                    Tutup
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: Detail Berita Reader -->
-    <div id="news-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeNewsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            
-            <span id="modal-news-tag" class="inline-block bg-amber-100 text-amber-800 font-bold text-xs px-2.5 py-0.5 rounded-full uppercase mb-2">Berita Harian</span>
-            <h3 id="modal-news-title" class="text-xl md:text-2xl font-bold text-slate-900 mb-3">Judul Berita</h3>
-            <p id="modal-news-date" class="text-xs text-slate-400 mb-4 flex items-center gap-1"><i class="fa-solid fa-calendar"></i> Tanggal Publikasi</p>
 
-            <img id="modal-news-img" src="" class="w-full h-64 object-cover rounded-xl mb-4 border" alt="Berita Detail">
-
-            <div id="modal-news-content" class="text-slate-700 text-sm leading-relaxed space-y-3">
-                <!-- Content injected dynamically -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Script Application Lo        // Data Berita (Harian & Bulanan)
+    <!-- ================= APPLICATION JAVASCRIPT LOGIC ================= -->
+    <script>
+        // News Data
         const newsData = [
             {
                 id: 1,
@@ -917,7 +950,7 @@
                     <p>Pejabat yang dilepas adalah <strong>Singgih Praja Kusuma</strong>, yang sebelumnya menjabat sebagai Kepala Sub Seksi Pengelolaan Rutan Siak. Setelah mendapatkan amanah baru, Singgih akan melanjutkan tugas sebagai Kepala Sub Seksi Pelaporan dan Tata Tertib pada Lapas Kelas IIA Pekanbaru. Selama bertugas di Rutan Siak, dedikasi dan kontribusinya menjadi bagian penting dalam mendukung pelaksanaan tugas dan fungsi pemasyarakatan serta pelayanan di lingkungan Rutan Siak.</p>
                     <p>Dalam kesempatan yang sama, Rutan Siak menyambut <strong>Okta Adi Putra</strong>, yang sebelumnya menjabat sebagai Kepala Urusan Umum dan Keuangan pada Lapas Kelas IIA Bagan Siapi-api. Kini, Okta mengemban amanah baru sebagai Kepala Sub Seksi Pelayanan Tahanan Rutan Kelas IIB Siak Sri Indrapura. Kehadirannya diharapkan dapat membawa semangat baru serta memperkuat kualitas pelayanan kepada warga binaan dan masyarakat pengguna layanan.</p>
                     <p>Pisah sambut ini bukan sekadar pergantian jabatan, tetapi menjadi bagian dari dinamika organisasi sekaligus bentuk kepercayaan dan amanah dalam perjalanan pengabdian. Keluarga besar Rutan Siak menyampaikan terima kasih dan apresiasi kepada Singgih Praja Kusuma atas pengabdian yang telah diberikan, serta mengucapkan selamat datang kepada Okta Adi Putra. Selamat menjalankan amanah di tempat tugas yang baru, dan selamat bergabung di keluarga besar Rutan Siak. Semoga setiap langkah pengabdian senantiasa memberikan manfaat dan membawa kemajuan bagi Pemasyarakatan.</p>
-                    <div class="pt-2 flex flex-wrap gap-1.5 text-xs text-amber-700 font-semibold">
+                    <div class="pt-2 flex flex-wrap gap-1.5 text-xs text-amber-400 font-semibold">
                         <a href="https://www.instagram.com/explore/tags/kemenimipas/" target="_blank" class="hover:underline">#kemenimipas</a>
                         <a href="https://www.instagram.com/explore/tags/agusandrianto/" target="_blank" class="hover:underline">#AgusAndrianto</a>
                         <a href="https://www.instagram.com/explore/tags/silmykarim/" target="_blank" class="hover:underline">#SilmyKarim</a>
@@ -939,7 +972,6 @@
                 content: `
                     <p><strong>Siak Sri Indrapura</strong> — Dalam rangka menindaklanjuti arahan Dirjen Pemasyarakatan terkait Deteksi Dini Gangguan Kamtib, Rutan Kelas IIB Siak Sri Indrapura menggelar penggeledahan insidental di blok hunian Warga Binaan Pemasyarakatan (WBP).</p>
                     <p>Kegiatan ini dilanjutkan dengan pelaksanaan tes urine secara acak bagi puluhan WBP dan petugas. Hasil pemeriksaan menunjukkan seluruh sampel dinyatakan negatif narkoba.</p>
-                    <p>Kepala Rutan Siak menegaskan bahwa kegiatan ini merupakan komitmen mewujudkan Rutan Siak Bebas dari Narkoba (BERSINAR) serta menciptakan kondisi lingkungan yang kondusif.</p>
                 `
             },
             {
@@ -952,38 +984,11 @@
                 summary: "Jajaran pegawai Rutan Kelas IIB Siak menyalurkan paket bantuan sembako kepada warga kurang mampu di sekitar lingkungan kantor.",
                 content: `
                     <p><strong>Siak Sri Indrapura</strong> — Jajaran pegawai Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura mengadakan kegiatan bakti sosial pembagian paket sembako dalam rangka menyambut Hari Pengayoman.</p>
-                    <p>Bantuan diserahkan langsung oleh pejabat struktural Rutan Siak kepada warga sekitar Jalan Pengadilan Kampung Rempak yang membutuhkan, sebagai bentuk kepedulian sosial lembaga pemasyarakatan.</p>
-                `
-            },
-            {
-                id: 4,
-                title: "Laporan Hasil Survei Indeks Kepuasan Masyarakat (IKM) Periode Juli 2026",
-                category: "bulanan",
-                tag: "Rangkuman Bulanan • Juli 2026",
-                date: "31 Juli 2026",
-                image: "assets/📊 HASIL SURVEI INDEKS KEPUASAN MASYARAKAT – JULI 2026Rumah Tahanan Negara Kelas IIB Siak Sri In.jpg",
-                summary: "Publikasi berkala capaian mutu pelayanan prima dan survei persepsi anti korupsi pada Rutan Kelas IIB Siak Sri Indrapura.",
-                content: `
-                    <p><strong>Siak Sri Indrapura</strong> — Rutan Kelas IIB Siak Sri Indrapura mempublikasikan hasil Survei Indeks Kepuasan Masyarakat (IKM) dan Indeks Persepsi Korupsi (IPK) periode Juli 2026 dengan predikat SANGAT BAIK.</p>
-                    <p>Capaian ini menjadi bukti komitmen seluruh jajaran dalam memberikan pelayanan publik yang ramah, cepat, akuntabel, dan bebas dari segala bentuk pungutan liar.</p>
-                `
-            },
-            {
-                id: 5,
-                title: "Rangkuman Kegiatan Bulanan: Pembinaan Kemandirian Pertanian & Perikanan WBP",
-                category: "bulanan",
-                tag: "Rangkuman Bulanan • Agustus 2026",
-                date: "24 Agustus 2026",
-                image: "rutansiak",
-                summary: "Rangkuman program pembinaan kemandirian bidang hidroponik dan budidaya ikan lele selama bulan Agustus 2026 di Rutan Siak.",
-                content: `
-                    <p><strong>Siak Sri Indrapura</strong> — Sepanjang bulan Agustus 2026, Rutan Siak terus memperkuat program pembinaan kemandirian bagi Warga Binaan Pemasyarakatan (WBP) bekerjasama dengan Dinas Pertanian Kabupaten Siak.</p>
-                    <p>Para warga binaan dibekali pengetahuan teknis mengenai budidaya sayuran hidroponik serta pengolahan pakan ikan lele. Hasil panen hidroponik rutin didistribusikan ke pasar lokal Siak sebagai bentuk wujud nyata kerja produktif WBP.</p>
                 `
             }
         ];
 
-        // Data Galeri Dokumen Kegiatan
+        // Gallery Data
         const galleryData = [
             { title: "Pisah Sambut Pejabat Eselon V Rutan Siak", img: "assets/pisahsambut1.jpg" },
             { title: "Ramah Tamah Pegawai & Keluarga Rutan Siak", img: "assets/pisahsambut2.jpg" },
@@ -996,121 +1001,102 @@
         window.onload = function() {
             renderNews();
             renderGallery();
-            
-            // Auto switch tab if URL hash exists
+            startLiveClock();
+
+            // Hash tab switcher
             const hash = window.location.hash.replace('#', '');
-            if (hash && ['beranda', 'profil', 'layanan', 'berita', 'galeri', 'kontak'].includes(hash)) {
+            if (hash && ['beranda', 'profil', 'layanan', 'galeri', 'kontak'].includes(hash)) {
                 switchTab(hash);
             }
         };
 
-        // Tab Navigation Switcher
+        // Digital Clock
+        function startLiveClock() {
+            function update() {
+                const now = new Date();
+                const opt = { timeZone: 'Asia/Jakarta', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                const timeStr = now.toLocaleTimeString('id-ID', opt);
+                const clockEl = document.getElementById('realtime-clock');
+                if(clockEl) clockEl.innerHTML = `<i class="fa-regular fa-clock text-xs text-amber-400"></i> ${timeStr} WIB`;
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        // Tab Navigation
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('text-amber-600', 'bg-amber-50');
-                el.classList.add('text-slate-600');
+                el.classList.remove('text-amber-400', 'bg-amber-500/10', 'border', 'border-amber-500/30');
+                el.classList.add('text-slate-300');
             });
 
             const targetTab = document.getElementById(`tab-${tabId}`);
-            if (targetTab) {
-                targetTab.classList.remove('hidden');
-            }
-            
+            if (targetTab) targetTab.classList.remove('hidden');
+
             const activeNav = document.getElementById(`nav-${tabId}`);
-            if(activeNav) {
-                activeNav.classList.add('text-amber-600', 'bg-amber-50');
-                activeNav.classList.remove('text-slate-600');
+            if (activeNav) {
+                activeNav.classList.add('text-amber-400', 'bg-amber-500/10', 'border', 'border-amber-500/30');
+                activeNav.classList.remove('text-slate-300');
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Subtab Switcher for Services Page
+        // Subtab Switcher
         function switchServiceSubTab(subTabId) {
             document.querySelectorAll('.subtab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-            document.getElementById(`subtab-${subTabId}`).classList.remove('hidden');
-            document.getElementById(`subtab-btn-${subTabId}`).classList.add('active');
+            const target = document.getElementById(`subtab-${subTabId}`);
+            if (target) target.classList.remove('hidden');
+            const btn = document.getElementById(`subtab-btn-${subTabId}`);
+            if (btn) btn.classList.add('active');
         }
 
-        // Toggle Mobile Menu
+        // Mobile Menu Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
         // Render News Grid
-        function renderNews(filter = 'all', searchQuery = '') {
+        function renderNews() {
             const homeGrid = document.getElementById('home-news-grid');
-            const allGrid = document.getElementById('all-news-grid');
+            if(!homeGrid) return;
 
-            let filtered = newsData.filter(item => {
-                const matchFilter = (filter === 'all') || (item.category === filter);
-                const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                     item.summary.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchFilter && matchSearch;
-            });
-
-            const createCardHTML = (news) => `
-                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 flex flex-col justify-between hover:shadow-xl transition-all">
+            homeGrid.innerHTML = newsData.map(news => `
+                <div class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between hover:border-amber-500/40 transition-all group">
                     <div>
                         <div class="relative h-48 overflow-hidden">
-                            <img src="${news.image}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="${news.title}">
-                            <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-amber-400 font-bold text-[10px] px-2.5 py-1 rounded-full uppercase">
-                                ${news.category === 'harian' ? 'Berita Harian' : (news.category === 'bulanan' ? 'Rangkuman Bulanan' : 'Pembinaan WBP')}
+                            <img src="${news.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${news.title}">
+                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md text-amber-400 font-bold text-[10px] px-2.5 py-1 rounded-full uppercase border border-white/10">
+                                ${news.category === 'harian' ? 'Berita Harian' : 'Pembinaan WBP'}
                             </span>
                         </div>
                         <div class="p-5">
-                            <span class="text-xs text-slate-400 block mb-1"><i class="fa-solid fa-calendar mr-1"></i> ${news.date}</span>
-                            <h4 class="font-bold text-slate-900 text-base leading-snug mb-2 hover:text-amber-600 transition-colors cursor-pointer" onclick="${news.link ? `window.location.href='${news.link}'` : `openNewsModal(${news.id})`}">
+                            <span class="text-xs text-slate-400 block mb-1 font-mono"><i class="fa-solid fa-calendar mr-1"></i> ${news.date}</span>
+                            <h4 class="font-bold text-white text-sm sm:text-base leading-snug mb-2 hover:text-amber-400 transition-colors cursor-pointer" onclick="${news.link ? `window.location.href='${news.link}'` : `openNewsModal(${news.id})`}">
                                 ${news.title}
                             </h4>
-                            <p class="text-slate-600 text-xs leading-relaxed line-clamp-3">
+                            <p class="text-slate-300 text-xs leading-relaxed line-clamp-3">
                                 ${news.summary}
                             </p>
                         </div>
                     </div>
-                    <div class="p-5 pt-0 flex items-center justify-between">
+                    <div class="p-5 pt-0 flex items-center justify-between border-t border-white/5 mt-2">
                         ${news.link ? `
-                            <a href="${news.link}" class="text-amber-700 font-bold text-xs hover:underline flex items-center gap-1">
+                            <a href="${news.link}" class="text-amber-400 font-bold text-xs hover:underline flex items-center gap-1">
                                 Buka Halaman Berita & Galeri <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                             </a>
                         ` : `
-                            <button onclick="openNewsModal(${news.id})" class="text-amber-700 font-bold text-xs hover:underline flex items-center gap-1">
+                            <button onclick="openNewsModal(${news.id})" class="text-amber-400 font-bold text-xs hover:underline flex items-center gap-1">
                                 Baca Selengkapnya <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         `}
                     </div>
                 </div>
-            `;
-
-            if(homeGrid) {
-                homeGrid.innerHTML = newsData.slice(0, 3).map(createCardHTML).join('');
-            }
-            if(allGrid) {
-                allGrid.innerHTML = filtered.length > 0 
-                    ? filtered.map(createCardHTML).join('')
-                    : `<div class="col-span-3 text-center py-12 text-slate-400">Tidak ada berita yang sesuai dengan kriteria pencarian.</div>`;
-            }
-        }
-
-        // Filter & Search Functions
-        function filterNews(cat) {
-            document.querySelectorAll('.news-filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-amber-600', 'text-white');
-                btn.classList.add('bg-slate-100', 'text-slate-700');
-            });
-            event.target.classList.add('active', 'bg-amber-600', 'text-white');
-            event.target.classList.remove('bg-slate-100', 'text-slate-700');
-            
-            renderNews(cat, document.getElementById('news-search').value);
-        }
-
-        function searchNews() {
-            const query = document.getElementById('news-search').value;
-            renderNews('all', query);
+            `).join('');
         }
 
         // Render Gallery
@@ -1118,17 +1104,17 @@
             const grid = document.getElementById('gallery-grid');
             if(!grid) return;
             grid.innerHTML = galleryData.map(item => `
-                <div class="group relative rounded-2xl overflow-hidden shadow-md bg-slate-900 h-64 border border-slate-200">
+                <div class="group relative rounded-3xl overflow-hidden glass-card h-64 border border-white/10">
                     <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-90 group-hover:opacity-100" alt="${item.title}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent flex flex-col justify-end p-4">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent flex flex-col justify-end p-5">
                         <h4 class="text-white font-bold text-sm leading-snug">${item.title}</h4>
-                        <span class="text-amber-400 text-[10px] mt-1 flex items-center gap-1"><i class="fa-solid fa-camera"></i> Dok. Kehumasan Rutan Siak</span>
+                        <span class="text-amber-400 text-[10px] mt-1 flex items-center gap-1 font-mono"><i class="fa-solid fa-camera"></i> Dok. Humas Rutan Siak</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Modal Handlers
+        // Modals
         function openBookingModal() {
             document.getElementById('booking-modal').classList.remove('hidden');
             document.getElementById('booking-form').reset();
@@ -1165,14 +1151,67 @@
             document.getElementById('news-modal').classList.add('hidden');
         }
 
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const alertBox = document.getElementById('form-alert');
-            alertBox.classList.remove('hidden');
-            e.target.reset();
-            setTimeout(() => {
-                alertBox.classList.add('hidden');
-            }, 5000);
+        // ================= SI-RUTAN AI ASSISTANT LOGIC =================
+        function toggleAiModal() {
+            const modal = document.getElementById('ai-chat-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('ai-user-input').value = promptText;
+            handleAiSubmit(new Event('submit'));
+        }
+
+        function handleAiSubmit(e) {
+            if(e) e.preventDefault();
+            const inputEl = document.getElementById('ai-user-input');
+            const query = inputEl.value.trim();
+            if(!query) return;
+
+            const chatMessages = document.getElementById('ai-chat-messages');
+
+            // Append User Bubble
+            const userBubble = document.createElement('div');
+            userBubble.className = "flex items-start justify-end gap-2";
+            userBubble.innerHTML = `
+                <div class="p-3 rounded-2xl bg-amber-500 text-slate-950 font-semibold leading-relaxed shadow-sm max-w-[85%]">
+                    ${query}
+                </div>
+            `;
+            chatMessages.appendChild(userBubble);
+            inputEl.value = '';
+
+            // Generate AI Response
+            const botBubble = document.createElement('div');
+            botBubble.className = "flex items-start gap-2 pt-1";
+            
+            let responseText = "";
+            const lowerQuery = query.toLowerCase();
+
+            if (lowerQuery.includes('jadwal') || lowerQuery.includes('hari') || lowerQuery.includes('kunjungan') || lowerQuery.includes('jam')) {
+                responseText = "Layanan kunjungan tatap muka dibuka setiap hari <strong>Senin s/d Kamis pukul 09.00 - 12.00 WIB</strong>.<br/>• <strong>Senin & Rabu:</strong> Khusus Tahanan<br/>• <strong>Selasa & Kamis:</strong> Khusus Narapidana.<br/>Jumat, Sabtu, dan Minggu libur layanan.";
+            } else if (lowerQuery.includes('bebas bersyarat') || lowerQuery.includes('pb') || lowerQuery.includes('cb') || lowerQuery.includes('integrasi') || lowerQuery.includes('syarat')) {
+                responseText = "Seluruh pengurusan Pembebasan Bersyarat (PB) dan Cuti Bersyarat (CB) adalah <strong>100% GRATIS tanpa biaya sepeserpun</strong>. Syarat utama: minimal telah menjalani 2/3 masa pidana (untuk PB) atau 1/2 masa pidana (untuk CB), berkelakuan baik, dan memiliki penjamin keluarga kandung.";
+            } else if (lowerQuery.includes('antrean') || lowerQuery.includes('tiket') || lowerQuery.includes('daftar')) {
+                responseText = "Anda dapat mendaftar antrean online langsung melalui tombol <strong>'Daftar Antrean'</strong> di pojok kanan atas website ini untuk mendapatkan nomor tiket digital.";
+            } else if (lowerQuery.includes('pisah sambut') || lowerQuery.includes('pejabat') || lowerQuery.includes('singgih') || lowerQuery.includes('okta')) {
+                responseText = "Pada Sabtu (29/8/2026), Rutan Siak menggelar acara pisah sambut pelepasan <strong>Singgih Praja Kusuma, S.H., M.H.</strong> (menuju Lapas Pekanbaru) dan menyambut <strong>Okta Adi Putra, S.H.</strong> sebagai Kasubsi Pelayanan Tahanan Rutan Siak yang baru. Anda dapat membaca liputan lengkap di menu <strong>Berita & Publikasi</strong>.";
+            } else if (lowerQuery.includes('kontak') || lowerQuery.includes('aduan') || lowerQuery.includes('nomor') || lowerQuery.includes('wa') || lowerQuery.includes('lokasi')) {
+                responseText = "Alamat kantor: Jl. Pengadilan No. 1, Kampung Rempak, Siak.<br/>Telepon: <strong>(0764) 20280</strong><br/>Hotline WhatsApp Pengaduan: <strong>+62 821-7642-0280</strong>.";
+            } else {
+                responseText = "Terima kasih telah bertanya. Sebagai asisten cerdas Rutan Siak, saya siap memberikan informasi terkait layanan kunjungan, antrean online, syarat integrasi PB/CB, warta rilis pers, serta aduan masyarakat.";
+            }
+
+            botBubble.innerHTML = `
+                <div class="w-6 h-6 rounded-lg bg-cyan-400 text-slate-950 flex items-center justify-center font-bold text-[10px] shrink-0">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-900/90 border border-white/10 text-slate-200 leading-relaxed shadow-sm max-w-[85%]">
+                    ${responseText}
+                </div>
+            `;
+            chatMessages.appendChild(botBubble);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     </script>
 </body>
