@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita & Publikasi — Rutan Kelas IIB Siak Sri Indrapura</title>
+    <title id="page-title">Berita & Publikasi — Rutan Kelas IIB Siak Sri Indrapura</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -136,11 +136,11 @@
     <div class="bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-slate-950/40 border-b border-amber-500/20 text-amber-200 text-xs py-1.5 px-4 overflow-hidden relative">
         <div class="max-w-7xl mx-auto flex items-center gap-3">
             <span class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider shrink-0 shadow-sm">
-                <i class="fa-solid fa-bullhorn mr-1"></i> SIARAN PERS
+                <i class="fa-solid fa-bullhorn mr-1"></i> WARTA KEDINASAN
             </span>
             <div class="overflow-hidden w-full relative">
                 <div class="animate-marquee font-medium text-slate-300">
-                    Liputan Khusus: Acara Pisah Sambut Pejabat Eselon V Rutan Kelas IIB Siak Sri Indrapura Telah Sukses Digelar • Melepas Singgih Praja Kusuma, S.H., M.H. & Menyambut Okta Adi Putra, S.H. • Simak 7 Dokumentasi Foto Lengkap di Bawah Ini.
+                    Portal Berita & Dokumentasi Resmi Rutan Kelas IIB Siak Sri Indrapura • Pilih dan baca liputan kegiatan kedinasan, penyaluran bansos, dan acara pisah sambut pejabat eselon V lengkap dengan galeri foto interaktif.
                 </div>
             </div>
         </div>
@@ -204,7 +204,7 @@
     </header>
 
     <!-- ================= BREADCRUMBS & HERO HEADER ================= -->
-    <div class="py-10 lg:py-14 border-b border-white/5 relative overflow-hidden bg-slate-950/60">
+    <div class="py-10 lg:py-14 border-b border-white/5 relative overflow-hidden bg-slate-950/60" id="article-header-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Breadcrumb Navigation -->
             <nav class="flex items-center gap-2 text-xs font-medium mb-3 text-slate-400">
@@ -212,21 +212,21 @@
                 <span><i class="fa-solid fa-chevron-right text-[10px] text-slate-600"></i></span>
                 <span class="text-slate-300">Berita & Publikasi</span>
                 <span><i class="fa-solid fa-chevron-right text-[10px] text-slate-600"></i></span>
-                <span class="text-amber-400 font-semibold truncate max-w-xs md:max-w-md">Pisah Sambut Pejabat Eselon V</span>
+                <span class="text-amber-400 font-semibold truncate max-w-xs md:max-w-md" id="breadcrumb-title">Judul Berita</span>
             </nav>
 
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
-                            WARTA KEDINASAN
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span id="article-tag" class="text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
+                            KATEGORI
                         </span>
-                        <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full">
+                        <span id="article-badge" class="text-xs font-mono px-2.5 py-0.5 rounded-full">
                             <i class="fa-solid fa-bolt mr-1"></i> RILIS RESMI
                         </span>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
-                        SETIAP ORANG ADA MASANYA: Rutan Siak Gelar Acara Pisah Sambut Kepada Pejabat Eselon V
+                    <h2 id="article-title" class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+                        Judul Berita Utama
                     </h2>
                 </div>
                 <div class="shrink-0 flex items-center gap-2">
@@ -247,7 +247,7 @@
             <div class="grid lg:grid-cols-12 gap-8 items-start">
                 
                 <!-- ARTICLE BODY CONTAINER -->
-                <article class="lg:col-span-8 space-y-8">
+                <article class="lg:col-span-8 space-y-8" id="main-article-container">
                     
                     <!-- Article Glass Card -->
                     <div class="glass-card rounded-3xl p-6 md:p-10 space-y-8 border border-white/10">
@@ -255,24 +255,24 @@
                         <!-- Metadata Bar -->
                         <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10 text-xs font-mono text-slate-400">
                             <div class="flex items-center gap-4 flex-wrap">
-                                <span class="flex items-center gap-1.5 text-amber-400 font-bold">
-                                    <i class="fa-solid fa-calendar-check"></i> Sabtu, 29 Agustus 2026
+                                <span class="flex items-center gap-1.5 font-bold" id="article-date">
+                                    <i class="fa-solid fa-calendar-check"></i> Tanggal
                                 </span>
-                                <span><i class="fa-solid fa-location-dot text-cyan-400"></i> Aula Rutan Siak</span>
+                                <span id="article-location"><i class="fa-solid fa-location-dot text-cyan-400"></i> Lokasi</span>
                                 <span><i class="fa-solid fa-user-pen"></i> Humas Rutan Siak</span>
                             </div>
-                            <span class="bg-slate-900 px-3 py-1 rounded-full border border-white/5 text-slate-300">
-                                <i class="fa-regular fa-clock text-amber-400 mr-1"></i> Waktu Baca: ~3 Menit
+                            <span class="bg-slate-900 px-3 py-1 rounded-full border border-white/5 text-slate-300" id="article-readtime">
+                                <i class="fa-regular fa-clock text-amber-400 mr-1"></i> Waktu Baca
                             </span>
                         </div>
 
                         <!-- Featured Main Photo Banner -->
                         <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" onclick="openLightbox(0)">
-                            <img src="assets/pisahsambut1.jpg" alt="Sambutan Pejabat yang Dilepas di Podium Rutan Siak" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-500">
+                            <img id="article-main-img" src="" alt="Main Image" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
                             <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-                                <p class="text-xs bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 max-w-[80%] truncate">
-                                    <i class="fa-solid fa-camera text-amber-400 mr-1"></i> Sambutan Pejabat yang Dilepas Singgih Praja Kusuma di Podium Kehormatan
+                                <p id="article-main-caption" class="text-xs bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 max-w-[80%] truncate">
+                                    Caption Foto Utama
                                 </p>
                                 <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-lg group-hover:scale-110 transition-transform">
                                     <i class="fa-solid fa-expand"></i>
@@ -280,95 +280,48 @@
                             </div>
                         </div>
 
-                        <!-- ================= AI SUMMARY CARD: KEY TAKEAWAYS ================= -->
-                        <div class="p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-cyan-500/10 border border-amber-500/30 space-y-3">
-                            <div class="flex items-center gap-2 text-xs font-bold text-amber-400">
+                        <!-- AI Summary Card -->
+                        <div id="article-ai-summary" class="p-5 rounded-2xl bg-gradient-to-br border space-y-3">
+                            <div class="flex items-center gap-2 text-xs font-bold" id="ai-summary-header">
                                 <div class="w-6 h-6 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center font-black text-xs">
                                     <i class="fa-solid fa-brain"></i>
                                 </div>
-                                <span class="uppercase font-mono tracking-wider">Ringkasan Cerdas AI / Key Takeaways</span>
+                                <span class="uppercase font-mono tracking-wider">Ringkasan Cerdas AI / Key Highlights</span>
                             </div>
-                            <ul class="space-y-1.5 text-xs text-slate-300 list-disc list-inside leading-relaxed">
-                                <li><strong>Momentum Pisah Sambut:</strong> Digelar pada Sabtu (29/8/2026) di Aula Rutan Kelas IIB Siak Sri Indrapura dalam suasana haru dan keakraban.</li>
-                                <li><strong>Pejabat yang Dilepas:</strong> Singgih Praja Kusuma, S.H., M.H. (Kasubsi Pengelolaan) promosi bertugas sebagai Kasubsi Pelaporan & Tata Tertib Lapas Kelas IIA Pekanbaru.</li>
-                                <li><strong>Pejabat yang Disambut:</strong> Okta Adi Putra, S.H. (sebelumnya Kaur Umum Lapas Bagan Siapi-api) resmi mengemban amanah sebagai Kasubsi Pelayanan Tahanan Rutan Siak.</li>
+                            <ul id="ai-summary-points" class="space-y-1.5 text-xs text-slate-300 list-disc list-inside leading-relaxed">
+                                <!-- Injected via JS -->
                             </ul>
                         </div>
 
-                        <!-- Full Press Release Caption Content -->
-                        <div class="text-slate-200 text-sm sm:text-base leading-relaxed space-y-5 font-light">
-                            <p>
-                                <strong class="text-amber-400 font-bold">Siak Sri Indrapura, 29 Agustus 2026</strong> — Rumah Tahanan Negara (Rutan) Kelas IIB Siak Sri Indrapura menggelar acara pisah sambut pejabat eselon V di lingkungan Rutan Siak pada Sabtu (29/8/2026). Kegiatan berlangsung dalam suasana penuh keakraban dan haru, menjadi momentum untuk melepas pejabat yang mendapat amanah baru sekaligus menyambut pejabat baru yang akan melanjutkan estafet pengabdian di Rutan Siak.
-                            </p>
-
-                            <p>
-                                Pejabat yang dilepas adalah <strong>Singgih Praja Kusuma</strong>, yang sebelumnya menjabat sebagai Kepala Sub Seksi Pengelolaan Rutan Siak. Setelah mendapatkan amanah baru, Singgih akan melanjutkan tugas sebagai Kepala Sub Seksi Pelaporan dan Tata Tertib pada Lapas Kelas IIA Pekanbaru. Selama bertugas di Rutan Siak, dedikasi dan kontribusinya menjadi bagian penting dalam mendukung pelaksanaan tugas dan fungsi pemasyarakatan serta pelayanan di lingkungan Rutan Siak.
-                            </p>
-
-                            <!-- Officer Profile Comparison Cards -->
-                            <div class="grid sm:grid-cols-2 gap-4 py-3">
-                                <div class="p-5 rounded-2xl bg-slate-950/70 border border-amber-500/20 space-y-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
-                                        <div>
-                                            <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider block">Pejabat Dilepas</span>
-                                            <h4 class="text-sm font-bold text-white">Singgih Praja Kusuma, S.H., M.H.</h4>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-slate-400">Kasubsi Pengelolaan Rutan Siak ➔ Kasubsi Portatib Lapas Kelas IIA Pekanbaru</p>
-                                </div>
-
-                                <div class="p-5 rounded-2xl bg-slate-950/70 border border-cyan-500/20 space-y-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-arrow-right-to-bracket"></i></span>
-                                        <div>
-                                            <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">Pejabat Disambut</span>
-                                            <h4 class="text-sm font-bold text-white">Okta Adi Putra, S.H.</h4>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-slate-400">Kaur Umum & Keuangan Lapas Bagan Siapi-api ➔ Kasubsi Pelayanan Tahanan Rutan Siak</p>
-                                </div>
-                            </div>
-
-                            <p>
-                                Dalam kesempatan yang sama, Rutan Siak menyambut <strong>Okta Adi Putra</strong>, yang sebelumnya menjabat sebagai Kepala Urusan Umum dan Keuangan pada Lapas Kelas IIA Bagan Siapi-api. Kini, Okta mengemban amanah baru sebagai Kepala Sub Seksi Pelayanan Tahanan Rutan Kelas IIB Siak Sri Indrapura. Kehadirannya diharapkan dapat membawa semangat baru serta memperkuat kualitas pelayanan kepada warga binaan dan masyarakat pengguna layanan.
-                            </p>
-
-                            <p>
-                                Pisah sambut ini bukan sekadar pergantian jabatan, tetapi menjadi bagian dari dinamika organisasi sekaligus bentuk kepercayaan dan amanah dalam perjalanan pengabdian. Keluarga besar Rutan Siak menyampaikan terima kasih dan apresiasi kepada Singgih Praja Kusuma atas pengabdian yang telah diberikan, serta mengucapkan selamat datang kepada Okta Adi Putra. Selamat menjalankan amanah di tempat tugas yang baru, dan selamat bergabung di keluarga besar Rutan Siak. Semoga setiap langkah pengabdian senantiasa memberikan manfaat dan membawa kemajuan bagi Pemasyarakatan.
-                            </p>
+                        <!-- Full Content Body -->
+                        <div id="article-body-content" class="text-slate-200 text-sm sm:text-base leading-relaxed space-y-5 font-light">
+                            <!-- Injected via JS -->
                         </div>
 
                         <!-- Hashtags Interactive Section -->
                         <div class="pt-6 border-t border-white/10 space-y-2">
                             <span class="text-xs font-mono text-slate-400 block"><i class="fa-solid fa-hashtag text-amber-400 mr-1"></i> Tagar Media Sosial Resmi:</span>
-                            <div class="flex flex-wrap gap-2 text-xs font-mono">
-                                <a href="https://www.instagram.com/explore/tags/kemenimipas/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#kemenimipas</a>
-                                <a href="https://www.instagram.com/explore/tags/agusandrianto/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#AgusAndrianto</a>
-                                <a href="https://www.instagram.com/explore/tags/silmykarim/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#SilmyKarim</a>
-                                <a href="https://www.instagram.com/explore/tags/ditjenpas/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#DitjenPas</a>
-                                <a href="https://www.instagram.com/explore/tags/mashudi/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#Mashudi</a>
-                                <a href="https://www.instagram.com/explore/tags/gungungunawan/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#GunGunGunawan</a>
-                                <a href="https://www.instagram.com/explore/tags/pemasyarakatanriau/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">#PemasyarakatanRiau</a>
+                            <div id="article-hashtags" class="flex flex-wrap gap-2 text-xs font-mono">
+                                <!-- Injected via JS -->
                             </div>
                         </div>
 
                         <!-- Reactions & Share Actions -->
                         <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
                             <div class="flex items-center gap-2">
-                                <button onclick="handleReaction(this, 'like')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-amber-500/20 text-slate-300 hover:text-amber-400 border border-white/10 transition-all text-xs font-semibold">
+                                <button onclick="handleReaction(this, 'like')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border border-white/10 transition-all text-xs font-semibold">
                                     <i class="fa-solid fa-heart text-rose-500"></i>
-                                    <span>Bermanfaat (<span class="reaction-count">142</span>)</span>
+                                    <span>Sangat Bermanfaat (<span class="reaction-count">189</span>)</span>
                                 </button>
-                                <button onclick="handleReaction(this, 'cheer')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border border-white/10 transition-all text-xs font-semibold">
-                                    <i class="fa-solid fa-hand-peace text-emerald-400"></i>
-                                    <span>Sukses Selalu (<span class="reaction-count">98</span>)</span>
+                                <button onclick="handleReaction(this, 'cheer')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-amber-500/20 text-slate-300 hover:text-amber-400 border border-white/10 transition-all text-xs font-semibold">
+                                    <i class="fa-solid fa-hands-clapping text-amber-400"></i>
+                                    <span>Apresiasi Kinerja (<span class="reaction-count">124</span>)</span>
                                 </button>
                             </div>
 
                             <div class="flex items-center gap-2 text-xs">
                                 <span class="text-slate-400 font-mono">Bagikan:</span>
-                                <a href="https://api.whatsapp.com/send?text=SETIAP%20ORANG%20ADA%20MASANYA%3A%20Rutan%20Siak%20Gelar%20Pisah%20Sambut%20Pejabat%20Eselon%20V" target="_blank" class="w-8 h-8 rounded-xl bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/30 flex items-center justify-center transition-all">
+                                <a href="https://api.whatsapp.com/send?text=Portal%20Berita%20Rutan%20Siak" target="_blank" class="w-8 h-8 rounded-xl bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/30 flex items-center justify-center transition-all">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </a>
                                 <a href="https://www.facebook.com/sharer/sharer.php" target="_blank" class="w-8 h-8 rounded-xl bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 flex items-center justify-center transition-all">
@@ -382,86 +335,23 @@
 
                     </div>
 
-                    <!-- ================= INTERACTIVE BENTO PHOTO GALLERY (7 PHOTOS) ================= -->
+                    <!-- ================= INTERACTIVE BENTO PHOTO GALLERY ================= -->
                     <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6 border border-white/10">
                         <div class="flex items-center justify-between border-b border-white/10 pb-4">
                             <div>
-                                <span class="text-xs font-mono text-amber-400 uppercase tracking-wider block">Dokumentasi Lengkap</span>
-                                <h3 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
-                                    <i class="fa-solid fa-images text-amber-400"></i> Galeri Dokumentasi Foto Kegiatan (7 Foto)
+                                <span class="text-xs font-mono text-amber-400 uppercase tracking-wider block">Dokumentasi Kegiatan</span>
+                                <h3 class="text-lg sm:text-xl font-black text-white flex items-center gap-2" id="gallery-header-title">
+                                    <i class="fa-solid fa-images text-amber-400"></i> Galeri Dokumentasi Foto Kegiatan
                                 </h3>
                             </div>
-                            <span class="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-white/5">
+                            <span class="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-white/5" id="gallery-photo-count">
                                 Klik foto untuk perbesar
                             </span>
                         </div>
 
-                        <!-- 7 Photos Bento Grid -->
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            
-                            <!-- Photo 1 -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10" onclick="openLightbox(0)">
-                                <img src="assets/pisahsambut1.jpg" alt="Sambutan di Podium" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200">1. Sambutan Podium</span>
-                            </div>
-
-                            <!-- Photo 2 -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10" onclick="openLightbox(1)">
-                                <img src="assets/pisahsambut2.jpg" alt="Ramah Tamah Meja Bundar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200">2. Ramah Tamah</span>
-                            </div>
-
-                            <!-- Photo 3 -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10" onclick="openLightbox(2)">
-                                <img src="assets/pisahsambut3.jpg" alt="Pengarahan Pimpinan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200">3. Pengarahan Karutan</span>
-                            </div>
-
-                            <!-- Photo 4 -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10" onclick="openLightbox(3)">
-                                <img src="assets/pisahsambut4.jpg" alt="Penyerahan Cenderamata" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200">4. Penyerahan Cenderamata</span>
-                            </div>
-
-                            <!-- Photo 5 -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10" onclick="openLightbox(4)">
-                                <img src="assets/pisahsambut5.jpg" alt="Pigura Kenang-kenangan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200">5. Pigura Foto Dinas</span>
-                            </div>
-
-                            <!-- Photo 6 -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10" onclick="openLightbox(5)">
-                                <img src="assets/pisahsambut6.jpg" alt="Foto Bersama Jajaran" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200">6. Foto Bersama Seluruh Jajaran</span>
-                            </div>
-
-                            <!-- Photo 7 (Infografis Media Sosial) -->
-                            <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10 col-span-2 md:col-span-3" onclick="openLightbox(6)">
-                                <img src="assets/pisahsambut7.jpg" alt="Kanal Medsos Rutan Siak" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-                                </div>
-                                <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2.5 py-1 rounded text-amber-400">7. Infografis Kanal Medsos Resmi Humas Rutan Siak</span>
-                            </div>
-
+                        <!-- Dynamic Photos Bento Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="article-bento-gallery">
+                            <!-- Injected via JS -->
                         </div>
                     </div>
 
@@ -471,49 +361,31 @@
                 <!-- SIDEBAR CONTAINER -->
                 <aside class="lg:col-span-4 space-y-6">
                     
-                    <!-- Karutan Official Statement Card -->
-                    <div class="glass-card rounded-3xl p-6 border border-amber-500/30 space-y-4">
+                    <!-- Karutan Statement Card -->
+                    <div class="glass-card rounded-3xl p-6 border border-emerald-500/30 space-y-4" id="sidebar-statement-card">
                         <div class="flex items-center gap-3 border-b border-white/10 pb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xl">
-                                <i class="fa-solid fa-quote-left"></i>
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-hands-holding-child"></i>
                             </div>
                             <div>
-                                <h4 class="font-extrabold text-sm text-white">Amanah & Pengabdian</h4>
+                                <h4 class="font-extrabold text-sm text-white">Komitmen Pelayanan</h4>
                                 <p class="text-xs text-slate-400">Humas Rutan Kelas IIB Siak</p>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            "Mutasi dan promosi jabatan merupakan bagian dari dinamika organisasi untuk menjaga kesinambungan komitmen pelayanan prima serta penguatan integritas di lingkungan Pemasyarakatan."
+                        <p class="text-xs text-slate-300 leading-relaxed" id="sidebar-statement-text">
+                            "Rutan Kelas IIB Siak senantiasa berkomitmen hadir memberikan pelayanan prima, menjaga integritas, dan memberikan manfaat positif bagi seluruh masyarakat."
                         </p>
                     </div>
 
-                    <!-- Related News Widget -->
+                    <!-- Related & Other News Widget (Clickable Switcher) -->
                     <div class="glass-card rounded-3xl p-6 space-y-4 border border-white/10">
                         <h4 class="font-black text-sm uppercase tracking-wider text-white border-b border-white/10 pb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-fire text-amber-400"></i> Publikasi & Berita Lainnya
+                            <i class="fa-solid fa-fire text-amber-400"></i> Publikasi & Warta Lainnya
                         </h4>
 
-                        <!-- News 1 -->
-                        <a href="index.html#berita" class="flex gap-3 items-start group pb-3 border-b border-white/5">
-                            <img src="assets/bansos1.jpeg" class="w-16 h-14 object-cover rounded-xl border border-white/10 shrink-0 group-hover:scale-105 transition-transform" alt="Bakti Sosial">
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-mono text-amber-400">18 Agustus 2026</span>
-                                <h5 class="text-xs font-bold text-slate-200 group-hover:text-amber-400 transition-colors line-clamp-2 leading-snug">
-                                    Peringatan Hari Pengayoman: Penyaluran Paket Sembako Bakti Sosial Rutan Siak
-                                </h5>
-                            </div>
-                        </a>
-
-                        <!-- News 2 -->
-                        <a href="index.html#berita" class="flex gap-3 items-start group">
-                            <img src="assets/pisahsambut6.jpg" class="w-16 h-14 object-cover rounded-xl border border-white/10 shrink-0 group-hover:scale-105 transition-transform" alt="Razia Kamtib">
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-mono text-amber-400">26 Agustus 2026</span>
-                                <h5 class="text-xs font-bold text-slate-200 group-hover:text-amber-400 transition-colors line-clamp-2 leading-snug">
-                                    Rutan Siak Gelar Razia Kamar Hunian & Tes Urine Bersama Aparat Penegak Hukum
-                                </h5>
-                            </div>
-                        </a>
+                        <div class="space-y-3" id="sidebar-news-list">
+                            <!-- Injected dynamically via JS: Clicking switches the active article without leaving page! -->
+                        </div>
                     </div>
 
                     <!-- Social Media Links -->
@@ -579,7 +451,7 @@
                 <div>
                     <h4 class="text-sm font-black text-white uppercase tracking-wider mb-3">Alamat Kantor</h4>
                     <p class="leading-relaxed">
-                        Jl. S. Syarif Hasyim, Kp. Dalam, Kec. Siak, Kabupaten Siak, Riau 28773.<br/>
+                        Jl. Pengadilan No. 1, Kp. Rempak, Kec. Siak, Kab. Siak, Riau 28671.<br/>
                         Telepon: (0764) 20280
                     </p>
                 </div>
@@ -598,8 +470,8 @@
         <!-- Header -->
         <div class="flex items-center justify-between text-white border-b border-white/10 pb-3">
             <div class="flex items-center gap-3">
-                <span class="bg-amber-500 text-slate-950 text-xs font-black px-3 py-1 rounded-lg font-mono uppercase" id="lightbox-counter">1 / 7</span>
-                <h4 class="text-xs sm:text-sm font-bold text-slate-200 truncate max-w-xs sm:max-w-md md:max-w-xl" id="lightbox-title">Dokumentasi Pisah Sambut</h4>
+                <span class="bg-amber-500 text-slate-950 text-xs font-black px-3 py-1 rounded-lg font-mono uppercase" id="lightbox-counter">1 / 1</span>
+                <h4 class="text-xs sm:text-sm font-bold text-slate-200 truncate max-w-xs sm:max-w-md md:max-w-xl" id="lightbox-title">Dokumentasi Foto</h4>
             </div>
             <div class="flex items-center gap-2">
                 <button onclick="downloadCurrentImage()" class="text-slate-400 hover:text-amber-400 p-2 text-base transition-colors" title="Buka Gambar Resolusi Penuh">
@@ -667,25 +539,25 @@
             <div id="ai-chat-messages" class="p-4 space-y-3 h-80 overflow-y-auto text-xs">
                 <!-- Bot Welcome Bubble -->
                 <div class="flex items-start gap-2">
-                    <div class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-[10px] shrink-0">
+                    <div class="w-6 h-6 rounded-lg bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-[10px] shrink-0">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="p-3 rounded-2xl bg-slate-900/90 border border-white/10 text-slate-200 leading-relaxed shadow-sm">
-                        Halo! Saya <strong>SI-RUTAN AI</strong>. Ada yang bisa saya bantu terkait berita pisah sambut, jadwal layanan, atau syarat kunjungan di Rutan Siak?
+                        Halo! Saya <strong>SI-RUTAN AI</strong>. Ada yang bisa saya bantu terkait berita penyaluran bansos, pisah sambut pejabat eselon V, jadwal layanan, atau syarat kunjungan di Rutan Siak?
                     </div>
                 </div>
 
                 <!-- Quick Prompts Chips -->
                 <div class="space-y-1.5 pt-2" id="ai-quick-prompts">
                     <span class="text-[10px] font-mono text-slate-400 block">Pilih Pertanyaan Populer:</span>
-                    <button onclick="sendQuickPrompt('Ringkasan Berita Pisah Sambut')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-amber-500/10 text-slate-300 hover:text-amber-300 border border-white/5 transition-all">
-                        📰 Ringkasan Berita Pisah Sambut Pejabat?
+                    <button onclick="sendQuickPrompt('Info Bantuan Sosial')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-300 border border-white/5 transition-all">
+                        🌾 Info Penyaluran Bantuan Sosial untuk Warga Sekitar?
                     </button>
-                    <button onclick="sendQuickPrompt('Jadwal Kunjungan')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-300 border border-white/5 transition-all">
+                    <button onclick="sendQuickPrompt('Info Pisah Sambut 29 Agustus')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-amber-500/10 text-slate-300 hover:text-amber-300 border border-white/5 transition-all">
+                        📰 Info Pisah Sambut Pejabat Eselon V (29 Agt)?
+                    </button>
+                    <button onclick="sendQuickPrompt('Jadwal Kunjungan')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-cyan-500/10 text-slate-300 hover:text-cyan-300 border border-white/5 transition-all">
                         📅 Jadwal & Jam Kunjungan Rutan Siak?
-                    </button>
-                    <button onclick="sendQuickPrompt('Syarat Pembebasan Bersyarat')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-cyan-500/10 text-slate-300 hover:text-cyan-300 border border-white/5 transition-all">
-                        ⚖️ Syarat Bebas Bersyarat (PB/CB)?
                     </button>
                 </div>
             </div>
@@ -693,7 +565,7 @@
             <!-- Input Bar -->
             <form onsubmit="handleAiSubmit(event)" class="p-3 border-t border-white/10 bg-slate-950/80 flex items-center gap-2">
                 <input type="text" id="ai-user-input" placeholder="Ketik pertanyaan Anda..." class="flex-grow px-3.5 py-2 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
-                <button type="submit" class="w-9 h-9 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl flex items-center justify-center font-bold text-sm shadow transition-transform active:scale-95">
+                <button type="submit" class="w-9 h-9 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl flex items-center justify-center font-bold text-sm shadow transition-transform active:scale-95">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </form>
@@ -702,59 +574,293 @@
 
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 left-6 z-50 glass-card text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl border border-amber-500/30 hidden flex items-center gap-2 transition-all">
+    <div id="toast" class="fixed bottom-6 left-6 z-50 glass-card text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl border border-emerald-500/30 hidden flex items-center gap-2 transition-all">
         <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
         <span id="toast-msg">Tautan berhasil disalin ke clipboard!</span>
     </div>
 
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- ================= JAVASCRIPT LOGIC & ARTICLE STORE ================= -->
     <script>
-        // Gallery Photos Data
-        const galleryItems = [
-            {
-                src: "assets/pisahsambut1.jpg",
-                title: "Sambutan Pejabat yang Dilepas di Podium",
-                caption: "Singgih Praja Kusuma, S.H., M.H. bersama keluarga menyampaikan kesan dan pesan di podium kehormatan Rutan Siak."
+        // Comprehensive Articles Store
+        const articles = {
+            "bansos": {
+                id: "bansos",
+                tag: "KEPEDULIAN SOSIAL & HUMANIS",
+                tagClass: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+                badge: "PROGRAM AKSELERASI KEMENIMIPAS",
+                badgeClass: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
+                title: "Wujud Kepedulian, Rutan Kelas IIB Siak Sri Indrapura Salurkan Bantuan Sosial untuk Warga Sekitar",
+                breadcrumb: "Bansos Rutan Siak untuk Warga Sekitar",
+                date: "Selasa, 28 Juli 2026",
+                dateColor: "text-emerald-400",
+                location: "Lingkungan Sekitar Rutan Siak",
+                readTime: "Waktu Baca: ~2 Menit",
+                mainImage: "assets/bansos1.jpg",
+                mainImageCaption: "Penyerahan Paket Beras & Sembako Bansos kepada Warga Sekitar Rutan",
+                aiSummaryTheme: "from-emerald-500/10 via-slate-900 to-cyan-500/10 border-emerald-500/30",
+                aiHeaderClass: "text-emerald-400",
+                aiSummaryPoints: [
+                    "<strong>Aksi Nyata Kepedulian Sosial:</strong> UPT Rutan Kelas IIB Siak menyalurkan paket bahan pokok dan beras kepada warga di lingkungan sekitar rutan pada Selasa (28/7/2026).",
+                    "<strong>Instruksi Langsung Pimpinan:</strong> Kegiatan dipimpin atas arahan Kepala Rutan Siak, <strong>Bapak Dedy Krihastoni</strong>, agar jajaran Rutan senantiasa hadir dan berkontribusi positif bagi masyarakat.",
+                    "<strong>Program Akselerasi Kemenimipas:</strong> Selaras dengan program akselerasi Menteri Imigrasi dan Pemasyarakatan untuk memperkuat keharmonisan dan meringankan kebutuhan warga penerima manfaat."
+                ],
+                bodyHtml: `
+                    <p>
+                        <strong class="text-amber-400 font-bold">SIAK SRI INDRAPURA</strong> – Sebagai wujud nyata kepedulian sosial serta komitmen untuk hadir di tengah masyarakat, Unit Pelaksana Teknis (UPT) Rumah Tahanan Negara (Rutan) Kelas IIB Siak Sri Indrapura menggelar kegiatan penyaluran Bantuan Sosial (Bansos) kepada warga di lingkungan sekitar rutan pada Selasa (28/7/2026).
+                    </p>
+                    <p>
+                        Kegiatan penyaluran bansos berupa bahan pokok dan beras ini dilaksanakan secara langsung atas arahan serta instruksi langsung dari Kepala Rutan (Karutan) Siak, <strong>Bapak Dedy Krihastoni</strong>. Beliau menegaskan bahwa jajaran Rutan Siak harus senantiasa peduli dan berkontribusi positif bagi masyarakat di lingkungan sekitar kantor.
+                    </p>
+                    <div class="p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 to-emerald-500/10 border-l-4 border-emerald-400 space-y-2 my-4">
+                        <div class="text-xs font-mono text-emerald-400 uppercase tracking-wider font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-quote-left"></i> Arahan Kepala Rutan Siak
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-200 italic leading-relaxed">
+                            "Jajaran Rutan Siak harus senantiasa hadir, peduli, dan memberikan kontribusi positif yang dirasakan langsung oleh masyarakat di lingkungan sekitar kantor."
+                        </p>
+                        <span class="text-[11px] font-bold text-amber-400 block">— Dedy Krihastoni, Kepala Rutan Kelas IIB Siak</span>
+                    </div>
+                    <p>
+                        Menindaklanjuti arahan Karutan Siak tersebut, jajaran petugas Rutan Siak menyerahkan paket bantuan berupa beras dan bingkisan sembako secara langsung kepada warga penerima manfaat sesuai dengan program akselerasi Menteri Imigrasi dan Pemasyarakatan. Penyerahan berlangsung dengan hangat, penuh keakraban, dan humanis.
+                    </p>
+                    <p>
+                        Melalui penyerahan bantuan sosial ini, diharapkan dapat membantu meringankan kebutuhan warga penerima manfaat sekaligus terus mempererat tali silaturahmi dan hubungan harmonis antara jajaran petugas UPT Rutan Kelas IIB Siak Sri Indrapura dengan masyarakat sekitar.
+                    </p>
+                `,
+                hashtags: ['#kemenimipas', '#AgusAndrianto', '#SilmyKarim', '#DitjenPas', '#Mashudi', '#GunGunGunawan', '#PemasyarakatanRiau'],
+                gallery: [
+                    { src: "assets/bansos1.jpg", title: "Penyerahan Bantuan Sosial Beras & Sembako", caption: "Petugas Rutan Kelas IIB Siak menyerahkan paket bantuan beras dan sembako secara langsung kepada warga penerima manfaat di lingkungan sekitar kantor." },
+                    { src: "assets/bansos2.jpg", title: "Penyaluran Bantuan Sembako Kepada Warga", caption: "Suasana penyerahan paket sembako beras dengan penuh kehangatan, keakraban, dan humanis kepada masyarakat penerima manfaat." },
+                    { src: "assets/bansos3.jpg", title: "Dokumentasi Penyerahan di Depan Spanduk Resmi", caption: "Petugas Rutan Kelas IIB Siak bersama warga penerima manfaat berfoto di depan spanduk Bantuan Sosial Kepada Warga Sekitar." },
+                    { src: "assets/bansos4.jpg", title: "Kanal Media Sosial Resmi Humas Rutan Siak", caption: "Infografis akun resmi media sosial Humas Rutan Siak (TikTok, X/Twitter, YouTube, Instagram, dan Facebook)." }
+                ]
             },
-            {
-                src: "assets/pisahsambut2.jpg",
-                title: "Suasana Ramah Tamah Meja Bundar",
-                caption: "Suasana kehangatan, kebersamaan, dan kekeluargaan saat jamuan ramah tamah bersama jajaran pegawai Rutan Siak."
+            "pisahsambut": {
+                id: "pisahsambut",
+                tag: "WARTA KEDINASAN & MUTASI",
+                tagClass: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+                badge: "RILIS RESMI HUMAS",
+                badgeClass: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+                title: "SETIAP ORANG ADA MASANYA: Rutan Siak Gelar Acara Pisah Sambut Kepada Pejabat Eselon V",
+                breadcrumb: "Pisah Sambut Pejabat Eselon V",
+                date: "Sabtu, 29 Agustus 2026",
+                dateColor: "text-amber-400",
+                location: "Aula Rutan Kelas IIB Siak Sri Indrapura",
+                readTime: "Waktu Baca: ~3 Menit",
+                mainImage: "assets/pisahsambut1.jpg",
+                mainImageCaption: "Sambutan Pejabat yang Dilepas Singgih Praja Kusuma di Podium Kehormatan",
+                aiSummaryTheme: "from-amber-500/10 via-slate-900 to-cyan-500/10 border-amber-500/30",
+                aiHeaderClass: "text-amber-400",
+                aiSummaryPoints: [
+                    "<strong>Momentum Pisah Sambut:</strong> Digelar pada Sabtu (29/8/2026) di Aula Rutan Kelas IIB Siak Sri Indrapura dalam suasana haru dan keakraban.",
+                    "<strong>Pejabat yang Dilepas:</strong> Singgih Praja Kusuma, S.H., M.H. (Kasubsi Pengelolaan) promosi bertugas sebagai Kasubsi Pelaporan & Tata Tertib Lapas Kelas IIA Pekanbaru.",
+                    "<strong>Pejabat yang Disambut:</strong> Okta Adi Putra, S.H. (sebelumnya Kaur Umum Lapas Bagan Siapi-api) resmi mengemban amanah sebagai Kasubsi Pelayanan Tahanan Rutan Siak."
+                ],
+                bodyHtml: `
+                    <p>
+                        <strong class="text-amber-400 font-bold">Siak Sri Indrapura, 29 Agustus 2026</strong> — Rumah Tahanan Negara (Rutan) Kelas IIB Siak Sri Indrapura menggelar acara pisah sambut pejabat eselon V di lingkungan Rutan Siak pada Sabtu (29/8/2026). Kegiatan berlangsung dalam suasana penuh keakraban dan haru, menjadi momentum untuk melepas pejabat yang mendapat amanah baru sekaligus menyambut pejabat baru yang akan melanjutkan estafet pengabdian di Rutan Siak.
+                    </p>
+                    <p>
+                        Pejabat yang dilepas adalah <strong>Singgih Praja Kusuma</strong>, yang sebelumnya menjabat sebagai Kepala Sub Seksi Pengelolaan Rutan Siak. Setelah mendapatkan amanah baru, Singgih akan melanjutkan tugas sebagai Kepala Sub Seksi Pelaporan dan Tata Tertib pada Lapas Kelas IIA Pekanbaru. Selama bertugas di Rutan Siak, dedikasi dan kontribusinya menjadi bagian penting dalam mendukung pelaksanaan tugas dan fungsi pemasyarakatan serta pelayanan di lingkungan Rutan Siak.
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-4 py-3 my-2">
+                        <div class="p-5 rounded-2xl bg-slate-950/70 border border-amber-500/20 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                                <div>
+                                    <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider block">Pejabat Dilepas</span>
+                                    <h4 class="text-sm font-bold text-white">Singgih Praja Kusuma, S.H., M.H.</h4>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-400">Kasubsi Pengelolaan Rutan Siak ➔ Kasubsi Portatib Lapas Kelas IIA Pekanbaru</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-950/70 border border-cyan-500/20 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-arrow-right-to-bracket"></i></span>
+                                <div>
+                                    <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">Pejabat Disambut</span>
+                                    <h4 class="text-sm font-bold text-white">Okta Adi Putra, S.H.</h4>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-400">Kaur Umum & Keuangan Lapas Bagan Siapi-api ➔ Kasubsi Pelayanan Tahanan Rutan Siak</p>
+                        </div>
+                    </div>
+                    <p>
+                        Dalam kesempatan yang sama, Rutan Siak menyambut <strong>Okta Adi Putra</strong>, yang sebelumnya menjabat sebagai Kepala Urusan Umum dan Keuangan pada Lapas Kelas IIA Bagan Siapi-api. Kini, Okta mengemban amanah baru sebagai Kepala Sub Seksi Pelayanan Tahanan Rutan Kelas IIB Siak Sri Indrapura. Kehadirannya diharapkan dapat membawa semangat baru serta memperkuat kualitas pelayanan kepada warga binaan dan masyarakat pengguna layanan.
+                    </p>
+                    <p>
+                        Pisah sambut ini bukan sekadar pergantian jabatan, tetapi menjadi bagian dari dinamika organisasi sekaligus bentuk kepercayaan dan amanah dalam perjalanan pengabdian. Keluarga besar Rutan Siak menyampaikan terima kasih dan apresiasi kepada Singgih Praja Kusuma atas pengabdian yang telah diberikan, serta mengucapkan selamat datang kepada Okta Adi Putra. Selamat menjalankan amanah di tempat tugas yang baru, dan selamat bergabung di keluarga besar Rutan Siak. Semoga setiap langkah pengabdian senantiasa memberikan manfaat dan membawa kemajuan bagi Pemasyarakatan.
+                    </p>
+                `,
+                hashtags: ['#kemenimipas', '#AgusAndrianto', '#SilmyKarim', '#DitjenPas', '#Mashudi', '#GunGunGunawan', '#PemasyarakatanRiau'],
+                gallery: [
+                    { src: "assets/pisahsambut1.jpg", title: "Sambutan Pejabat yang Dilepas di Podium", caption: "Singgih Praja Kusuma, S.H., M.H. bersama keluarga menyampaikan kesan dan pesan di podium kehormatan Rutan Siak." },
+                    { src: "assets/pisahsambut2.jpg", title: "Suasana Ramah Tamah Meja Bundar", caption: "Suasana kehangatan, kebersamaan, dan kekeluargaan saat jamuan ramah tamah bersama jajaran pegawai Rutan Siak." },
+                    { src: "assets/pisahsambut3.jpg", title: "Sambutan Pimpinan & Pejabat Baru", caption: "Pengarahan dari Kepala Rutan Siak serta perkenalan dari pejabat baru Kasubsi Pelayanan Tahanan Okta Adi Putra, S.H." },
+                    { src: "assets/pisahsambut4.jpg", title: "Penyerahan Cenderamata Pejabat Struktural", caption: "Penyerahan cenderamata kenang-kenangan dari jajaran pegawai kepada Singgih Praja Kusuma dan keluarga." },
+                    { src: "assets/pisahsambut5.jpg", title: "Penyerahan Pigura Foto Dinas", caption: "Penyerahan bingkai kenang-kenangan foto dinas sebagai wujud apresiasi atas dedikasi dan pengabdian di Rutan Siak." },
+                    { src: "assets/pisahsambut6.jpg", title: "Foto Bersama Seluruh Jajaran Rutan Siak", caption: "Foto bersama seluruh pejabat struktural, staf, dan regu pengamanan Rutan Kelas IIB Siak Sri Indrapura." },
+                    { src: "assets/pisahsambut7.jpg", title: "Kanal Media Sosial Humas Rutan Siak", caption: "Infografis resmi saluran media sosial Humas Rutan Siak (Instagram, Facebook, X, TikTok, dan YouTube)." }
+                ]
             },
-            {
-                src: "assets/pisahsambut3.jpg",
-                title: "Sambutan Pimpinan & Pejabat Baru",
-                caption: "Pengarahan dari Kepala Rutan Siak serta perkenalan dari pejabat baru Kasubsi Pelayanan Tahanan Okta Adi Putra, S.H."
-            },
-            {
-                src: "assets/pisahsambut4.jpg",
-                title: "Penyerahan Cenderamata Pejabat Struktural",
-                caption: "Penyerahan cenderamata kenang-kenangan dari jajaran pegawai kepada Singgih Praja Kusuma dan keluarga."
-            },
-            {
-                src: "assets/pisahsambut5.jpg",
-                title: "Penyerahan Pigura Foto Dinas",
-                caption: "Penyerahan bingkai kenang-kenangan foto dinas sebagai wujud apresiasi atas dedikasi dan pengabdian di Rutan Siak."
-            },
-            {
-                src: "assets/pisahsambut6.jpg",
-                title: "Foto Bersama Seluruh Jajaran Rutan Siak",
-                caption: "Foto bersama seluruh pejabat struktural, staf, dan regu pengamanan Rutan Kelas IIB Siak Sri Indrapura."
-            },
-            {
-                src: "assets/pisahsambut7.jpg",
-                title: "Kanal Media Sosial Humas Rutan Siak",
-                caption: "Infografis resmi saluran media sosial Humas Rutan Siak (Instagram, Facebook, X, TikTok, dan YouTube)."
+            "razia": {
+                id: "razia",
+                tag: "DETEKSI DINI & KAMTIB",
+                tagClass: "bg-purple-500/20 text-purple-300 border-purple-500/40",
+                badge: "PENGGELEDAHAN INSIDENTAL",
+                badgeClass: "text-purple-400 bg-purple-500/10 border-purple-500/20",
+                title: "Rutan Siak Gelar Razia Kamar Hunian & Tes Urine Bersama Aparat Penegak Hukum",
+                breadcrumb: "Razia Kamar Hunian & Tes Urine",
+                date: "Rabu, 26 Agustus 2026",
+                dateColor: "text-purple-400",
+                location: "Blok Kamar Hunian WBP Rutan Siak",
+                readTime: "Waktu Baca: ~2 Menit",
+                mainImage: "assets/pisahsambut6.jpg",
+                mainImageCaption: "Penggeledahan Kamar Hunian dan Tes Urine Gabungan Bersama Polres Siak",
+                aiSummaryTheme: "from-purple-500/10 via-slate-900 to-amber-500/10 border-purple-500/30",
+                aiHeaderClass: "text-purple-400",
+                aiSummaryPoints: [
+                    "<strong>Deteksi Dini Gangguan Kamtib:</strong> Rutan Siak bersama Polres Siak menggelar penggeledahan sidak kamar hunian.",
+                    "<strong>Tes Urine Narkoba:</strong> Puluhan WBP dan petugas dites urine secara acak dengan hasil 100% negatif.",
+                    "<strong>Komitmen Zero Halinar:</strong> Bebas Handphone, Pungli, dan Narkoba."
+                ],
+                bodyHtml: `
+                    <p>
+                        <strong class="text-amber-400 font-bold">Siak Sri Indrapura</strong> — Dalam rangka menindaklanjuti arahan Dirjen Pemasyarakatan terkait Deteksi Dini Gangguan Keamanan dan Ketertiban (Kamtib), Rutan Kelas IIB Siak Sri Indrapura menggelar penggeledahan insidental di blok hunian Warga Binaan Pemasyarakatan (WBP).
+                    </p>
+                    <p>
+                        Kegiatan ini melibatkan jajaran Kepolisian Resor Siak guna memastikan seluruh kamar hunian bebas dari barang-barang terlarang. Dilanjutkan dengan pelaksanaan tes urine secara acak bagi WBP dan petugas dengan hasil seluruh sampel dinyatakan negatif narkoba.
+                    </p>
+                `,
+                hashtags: ['#kemenimipas', '#DitjenPas', '#PemasyarakatanRiau', '#ZeroHalinar', '#DeteksiDini'],
+                gallery: [
+                    { src: "assets/pisahsambut6.jpg", title: "Foto Bersama Seluruh Jajaran Satops Patnal", caption: "Seluruh personel pengamanan dan jajaran struktural Rutan Siak siap siaga menjaga stabilitas ketertiban." },
+                    { src: "assets/pisahsambut5.jpg", title: "Pemeriksaan dan Apel Kesiapsiagaan", caption: "Pengarahan teknis pemeriksaan kamar hunian blok tahanan dan narapidana." }
+                ]
             }
-        ];
+        };
 
+        let currentArticleId = "bansos";
+        let activeGallery = [];
         let currentImageIndex = 0;
 
         window.onload = function() {
             startLiveClock();
+
+            // Check URL hash to switch article automatically
+            const hash = window.location.hash.replace('#', '');
+            if (hash && articles[hash]) {
+                switchArticle(hash, false);
+            } else {
+                switchArticle("bansos", false);
+            }
         };
 
+        // Switch Article Function
+        function switchArticle(articleId, shouldScroll = true) {
+            const art = articles[articleId];
+            if(!art) return;
+
+            currentArticleId = articleId;
+            activeGallery = art.gallery;
+
+            // Update Window History Hash
+            window.history.replaceState(null, null, `#${articleId}`);
+
+            // Update Title & Breadcrumb
+            document.getElementById('page-title').innerText = `${art.title} — Rutan Siak`;
+            document.getElementById('breadcrumb-title').innerText = art.breadcrumb;
+            document.getElementById('article-title').innerText = art.title;
+
+            // Update Tags & Badges
+            const tagEl = document.getElementById('article-tag');
+            tagEl.className = `text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm ${art.tagClass}`;
+            tagEl.innerText = art.tag;
+
+            const badgeEl = document.getElementById('article-badge');
+            badgeEl.className = `text-xs font-mono px-2.5 py-0.5 rounded-full ${art.badgeClass}`;
+            badgeEl.innerHTML = `<i class="fa-solid fa-bolt mr-1"></i> ${art.badge}`;
+
+            // Update Metadata
+            document.getElementById('article-date').innerHTML = `<i class="fa-solid fa-calendar-check ${art.dateColor}"></i> ${art.date}`;
+            document.getElementById('article-location').innerHTML = `<i class="fa-solid fa-location-dot text-cyan-400"></i> ${art.location}`;
+            document.getElementById('article-readtime').innerHTML = `<i class="fa-regular fa-clock text-amber-400 mr-1"></i> ${art.readTime}`;
+
+            // Update Main Photo
+            document.getElementById('article-main-img').src = art.mainImage;
+            document.getElementById('article-main-caption').innerHTML = `<i class="fa-solid fa-camera text-amber-400 mr-1"></i> ${art.mainImageCaption}`;
+
+            // Update AI Summary
+            const aiBox = document.getElementById('article-ai-summary');
+            aiBox.className = `p-5 rounded-2xl bg-gradient-to-br border space-y-3 ${art.aiSummaryTheme}`;
+            document.getElementById('ai-summary-header').className = `flex items-center gap-2 text-xs font-bold ${art.aiHeaderClass}`;
+            document.getElementById('ai-summary-points').innerHTML = art.aiSummaryPoints.map(p => `<li>${p}</li>`).join('');
+
+            // Update Body Content
+            document.getElementById('article-body-content').innerHTML = art.bodyHtml;
+
+            // Update Hashtags
+            document.getElementById('article-hashtags').innerHTML = art.hashtags.map(h => `
+                <a href="https://www.instagram.com/explore/tags/${h.replace('#','')}/" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-white/10 hover:border-amber-400 transition-all">
+                    ${h}
+                </a>
+            `).join('');
+
+            // Update Gallery Header & Photo Count
+            document.getElementById('gallery-header-title').innerHTML = `<i class="fa-solid fa-images text-amber-400"></i> Galeri Dokumentasi (${art.gallery.length} Foto)`;
+            document.getElementById('gallery-photo-count').innerText = `${art.gallery.length} Foto Dokumentasi`;
+
+            // Render Bento Gallery
+            const bentoContainer = document.getElementById('article-bento-gallery');
+            bentoContainer.innerHTML = art.gallery.map((g, idx) => `
+                <div class="group relative rounded-2xl overflow-hidden glass-card aspect-[4/3] cursor-pointer border border-white/10 ${idx === 0 ? 'sm:col-span-2 sm:row-span-2 aspect-auto h-64 sm:h-auto' : ''}" onclick="openLightbox(${idx})">
+                    <img src="${g.src}" alt="${g.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm shadow-xl">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+                        </span>
+                    </div>
+                    <span class="absolute bottom-2 left-2 bg-slate-950/80 text-[10px] font-mono px-2 py-0.5 rounded text-slate-200 truncate max-w-[90%]">
+                        ${idx + 1}. ${g.title}
+                    </span>
+                </div>
+            `).join('');
+
+            // Update Sidebar News List
+            renderSidebarList();
+
+            if (shouldScroll) {
+                document.getElementById('article-header-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Render Sidebar Other News
+        function renderSidebarList() {
+            const listEl = document.getElementById('sidebar-news-list');
+            if(!listEl) return;
+
+            const otherKeys = Object.keys(articles).filter(k => k !== currentArticleId);
+            listEl.innerHTML = otherKeys.map(k => {
+                const a = articles[k];
+                return `
+                    <div onclick="switchArticle('${a.id}')" class="flex gap-3 items-start group p-2 rounded-2xl hover:bg-white/5 cursor-pointer transition-all border border-transparent hover:border-white/10 pb-3 border-b border-white/5">
+                        <img src="${a.mainImage}" class="w-16 h-14 object-cover rounded-xl border border-white/10 shrink-0 group-hover:scale-105 transition-transform" alt="${a.title}">
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-mono text-amber-400 block">${a.date}</span>
+                            <h5 class="text-xs font-bold text-slate-200 group-hover:text-amber-400 transition-colors line-clamp-2 leading-snug">
+                                ${a.title}
+                            </h5>
+                            <span class="text-[10px] text-cyan-400 font-mono flex items-center gap-1 group-hover:underline">
+                                <i class="fa-solid fa-images text-[9px]"></i> Lihat ${a.gallery.length} Foto <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Live Clock
         function startLiveClock() {
             function update() {
                 const now = new Date();
@@ -767,6 +873,7 @@
             setInterval(update, 1000);
         }
 
+        // Lightbox Functions
         function openLightbox(index) {
             currentImageIndex = index;
             updateLightbox();
@@ -780,15 +887,16 @@
         }
 
         function updateLightbox() {
-            const item = galleryItems[currentImageIndex];
+            if(!activeGallery || activeGallery.length === 0) return;
+            const item = activeGallery[currentImageIndex];
             document.getElementById('lightbox-img').src = item.src;
-            document.getElementById('lightbox-counter').innerText = `${currentImageIndex + 1} / ${galleryItems.length}`;
+            document.getElementById('lightbox-counter').innerText = `${currentImageIndex + 1} / ${activeGallery.length}`;
             document.getElementById('lightbox-title').innerText = item.title;
             document.getElementById('lightbox-caption').innerText = item.caption;
 
             // Render Thumbnails
             const thumbsContainer = document.getElementById('lightbox-thumbs');
-            thumbsContainer.innerHTML = galleryItems.map((g, idx) => `
+            thumbsContainer.innerHTML = activeGallery.map((g, idx) => `
                 <button onclick="openLightbox(${idx})" class="w-12 h-12 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${idx === currentImageIndex ? 'border-amber-400 scale-105 shadow-md' : 'border-white/20 opacity-50 hover:opacity-100'}">
                     <img src="${g.src}" class="w-full h-full object-cover" alt="thumb">
                 </button>
@@ -796,20 +904,20 @@
         }
 
         function nextLightboxImage() {
-            currentImageIndex = (currentImageIndex + 1) % galleryItems.length;
+            currentImageIndex = (currentImageIndex + 1) % activeGallery.length;
             updateLightbox();
         }
 
         function prevLightboxImage() {
-            currentImageIndex = (currentImageIndex - 1 + galleryItems.length) % galleryItems.length;
+            currentImageIndex = (currentImageIndex - 1 + activeGallery.length) % activeGallery.length;
             updateLightbox();
         }
 
         function downloadCurrentImage() {
-            window.open(galleryItems[currentImageIndex].src, '_blank');
+            window.open(activeGallery[currentImageIndex].src, '_blank');
         }
 
-        // Keyboard navigation
+        // Keyboard navigation for Lightbox
         window.addEventListener('keydown', (e) => {
             const modal = document.getElementById('lightbox-modal');
             if (!modal.classList.contains('hidden')) {
@@ -830,7 +938,7 @@
             if(!btn.dataset.reacted) {
                 countEl.innerText = current + 1;
                 btn.dataset.reacted = "true";
-                btn.classList.add('bg-amber-500/20', 'text-amber-300', 'border-amber-400');
+                btn.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-400');
                 showToast("Terima kasih atas apresiasi Anda!");
             } else {
                 showToast("Anda sudah memberikan respon pada artikel ini.");
@@ -878,7 +986,7 @@
             const userBubble = document.createElement('div');
             userBubble.className = "flex items-start justify-end gap-2";
             userBubble.innerHTML = `
-                <div class="p-3 rounded-2xl bg-amber-500 text-slate-950 font-semibold leading-relaxed shadow-sm max-w-[85%]">
+                <div class="p-3 rounded-2xl bg-emerald-500 text-slate-950 font-semibold leading-relaxed shadow-sm max-w-[85%]">
                     ${query}
                 </div>
             `;
@@ -892,14 +1000,16 @@
             let responseText = "";
             const lowerQuery = query.toLowerCase();
 
-            if (lowerQuery.includes('pisah sambut') || lowerQuery.includes('berita') || lowerQuery.includes('pejabat') || lowerQuery.includes('singgih') || lowerQuery.includes('okta')) {
-                responseText = "Acara pisah sambut pejabat eselon V Rutan Siak pada 29 Agustus 2026 melepas <strong>Singgih Praja Kusuma, S.H., M.H.</strong> (promosi ke Lapas Pekanbaru) dan menyambut <strong>Okta Adi Putra, S.H.</strong> sebagai Kasubsi Pelayanan Tahanan Rutan Siak yang baru.";
+            if (lowerQuery.includes('bansos') || lowerQuery.includes('bantuan sosial') || lowerQuery.includes('beras') || lowerQuery.includes('sembako') || lowerQuery.includes('dedy krihastoni')) {
+                responseText = "Pada Selasa (28/7/2026), Rutan Kelas IIB Siak Sri Indrapura atas arahan Kepala Rutan <strong>Bapak Dedy Krihastoni</strong> menyalurkan Bantuan Sosial (Bansos) berupa beras dan bahan pokok kepada warga di lingkungan sekitar rutan sebagai wujud nyata kepedulian sosial dan implementasi program akselerasi Menteri Imigrasi dan Pemasyarakatan.";
+            } else if (lowerQuery.includes('pisah sambut') || lowerQuery.includes('singgih') || lowerQuery.includes('okta') || lowerQuery.includes('29 agustus')) {
+                responseText = "Acara pisah sambut pejabat eselon V Rutan Siak pada 29 Agustus 2026 melepas <strong>Singgih Praja Kusuma, S.H., M.H.</strong> (promosi ke Lapas Pekanbaru) dan menyambut <strong>Okta Adi Putra, S.H.</strong> sebagai Kasubsi Pelayanan Tahanan Rutan Siak yang baru. Anda dapat mengklik artikel tersebut di sidebar untuk membuka rilis dan 7 galeri fotonya.";
             } else if (lowerQuery.includes('jadwal') || lowerQuery.includes('kunjungan') || lowerQuery.includes('jam')) {
-                responseText = "Layanan kunjungan dibuka setiap <strong>Senin s/d Kamis pukul 09.00 - 12.00 WIB</strong> (Senin & Rabu untuk Tahanan, Selasa & Kamis untuk Narapidana).";
+                responseText = "Layanan kunjungan tatap muka dibuka setiap <strong>Senin s/d Kamis pukul 09.00 - 12.00 WIB</strong> (Senin & Rabu untuk Tahanan, Selasa & Kamis untuk Narapidana).";
             } else if (lowerQuery.includes('bebas bersyarat') || lowerQuery.includes('pb') || lowerQuery.includes('cb') || lowerQuery.includes('syarat')) {
-                responseText = "Pengurusan Pembebasan Bersyarat (PB) dan Cuti Bersyarat (CB) di Rutan Siak <strong>100% GRATIS tanpa pungutan biaya</strong>.";
+                responseText = "Pengurusan Pembebasan Bersyarat (PB) dan Cuti Bersyarat (CB) di Rutan Siak <strong>100% GRATIS tanpa biaya sepeserpun</strong>.";
             } else {
-                responseText = "Saya SI-RUTAN AI siap membantu memberikan informasi terkait layanan pemasyarakatan, warta rilis pers, serta aduan resmi Rutan Siak.";
+                responseText = "Saya SI-RUTAN AI siap membantu memberikan informasi terkait penyaluran bansos, pisah sambut pejabat, jadwal kunjungan, syarat integrasi PB/CB, dan saluran aduan resmi Rutan Siak.";
             }
 
             botBubble.innerHTML = `
