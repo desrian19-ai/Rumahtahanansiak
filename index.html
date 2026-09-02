@@ -75,8 +75,32 @@
         }
 
         .hero-banner-bg {
-            background: linear-gradient(135deg, rgba(7, 11, 20, 0.94) 0%, rgba(13, 21, 39, 0.88) 100%),
-                        url('gedung-rutan-siak.jpg') center/cover no-repeat;
+            position: relative;
+            background-color: #070b14;
+        }
+
+        .hero-bg-layer {
+            position: absolute;
+            inset: 0;
+            background-image: url('gedung-rutan-siak.jpg');
+            background-position: center 30%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            filter: brightness(0.88) contrast(1.1) saturate(1.15);
+            transform: scale(1.02);
+            transition: transform 1.2s ease-out;
+        }
+
+        .hero-banner-bg:hover .hero-bg-layer {
+            transform: scale(1.05);
+        }
+
+        .hero-overlay-gradient {
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(90deg, rgba(7, 11, 20, 0.90) 0%, rgba(7, 11, 20, 0.65) 45%, rgba(7, 11, 20, 0.25) 85%, rgba(7, 11, 20, 0.40) 100%),
+                linear-gradient(180deg, rgba(7, 11, 20, 0.4) 0%, transparent 35%, rgba(7, 11, 20, 0.8) 85%, #070b14 100%);
         }
 
         @keyframes pulseGlow {
@@ -237,15 +261,20 @@
         <section id="tab-beranda" class="tab-content block">
             
             <!-- AI Hero Banner -->
-            <div class="relative hero-banner-bg py-20 lg:py-28 overflow-hidden border-b border-white/5">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/60 to-[#070b14]"></div>
+            <div class="relative hero-banner-bg py-20 lg:py-28 overflow-hidden border-b border-white/10">
+                <!-- Clear & Sharp Background Building Layer -->
+                <div class="hero-bg-layer"></div>
+                <!-- Gradient Vignette & Overlay for Perfect Readability & Contrast -->
+                <div class="hero-overlay-gradient"></div>
+                <!-- Subtle Cyber Grid Overlay -->
+                <div class="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.06)_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none"></div>
                 
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div class="grid lg:grid-cols-12 gap-10 items-center">
                         <div class="lg:col-span-8 space-y-6 text-center lg:text-left">
                             
                             <!-- Smart Pill Tag -->
-                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-amber-500/40 backdrop-blur-xl text-xs font-bold text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/50 backdrop-blur-xl text-xs font-bold text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.25)]">
                                 <span class="flex h-2 w-2 relative">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
@@ -254,14 +283,14 @@
                             </div>
 
                             <!-- Main Headline with Gradient Text -->
-                            <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white">
+                            <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
                                 Pelayanan Pemasyarakatan <br/>
-                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 drop-shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]">
                                     Modern, Humanis & PASTI
                                 </span>
                             </h2>
                             
-                            <p class="text-base sm:text-lg text-slate-300 max-w-2xl font-light leading-relaxed">
+                            <p class="text-base sm:text-lg text-slate-200 max-w-2xl font-medium leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                                 Transformasi digital keterbukaan informasi dan pelayanan publik Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. Cepat, transparan, dan 100% bebas biaya pungli.
                             </p>
 
