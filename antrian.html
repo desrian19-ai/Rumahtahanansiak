@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- QRCode.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Supabase JS Client (v2 for PostgreSQL, Cloud Storage & Realtime Sync) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
         tailwind.config = {
@@ -138,9 +140,11 @@
                     <i class="fa-solid fa-location-dot text-cyan-400"></i> Rutan Kelas IIB Siak Sri Indrapura
                 </span>
                 <span class="hidden sm:inline text-slate-700">|</span>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-0.5"></span> Server Database Antrean Aktif
-                </span>
+                <button onclick="openSupabaseConfigModal()" id="supabase-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-700 hover:border-emerald-500/60 text-slate-300 hover:text-white text-[11px] font-semibold transition-all cursor-pointer" title="Pengaturan Database Supabase Cloud">
+                    <span id="supabase-status-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span id="supabase-status-text">Supabase: Offline / Lokal</span>
+                    <i class="fa-solid fa-gear text-[10px] text-slate-400 ml-0.5"></i>
+                </button>
             </div>
             <div class="flex items-center gap-4 text-slate-400">
                 <span class="font-mono text-amber-300 font-semibold flex items-center gap-1.5" id="realtime-clock">
@@ -442,6 +446,27 @@
                                     </label>
                                     <div id="titipan-detail-container" class="hidden pl-6 space-y-1">
                                         <input type="text" id="reg-rincian-barang" placeholder="Rincian makanan/pakaian (Wajib wadah transparan & tidak mengandung zat terlarang)" class="w-full px-3.5 py-2 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400 text-xs">
+                                </div>
+
+                                <!-- Upload Berkas Identitas (Supabase Cloud Storage) -->
+                                <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-white/10 space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <label class="block font-bold text-slate-200">
+                                            <i class="fa-solid fa-cloud-arrow-up text-emerald-400 mr-1"></i> Lampiran Berkas Pengunjung (Opsional)
+                                        </label>
+                                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono font-bold">Cloud Storage</span>
+                                    </div>
+                                    <div class="grid md:grid-cols-2 gap-3">
+                                        <div>
+                                            <span class="block text-[11px] font-semibold text-slate-300 mb-1">Foto e-KTP Pengunjung:</span>
+                                            <input type="file" id="reg-file-ktp" accept="image/*,.pdf" class="w-full text-xs text-slate-400 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-amber-500/20 file:text-amber-300 hover:file:bg-amber-500/30">
+                                            <span class="text-[9px] text-slate-500 block mt-0.5">JPG/PNG/PDF (Disimpan di bucket Supabase)</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-[11px] font-semibold text-slate-300 mb-1">Foto Surat Izin Kunjungan:</span>
+                                            <input type="file" id="reg-file-surat" accept="image/*,.pdf" class="w-full text-xs text-slate-400 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-cyan-500/20 file:text-cyan-300 hover:file:bg-cyan-500/30">
+                                            <span class="text-[9px] text-slate-500 block mt-0.5">Wajib jika WBP masih berstatus tahanan</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -955,6 +980,69 @@
                         Terbitkan Tiket Walk-in
                     </button>
                 </form>
+        </div>
+
+        <!-- ================= MODAL: KONFIGURASI SUPABASE CLOUD ================= -->
+        <div id="supabase-config-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+            <div class="glass-card rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl relative border border-emerald-500/30 max-h-[90vh] overflow-y-auto">
+                <button onclick="closeSupabaseConfigModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-cloud"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-white">Konfigurasi Supabase Cloud</h3>
+                        <p class="text-[11px] text-emerald-400 font-semibold">PostgreSQL, Realtime Channel & Storage</p>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-300 mb-5 leading-relaxed">
+                    Hubungkan website ke project <strong>Supabase</strong> Anda untuk sinkronisasi database online multi-perangkat di Vercel, pemanggilan realtime, dan penyimpanan berkas KTP.
+                </p>
+
+                <form onsubmit="handleSaveSupabaseConfig(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-200 mb-1">
+                            Supabase Project URL <span class="text-red-400">*</span>
+                        </label>
+                        <input type="url" id="cfg-supabase-url" placeholder="https://xxxxxxxxxxxxxxxxxxxx.supabase.co" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-400 font-mono text-xs" required>
+                        <span class="text-[10px] text-slate-400">Project Settings > API > Project URL</span>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-200 mb-1">
+                            Supabase Anon Public API Key <span class="text-red-400">*</span>
+                        </label>
+                        <textarea id="cfg-supabase-anon-key" rows="3" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." class="w-full px-3.5 py-2 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-400 font-mono text-[11px]" required></textarea>
+                        <span class="text-[10px] text-slate-400">Project Settings > API > Project API keys (anon public)</span>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-200 mb-1">Storage Bucket Dokumen</label>
+                        <input type="text" id="cfg-supabase-bucket" value="berkas-kunjungan" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-400 font-mono text-xs">
+                        <span class="text-[10px] text-slate-400">Bucket Cloud Storage untuk foto e-KTP & surat izin</span>
+                    </div>
+
+                    <div id="cfg-test-status" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+                    <div class="flex gap-2 pt-2">
+                        <button type="button" onclick="testSupabaseConnection()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-plug"></i> Tes Koneksi
+                        </button>
+                        <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan & Terapkan
+                        </button>
+                    </div>
+                    
+                    <div class="pt-3 border-t border-white/10 flex justify-between items-center text-[11px]">
+                        <button type="button" onclick="disconnectSupabase()" class="text-red-400 hover:underline">
+                            <i class="fa-solid fa-link-slash mr-1"></i> Putus Koneksi (Mode Lokal)
+                        </button>
+                        <span class="text-slate-400">Tersimpan di Browser LocalStorage</span>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -994,13 +1082,16 @@
     </div>
 
 
-    <!-- ================= JAVASCRIPT LOGIC & DATABASE ENGINE ================= -->
+    <!-- ================= JAVASCRIPT LOGIC & SUPABASE DATABASE ENGINE ================= -->
     <script>
         // ==========================================
-        // 1. DATABASE STRUCTURE & LOCAL STORAGE SYNC
+        // 1. CONSTANTS & DATABASE KEYS
         // ==========================================
         const DB_KEY_ANTREAN = 'rutan_siak_db_antrean';
         const DB_KEY_ADMIN_SESSION = 'rutan_siak_admin_session';
+        const CFG_KEY_SUPABASE_URL = 'rutan_siak_supabase_url';
+        const CFG_KEY_SUPABASE_KEY = 'rutan_siak_supabase_key';
+        const CFG_KEY_SUPABASE_BUCKET = 'rutan_siak_supabase_bucket';
 
         // Pre-configured Admin Accounts
         const ADMIN_ACCOUNTS = [
@@ -1011,7 +1102,270 @@
             { id: 5, username: 'kasubsi.yantah', password: 'rutansiak2026', nama: 'Okta Adi Putra, S.H.', role: 'PENGAWAS', defaultLoket: 1 }
         ];
 
-        // Seed Sample Queue Data with Narkotika & Pidana Umum (1 Sesi: 09:00 - 11:00 WIB)
+        // Global Supabase Client
+        window.supabaseClient = null;
+        window.realtimeChannel = null;
+
+        // ==========================================
+        // 2. SUPABASE INITIALIZATION & REALTIME SYNC
+        // ==========================================
+        function initSupabase() {
+            const url = localStorage.getItem(CFG_KEY_SUPABASE_URL);
+            const key = localStorage.getItem(CFG_KEY_SUPABASE_KEY);
+
+            if (url && key && window.supabase) {
+                try {
+                    window.supabaseClient = window.supabase.createClient(url, key);
+                    updateSupabaseStatusUI(true, 'Supabase: Terhubung');
+                    subscribeSupabaseRealtime();
+                    fetchQueueFromCloud();
+                } catch (err) {
+                    console.error('Inisialisasi Supabase gagal:', err);
+                    updateSupabaseStatusUI(false, 'Supabase: Error Koneksi');
+                }
+            } else {
+                updateSupabaseStatusUI(false, 'Supabase: Mode Lokal');
+            }
+        }
+
+        function updateSupabaseStatusUI(isConnected, label) {
+            const dot = document.getElementById('supabase-status-dot');
+            const text = document.getElementById('supabase-status-text');
+            const badge = document.getElementById('supabase-status-badge');
+
+            if (dot && text) {
+                if (isConnected) {
+                    dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                    text.innerText = label || 'Supabase: Terhubung';
+                    if (badge) badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-[11px] font-semibold transition-all cursor-pointer';
+                } else {
+                    dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+                    text.innerText = label || 'Supabase: Mode Lokal';
+                    if (badge) badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-700 hover:border-emerald-500/60 text-slate-300 hover:text-white text-[11px] font-semibold transition-all cursor-pointer';
+                }
+            }
+        }
+
+        function subscribeSupabaseRealtime() {
+            if (!window.supabaseClient) return;
+            try {
+                if (window.realtimeChannel) {
+                    window.supabaseClient.removeChannel(window.realtimeChannel);
+                }
+
+                window.realtimeChannel = window.supabaseClient.channel('antrian-realtime-channel')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'pendaftaran_antrian' }, async (payload) => {
+                        console.log('⚡ Supabase Realtime Event (pendaftaran_antrian):', payload);
+                        await fetchQueueFromCloud();
+                    })
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'log_pemanggilan' }, (payload) => {
+                        console.log('📢 Supabase Realtime Voice Call Log:', payload);
+                        // Trigger voice sound jika di layar TV atau jika ada pemanggilan baru
+                        if (payload.new && payload.new.teks_suara) {
+                            playChimeBell();
+                        }
+                    })
+                    .subscribe((status) => {
+                        console.log('📡 Status Kanal Realtime Supabase:', status);
+                        if (status === 'SUBSCRIBED') {
+                            updateSupabaseStatusUI(true, 'Supabase: Realtime Aktif');
+                        }
+                    });
+            } catch (err) {
+                console.warn('Gagal berlangganan Realtime Supabase:', err);
+            }
+        }
+
+        async function fetchQueueFromCloud() {
+            if (!window.supabaseClient) return;
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('pendaftaran_antrian')
+                    .select('*')
+                    .order('id', { ascending: true });
+
+                if (error) throw error;
+                if (data) {
+                    const mappedList = data.map(mapSupabaseRowToQueueItem);
+                    saveQueueData(mappedList);
+                    renderAdminQueueTable();
+                    updateAdminStats();
+                    console.log(`✅ Berhasil menyinkronkan ${mappedList.length} data antrean dari Supabase Cloud.`);
+                }
+            } catch (err) {
+                console.warn('Gagal memuat antrean dari Supabase Cloud:', err.message);
+            }
+        }
+
+        function mapSupabaseRowToQueueItem(row) {
+            return {
+                id: row.id,
+                kodeBooking: row.kode_booking,
+                nomorAntrean: row.nomor_antrian,
+                nomorUrut: row.nomor_urut,
+                tglKunjungan: row.tgl_kunjungan,
+                sesi: row.sesi_kunjungan || '09:00 - 11:00 WIB',
+                kategori: row.kategori_kunjungan,
+                namaPengunjung: row.nama_pengunjung,
+                nikPengunjung: row.nik_pengunjung,
+                jk: row.jenis_kelamin,
+                noWA: row.no_whatsapp,
+                alamat: row.alamat_domisili,
+                hubungan: row.hubungan_wbp,
+                pengikutDewasa: row.jumlah_pengikut_dewasa || 0,
+                pengikutAnak: row.jumlah_pengikut_anak || 0,
+                namaWBP: row.nama_wbp,
+                blokWBP: row.blok_kamar_wbp || 'Umum',
+                suratIzin: row.nomor_surat_izin || '-',
+                bawaBarang: row.membawa_barang_titipan ? 1 : 0,
+                rincianBarang: row.rincian_barang_titipan || '-',
+                status: row.status_antrian || 'Menunggu',
+                jumlahPanggilan: row.jumlah_panggilan || 0,
+                waktuDaftar: row.waktu_daftar || new Date().toISOString(),
+                loketId: row.loket_pemanggil_id || 1,
+                berkasKtpUrl: row.berkas_ktp_url || null,
+                berkasSuratIzinUrl: row.berkas_surat_izin_url || null
+            };
+        }
+
+        function mapQueueItemToSupabaseRow(item) {
+            return {
+                kode_booking: item.kodeBooking,
+                nomor_antrian: item.nomorAntrean,
+                nomor_urut: item.nomorUrut,
+                tgl_kunjungan: item.tglKunjungan,
+                sesi_kunjungan: item.sesi || '09:00 - 11:00 WIB',
+                kategori_kunjungan: item.kategori,
+                nik_pengunjung: item.nikPengunjung,
+                nama_pengunjung: item.namaPengunjung,
+                jenis_kelamin: item.jk,
+                no_whatsapp: item.noWA,
+                alamat_domisili: item.alamat,
+                hubungan_wbp: item.hubungan,
+                jumlah_pengikut_dewasa: item.pengikutDewasa,
+                jumlah_pengikut_anak: item.pengikutAnak,
+                nama_wbp: item.namaWBP,
+                blok_kamar_wbp: item.blokWBP,
+                nomor_surat_izin: item.suratIzin,
+                membawa_barang_titipan: item.bawaBarang === 1,
+                rincian_barang_titipan: item.rincianBarang,
+                status_antrian: item.status,
+                jumlah_panggilan: item.jumlahPanggilan,
+                loket_pemanggil_id: item.loketId || 1,
+                berkas_ktp_url: item.berkasKtpUrl || null,
+                berkas_surat_izin_url: item.berkasSuratIzinUrl || null,
+                asal_pendaftaran: 'Online_Website'
+            };
+        }
+
+        // Upload berkas ke Supabase Cloud Storage (Bucket: berkas-kunjungan)
+        async function uploadFileToSupabaseStorage(file, prefix) {
+            if (!window.supabaseClient || !file) return null;
+            try {
+                const bucket = localStorage.getItem(CFG_KEY_SUPABASE_BUCKET) || 'berkas-kunjungan';
+                const fileExt = file.name.split('.').pop();
+                const filePath = `${prefix}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+                const { data, error } = await window.supabaseClient.storage
+                    .from(bucket)
+                    .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+                if (error) {
+                    console.warn('Storage upload warning:', error.message);
+                    return null;
+                }
+
+                const { data: urlData } = window.supabaseClient.storage
+                    .from(bucket)
+                    .getPublicUrl(filePath);
+
+                return urlData ? urlData.publicUrl : null;
+            } catch (err) {
+                console.error('Storage upload exception:', err);
+                return null;
+            }
+        }
+
+        // ==========================================
+        // 3. SUPABASE CONFIGURATION MODAL HANDLERS
+        // ==========================================
+        function openSupabaseConfigModal() {
+            document.getElementById('cfg-supabase-url').value = localStorage.getItem(CFG_KEY_SUPABASE_URL) || '';
+            document.getElementById('cfg-supabase-anon-key').value = localStorage.getItem(CFG_KEY_SUPABASE_KEY) || '';
+            document.getElementById('cfg-supabase-bucket').value = localStorage.getItem(CFG_KEY_SUPABASE_BUCKET) || 'berkas-kunjungan';
+            document.getElementById('cfg-test-status').classList.add('hidden');
+            document.getElementById('supabase-config-modal').classList.remove('hidden');
+        }
+
+        function closeSupabaseConfigModal() {
+            document.getElementById('supabase-config-modal').classList.add('hidden');
+        }
+
+        async function testSupabaseConnection() {
+            const url = document.getElementById('cfg-supabase-url').value.trim();
+            const key = document.getElementById('cfg-supabase-anon-key').value.trim();
+            const statusBox = document.getElementById('cfg-test-status');
+
+            if (!url || !key) {
+                statusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-500/10 border border-amber-500/30 text-amber-300 block';
+                statusBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Mohon isi Project URL dan Anon Key terlebih dahulu.';
+                return;
+            }
+
+            statusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 block';
+            statusBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menghubungkan ke Supabase Cloud...';
+
+            try {
+                const testClient = window.supabase.createClient(url, key);
+                const { data, error } = await testClient.from('pendaftaran_antrian').select('count', { count: 'exact', head: true });
+
+                if (error) throw error;
+
+                statusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 block';
+                statusBox.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> <strong>Koneksi Berhasil!</strong> Database Supabase PostgreSQL siap digunakan.';
+            } catch (err) {
+                statusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-red-500/10 border border-red-500/30 text-red-300 block';
+                statusBox.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> <strong>Gagal Terhubung:</strong> ${err.message}. Pastikan SQL schema telah dijalankan di Supabase SQL Editor.`;
+            }
+        }
+
+        function handleSaveSupabaseConfig(e) {
+            e.preventDefault();
+            const url = document.getElementById('cfg-supabase-url').value.trim();
+            const key = document.getElementById('cfg-supabase-anon-key').value.trim();
+            const bucket = document.getElementById('cfg-supabase-bucket').value.trim() || 'berkas-kunjungan';
+
+            if (!url || !key) {
+                alert('Project URL dan Anon Key tidak boleh kosong.');
+                return;
+            }
+
+            localStorage.setItem(CFG_KEY_SUPABASE_URL, url);
+            localStorage.setItem(CFG_KEY_SUPABASE_KEY, key);
+            localStorage.setItem(CFG_KEY_SUPABASE_BUCKET, bucket);
+
+            initSupabase();
+            closeSupabaseConfigModal();
+            alert('Konfigurasi Supabase Cloud berhasil disimpan! Database antrean kini tersinkronisasi otomatis.');
+        }
+
+        function disconnectSupabase() {
+            if (confirm('Apakah Anda yakin ingin memutuskan koneksi Supabase Cloud dan kembali ke mode penyimpanan lokal?')) {
+                localStorage.removeItem(CFG_KEY_SUPABASE_URL);
+                localStorage.removeItem(CFG_KEY_SUPABASE_KEY);
+                if (window.realtimeChannel && window.supabaseClient) {
+                    window.supabaseClient.removeChannel(window.realtimeChannel);
+                }
+                window.supabaseClient = null;
+                updateSupabaseStatusUI(false, 'Supabase: Mode Lokal');
+                closeSupabaseConfigModal();
+                alert('Koneksi Supabase diputus. Sistem berjalan dalam Mode Penyimpanan Lokal (LocalStorage).');
+            }
+        }
+
+        // ==========================================
+        // 4. LOCAL DATABASE STRUCTURE & STORAGE SYNC
+        // ==========================================
         function initDatabase() {
             const todayStr = getTodayDateString();
             const existing = localStorage.getItem(DB_KEY_ANTREAN);
@@ -1080,7 +1434,6 @@
 
         function saveQueueData(data) {
             localStorage.setItem(DB_KEY_ANTREAN, JSON.stringify(data));
-            // Trigger storage event for live TV sync
             window.dispatchEvent(new Event('storage'));
         }
 
@@ -1093,7 +1446,7 @@
         }
 
         // ==========================================
-        // 2. WEB AUDIO SYNTHESIS (AIRPORT / CHIME)
+        // 5. WEB AUDIO SYNTHESIS & VOICE CALLING
         // ==========================================
         let audioCtx = null;
         function playChimeBell() {
@@ -1125,7 +1478,6 @@
             }
         }
 
-        // Indonesian Web Speech Synthesis
         function speakQueue(number, name, loketNumber) {
             playChimeBell();
             if ('speechSynthesis' in window) {
@@ -1147,7 +1499,7 @@
         }
 
         // ==========================================
-        // 3. UI VIEW CONTROLLER & ROUTING
+        // 6. UI VIEW CONTROLLER & NAVIGATION ROUTING
         // ==========================================
         function switchMainView(viewName) {
             ['public', 'ticket-result', 'tracking', 'admin'].forEach(v => {
@@ -1179,7 +1531,7 @@
         }
 
         // ==========================================
-        // 4. SCHEDULE VALIDATION LOGIC (NARKOTIKA & PIDUM - 1 SESI: 09.00 - 11.00)
+        // 7. SCHEDULE VALIDATION (1 SESI: 09.00 - 11.00 WIB)
         // ==========================================
         function validateSelectedDate(dateVal) {
             if (!dateVal) return;
@@ -1255,9 +1607,9 @@
         }
 
         // ==========================================
-        // 5. PENDAFTARAN ONLINE PENGUNJUNG
+        // 8. PENDAFTARAN ONLINE PENGUNJUNG (CLOUD + LOCAL)
         // ==========================================
-        function handlePublicRegistration(e) {
+        async function handlePublicRegistration(e) {
             e.preventDefault();
             const tglKunjungan = document.getElementById('reg-tgl-kunjungan').value;
             const dateObj = new Date(tglKunjungan + 'T00:00:00');
@@ -1289,48 +1641,93 @@
             const bawaBarang = document.getElementById('reg-bawa-barang').checked ? 1 : 0;
             const rincianBarang = document.getElementById('reg-rincian-barang').value.trim() || '-';
 
-            // Prefix: N = Narkotika, P = Pidana Umum
-            const prefix = (kategori === 'Narkotika') ? 'N' : 'P';
-            const allQueues = getQueueData();
-            const sameDayQueues = allQueues.filter(q => q.tglKunjungan === tglKunjungan && q.kategori === kategori);
-            const nextUrut = sameDayQueues.length + 1;
-            const formattedNumber = `${prefix}-${String(nextUrut).padStart(3, '0')}`;
-            const cleanDate = tglKunjungan.replace(/-/g, '');
-            const bookingCode = `SIK-${cleanDate}-${formattedNumber.replace('-', '')}`;
+            const ktpFile = document.getElementById('reg-file-ktp')?.files[0] || null;
+            const suratFile = document.getElementById('reg-file-surat')?.files[0] || null;
 
-            const newTicket = {
-                id: Date.now(),
-                kodeBooking: bookingCode,
-                nomorAntrean: formattedNumber,
-                nomorUrut: nextUrut,
-                tglKunjungan: tglKunjungan,
-                sesi: sesi,
-                kategori: kategori,
-                namaPengunjung: namaPengunjung,
-                nikPengunjung: nikPengunjung,
-                jk: jk,
-                noWA: noWA,
-                alamat: alamat,
-                hubungan: hubungan,
-                pengikutDewasa: pengikutDewasa,
-                pengikutAnak: pengikutAnak,
-                namaWBP: namaWBP,
-                blokWBP: blokWBP,
-                suratIzin: suratIzin,
-                bawaBarang: bawaBarang,
-                rincianBarang: rincianBarang,
-                status: 'Menunggu',
-                jumlahPanggilan: 0,
-                waktuDaftar: new Date().toISOString(),
-                loketId: 1
-            };
+            const submitBtn = document.getElementById('btn-submit-registration');
+            const origText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Memproses Pendaftaran & Upload Cloud...';
 
-            allQueues.push(newTicket);
-            saveQueueData(allQueues);
+            try {
+                // Upload berkas jika Supabase terhubung & user memilih file
+                let berkasKtpUrl = null;
+                let berkasSuratUrl = null;
 
-            // Display Result Ticket View
-            renderDigitalTicket(newTicket);
-            switchMainView('ticket-result');
+                if (ktpFile) {
+                    berkasKtpUrl = await uploadFileToSupabaseStorage(ktpFile, 'ktp');
+                }
+                if (suratFile) {
+                    berkasSuratUrl = await uploadFileToSupabaseStorage(suratFile, 'surat_izin');
+                }
+
+                // Prefix: N = Narkotika, P = Pidana Umum
+                const prefix = (kategori === 'Narkotika') ? 'N' : 'P';
+                const allQueues = getQueueData();
+                const sameDayQueues = allQueues.filter(q => q.tglKunjungan === tglKunjungan && q.kategori === kategori);
+                const nextUrut = sameDayQueues.length + 1;
+                const formattedNumber = `${prefix}-${String(nextUrut).padStart(3, '0')}`;
+                const cleanDate = tglKunjungan.replace(/-/g, '');
+                const bookingCode = `SIK-${cleanDate}-${formattedNumber.replace('-', '')}`;
+
+                const newTicket = {
+                    id: Date.now(),
+                    kodeBooking: bookingCode,
+                    nomorAntrean: formattedNumber,
+                    nomorUrut: nextUrut,
+                    tglKunjungan: tglKunjungan,
+                    sesi: sesi,
+                    kategori: kategori,
+                    namaPengunjung: namaPengunjung,
+                    nikPengunjung: nikPengunjung,
+                    jk: jk,
+                    noWA: noWA,
+                    alamat: alamat,
+                    hubungan: hubungan,
+                    pengikutDewasa: pengikutDewasa,
+                    pengikutAnak: pengikutAnak,
+                    namaWBP: namaWBP,
+                    blokWBP: blokWBP,
+                    suratIzin: suratIzin,
+                    bawaBarang: bawaBarang,
+                    rincianBarang: rincianBarang,
+                    status: 'Menunggu',
+                    jumlahPanggilan: 0,
+                    waktuDaftar: new Date().toISOString(),
+                    loketId: 1,
+                    berkasKtpUrl: berkasKtpUrl,
+                    berkasSuratIzinUrl: berkasSuratUrl
+                };
+
+                // Jika terhubung ke Supabase, simpan langsung ke tabel pendaftaran_antrian
+                if (window.supabaseClient) {
+                    const rowData = mapQueueItemToSupabaseRow(newTicket);
+                    const { data, error } = await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .insert([rowData])
+                        .select();
+
+                    if (error) {
+                        console.warn('Gagal insert ke Supabase, fallback ke lokal:', error.message);
+                    } else if (data && data[0]) {
+                        newTicket.id = data[0].id;
+                        console.log('✅ Berhasil disimpan ke Supabase PostgreSQL ID:', data[0].id);
+                    }
+                }
+
+                allQueues.push(newTicket);
+                saveQueueData(allQueues);
+
+                // Render E-Tiket
+                renderDigitalTicket(newTicket);
+                switchMainView('ticket-result');
+            } catch (err) {
+                console.error('Error saat pendaftaran:', err);
+                alert('Terjadi kesalahan saat memproses pendaftaran: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
+            }
         }
 
         // Render E-Ticket with QR Code
@@ -1381,14 +1778,34 @@
         }
 
         // ==========================================
-        // 6. TRACKING TIKET PENGUNJUNG
+        // 9. TRACKING TIKET PENGUNJUNG
         // ==========================================
-        function handleTrackTicket(e) {
+        async function handleTrackTicket(e) {
             e.preventDefault();
             const query = document.getElementById('track-search-input').value.trim().toUpperCase();
-            const allQueues = getQueueData();
-            const match = allQueues.find(q => q.kodeBooking.toUpperCase() === query || q.nikPengunjung === query);
+            let allQueues = getQueueData();
 
+            // Coba cari di Supabase jika terhubung
+            if (window.supabaseClient) {
+                try {
+                    const { data } = await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .select('*')
+                        .or(`kode_booking.ilike.%${query}%,nik_pengunjung.eq.${query}`);
+                    
+                    if (data && data.length > 0) {
+                        const item = mapSupabaseRowToQueueItem(data[0]);
+                        const idx = allQueues.findIndex(q => q.kodeBooking === item.kodeBooking);
+                        if (idx !== -1) allQueues[idx] = item;
+                        else allQueues.push(item);
+                        saveQueueData(allQueues);
+                    }
+                } catch (err) {
+                    console.warn('Gagal tracking online Supabase:', err);
+                }
+            }
+
+            const match = allQueues.find(q => q.kodeBooking.toUpperCase() === query || q.nikPengunjung === query);
             const resultBox = document.getElementById('tracking-result-box');
             resultBox.classList.remove('hidden');
 
@@ -1419,6 +1836,7 @@
                         <p>🔒 <strong>WBP:</strong> ${match.namaWBP} - Kasus ${match.kategori}</p>
                         <p>📅 <strong>Tanggal:</strong> ${match.tglKunjungan} (${match.sesi})</p>
                         ${match.status === 'Menunggu' ? `<p class="text-amber-300 font-bold">⏳ Posisi dalam antrean: <strong>Nomor ke-${position}</strong></p>` : ''}
+                        ${match.berkasKtpUrl ? `<p class="text-emerald-400"><i class="fa-solid fa-paperclip"></i> <a href="${match.berkasKtpUrl}" target="_blank" class="underline">Lihat Foto e-KTP Cloud</a></p>` : ''}
                     </div>
                     <button onclick="renderDigitalTicket(getQueueData().find(q => q.id === ${match.id})); switchMainView('ticket-result')" class="w-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 font-bold py-2 rounded-xl text-xs mt-2 border border-amber-500/30">
                         Buka Tampilan E-Tiket Lengkap
@@ -1428,7 +1846,7 @@
         }
 
         // ==========================================
-        // 7. ADMINISTRATOR AUTHENTICATION & DASHBOARD
+        // 10. ADMINISTRATOR AUTHENTICATION & DASHBOARD
         // ==========================================
         function checkAdminSession() {
             const session = JSON.parse(localStorage.getItem(DB_KEY_ADMIN_SESSION) || 'null');
@@ -1490,7 +1908,7 @@
         }
 
         // ==========================================
-        // 8. QUEUE CALLING & OPERATOR ACTIONS
+        // 11. OPERATOR ACTIONS & QUEUE CALLING
         // ==========================================
         let activeCallingItem = null;
 
@@ -1519,7 +1937,10 @@
             tbody.innerHTML = list.map(item => `
                 <tr class="hover:bg-white/5 transition-colors ${item.status === 'Dipanggil' ? 'bg-amber-500/10' : ''}">
                     <td class="p-3 font-mono font-black text-amber-400 text-sm">${item.nomorAntrean}</td>
-                    <td class="p-3 font-mono text-slate-400 text-[11px]">${item.kodeBooking}</td>
+                    <td class="p-3 font-mono text-slate-400 text-[11px]">
+                        ${item.kodeBooking}
+                        ${item.berkasKtpUrl ? `<a href="${item.berkasKtpUrl}" target="_blank" class="block text-[10px] text-emerald-400 hover:underline"><i class="fa-solid fa-id-card"></i> KTP Cloud</a>` : ''}
+                    </td>
                     <td class="p-3">
                         <div class="font-bold text-white">${item.namaPengunjung}</div>
                         <div class="text-[10px] text-slate-400 font-mono">NIK: ${item.nikPengunjung} • WA: ${item.noWA}</div>
@@ -1597,7 +2018,7 @@
             }
         }
 
-        function executeCallQueue(item, loketNumber) {
+        async function executeCallQueue(item, loketNumber) {
             item.status = 'Dipanggil';
             item.jumlahPanggilan = (item.jumlahPanggilan || 0) + 1;
             item.loketId = loketNumber;
@@ -1609,6 +2030,39 @@
             const idx = allQueues.findIndex(q => q.id === item.id);
             if (idx !== -1) allQueues[idx] = item;
             saveQueueData(allQueues);
+
+            // Sync ke Supabase jika terhubung
+            if (window.supabaseClient) {
+                try {
+                    const session = JSON.parse(localStorage.getItem(DB_KEY_ADMIN_SESSION) || '{}');
+                    // Update antrean
+                    await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .update({
+                            status_antrian: 'Dipanggil',
+                            jumlah_panggilan: item.jumlahPanggilan,
+                            loket_pemanggil_id: loketNumber,
+                            waktu_panggil_terakhir: new Date().toISOString()
+                        })
+                        .eq('kode_booking', item.kodeBooking);
+
+                    // Insert log pemanggilan
+                    await window.supabaseClient
+                        .from('log_pemanggilan')
+                        .insert([{
+                            antrian_id: item.id,
+                            kode_booking: item.kodeBooking,
+                            nomor_antrian: item.nomorAntrean,
+                            loket_nomor: loketNumber,
+                            petugas_id: session.id || 1,
+                            petugas_nama: session.nama || 'Petugas Loket',
+                            panggilan_ke: item.jumlahPanggilan,
+                            teks_suara: `Nomor antrean ${item.nomorAntrean.replace('-', ' ')}, atas nama ${item.namaPengunjung}, silakan menuju Loket ${loketNumber}`
+                        }]);
+                } catch (err) {
+                    console.warn('Gagal sinkron pemanggilan ke Supabase:', err);
+                }
+            }
 
             // Update Panel Display
             document.getElementById('active-call-number').innerText = item.nomorAntrean;
@@ -1633,25 +2087,48 @@
             executeCallQueue(activeCallingItem, session.loket || 1);
         }
 
-        function startServingCurrentQueue() {
+        async function startServingCurrentQueue() {
             if (!activeCallingItem) return;
             activeCallingItem.status = 'Sedang_Dilayani';
             const allQueues = getQueueData();
             const idx = allQueues.findIndex(q => q.id === activeCallingItem.id);
             if (idx !== -1) allQueues[idx] = activeCallingItem;
             saveQueueData(allQueues);
+
+            if (window.supabaseClient) {
+                try {
+                    await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .update({ status_antrian: 'Sedang_Dilayani' })
+                        .eq('kode_booking', activeCallingItem.kodeBooking);
+                } catch (e) { console.warn(e); }
+            }
+
             renderAdminQueueTable();
             updateAdminStats();
             document.getElementById('active-call-category-text').innerText = `SEDANG DILAYANI DI LOKET ${activeCallingItem.loketId}`;
         }
 
-        function completeCurrentQueue() {
+        async function completeCurrentQueue() {
             if (!activeCallingItem) return;
             activeCallingItem.status = 'Selesai';
             const allQueues = getQueueData();
             const idx = allQueues.findIndex(q => q.id === activeCallingItem.id);
             if (idx !== -1) allQueues[idx] = activeCallingItem;
             saveQueueData(allQueues);
+
+            if (window.supabaseClient) {
+                try {
+                    await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .update({ 
+                            status_antrian: 'Selesai',
+                            waktu_selesai_layanan: new Date().toISOString()
+                        })
+                        .eq('kode_booking', activeCallingItem.kodeBooking);
+                } catch (e) { console.warn(e); }
+            }
+
             renderAdminQueueTable();
             updateAdminStats();
             document.getElementById('active-call-number').innerText = '--';
@@ -1660,13 +2137,23 @@
             activeCallingItem = null;
         }
 
-        function skipCurrentQueue() {
+        async function skipCurrentQueue() {
             if (!activeCallingItem) return;
             activeCallingItem.status = 'Dilewati';
             const allQueues = getQueueData();
             const idx = allQueues.findIndex(q => q.id === activeCallingItem.id);
             if (idx !== -1) allQueues[idx] = activeCallingItem;
             saveQueueData(allQueues);
+
+            if (window.supabaseClient) {
+                try {
+                    await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .update({ status_antrian: 'Dilewati' })
+                        .eq('kode_booking', activeCallingItem.kodeBooking);
+                } catch (e) { console.warn(e); }
+            }
+
             renderAdminQueueTable();
             updateAdminStats();
             document.getElementById('active-call-number').innerText = '--';
@@ -1675,28 +2162,50 @@
             activeCallingItem = null;
         }
 
-        function changeQueueStatusDirectly(id, status) {
+        async function changeQueueStatusDirectly(id, status) {
             const allQueues = getQueueData();
             const item = allQueues.find(q => q.id === id);
             if (item) {
                 item.status = status;
                 saveQueueData(allQueues);
+
+                if (window.supabaseClient) {
+                    try {
+                        await window.supabaseClient
+                            .from('pendaftaran_antrian')
+                            .update({ status_antrian: status })
+                            .eq('kode_booking', item.kodeBooking);
+                    } catch (e) { console.warn(e); }
+                }
+
                 renderAdminQueueTable();
                 updateAdminStats();
             }
         }
 
-        function deleteQueueItem(id) {
+        async function deleteQueueItem(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data antrean ini?')) {
-                const allQueues = getQueueData().filter(q => q.id !== id);
-                saveQueueData(allQueues);
+                const allQueues = getQueueData();
+                const item = allQueues.find(q => q.id === id);
+                const filtered = allQueues.filter(q => q.id !== id);
+                saveQueueData(filtered);
+
+                if (window.supabaseClient && item) {
+                    try {
+                        await window.supabaseClient
+                            .from('pendaftaran_antrian')
+                            .delete()
+                            .eq('kode_booking', item.kodeBooking);
+                    } catch (e) { console.warn(e); }
+                }
+
                 renderAdminQueueTable();
                 updateAdminStats();
             }
         }
 
         // ==========================================
-        // 9. WALK-IN REGISTRATION MODAL
+        // 12. WALK-IN REGISTRATION MODAL
         // ==========================================
         function openWalkInModal() {
             document.getElementById('walkin-modal').classList.remove('hidden');
@@ -1706,7 +2215,7 @@
             document.getElementById('walkin-modal').classList.add('hidden');
         }
 
-        function handleWalkInRegistration(e) {
+        async function handleWalkInRegistration(e) {
             e.preventDefault();
             const nama = document.getElementById('walkin-nama').value.trim();
             const nik = document.getElementById('walkin-nik').value.trim();
@@ -1751,6 +2260,20 @@
                 loketId: 1
             };
 
+            if (window.supabaseClient) {
+                try {
+                    const rowData = mapQueueItemToSupabaseRow(walkInItem);
+                    rowData.asal_pendaftaran = 'Walk_in_Loket';
+                    const { data } = await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .insert([rowData])
+                        .select();
+                    if (data && data[0]) walkInItem.id = data[0].id;
+                } catch (err) {
+                    console.warn(err);
+                }
+            }
+
             allQueues.push(walkInItem);
             saveQueueData(allQueues);
             closeWalkInModal();
@@ -1760,7 +2283,7 @@
         }
 
         // ==========================================
-        // 10. EXPORT & REPORTING TOOLS
+        // 13. EXPORT & REPORTING TOOLS
         // ==========================================
         function exportToExcelCSV() {
             const queues = getQueueData();
@@ -1768,9 +2291,9 @@
                 alert('Belum ada data untuk diekspor.');
                 return;
             }
-            let csv = "ID,Kode Booking,Nomor Antrean,Tgl Kunjungan,Waktu Layanan,Kategori Perkara,Nama Pengunjung,NIK,No WA,Hubungan,Nama WBP,Blok,Status,Panggilan\n";
+            let csv = "ID,Kode Booking,Nomor Antrean,Tgl Kunjungan,Waktu Layanan,Kategori Perkara,Nama Pengunjung,NIK,No WA,Hubungan,Nama WBP,Blok,Status,Panggilan,Berkas KTP URL\n";
             queues.forEach(q => {
-                csv += `"${q.id}","${q.kodeBooking}","${q.nomorAntrean}","${q.tglKunjungan}","${q.sesi}","${q.kategori}","${q.namaPengunjung}","${q.nikPengunjung}","${q.noWA}","${q.hubungan}","${q.namaWBP}","${q.blokWBP}","${q.status}","${q.jumlahPanggilan}"\n`;
+                csv += `"${q.id}","${q.kodeBooking}","${q.nomorAntrean}","${q.tglKunjungan}","${q.sesi}","${q.kategori}","${q.namaPengunjung}","${q.nikPengunjung}","${q.noWA}","${q.hubungan}","${q.namaWBP}","${q.blokWBP}","${q.status}","${q.jumlahPanggilan}","${q.berkasKtpUrl || ''}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
@@ -1781,14 +2304,14 @@
 
         function exportDatabaseSQL() {
             const queues = getQueueData();
-            let sql = `-- Backup Data Antrean Rutan Kelas IIB Siak Sri Indrapura\n-- Generated: ${new Date().toISOString()}\n\n`;
+            let sql = `-- Backup Data Antrean Rutan Kelas IIB Siak Sri Indrapura (PostgreSQL / Supabase)\n-- Generated: ${new Date().toISOString()}\n\n`;
             queues.forEach(q => {
-                sql += `INSERT INTO pendaftaran_antrian (kode_booking, nomor_antrian, tgl_kunjungan, sesi_kunjungan, kategori_kunjungan, nik_pengunjung, nama_pengunjung, no_whatsapp, hubungan_wbp, nama_wbp, status_antrian) VALUES ('${q.kodeBooking}', '${q.nomorAntrean}', '${q.tglKunjungan}', '${q.sesi}', '${q.kategori}', '${q.nikPengunjung}', '${q.namaPengunjung}', '${q.noWA}', '${q.hubungan}', '${q.namaWBP}', '${q.status}');\n`;
+                sql += `INSERT INTO public.pendaftaran_antrian (kode_booking, nomor_antrian, nomor_urut, tgl_kunjungan, sesi_kunjungan, kategori_kunjungan, nik_pengunjung, nama_pengunjung, jenis_kelamin, no_whatsapp, alamat_domisili, hubungan_wbp, nama_wbp, status_antrian) VALUES ('${q.kodeBooking}', '${q.nomorAntrean}', ${q.nomorUrut || 1}, '${q.tglKunjungan}', '${q.sesi}', '${q.kategori}', '${q.nikPengunjung}', '${q.namaPengunjung}', '${q.jk || 'L'}', '${q.noWA}', '${q.alamat}', '${q.hubungan}', '${q.namaWBP}', '${q.status}');\n`;
             });
             const blob = new Blob([sql], { type: 'text/plain;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `backup_antrean_rutansiak_${getTodayDateString()}.sql`;
+            link.download = `backup_antrean_supabase_${getTodayDateString()}.sql`;
             link.click();
         }
 
@@ -1846,27 +2369,41 @@
             window.print();
         }
 
-        function resetDailyQueueData() {
+        async function resetDailyQueueData() {
             if (confirm('PERINGATAN: Apakah Anda yakin ingin mereset seluruh data antrean hari ini?')) {
                 const todayStr = getTodayDateString();
                 const remaining = getQueueData().filter(q => q.tglKunjungan !== todayStr);
                 saveQueueData(remaining);
+
+                if (window.supabaseClient) {
+                    try {
+                        await window.supabaseClient
+                            .from('pendaftaran_antrian')
+                            .delete()
+                            .eq('tgl_kunjungan', todayStr);
+                    } catch (e) { console.warn(e); }
+                }
+
                 renderAdminQueueTable();
                 updateAdminStats();
             }
         }
 
         // ==========================================
-        // 11. TV DISPLAY MONITOR (WINDOW)
+        // 14. TV DISPLAY MONITOR (WINDOW WITH SUPABASE REALTIME)
         // ==========================================
         function openDisplayWindow() {
+            const currentUrl = localStorage.getItem(CFG_KEY_SUPABASE_URL) || '';
+            const currentKey = localStorage.getItem(CFG_KEY_SUPABASE_KEY) || '';
+
             const displayHtml = `
             <!DOCTYPE html>
             <html lang="id">
             <head>
                 <meta charset="UTF-8">
-                <title>Layar Display Pemanggilan Antrean — Rutan Kelas IIB Siak</title>
+                <title>Layar Display Pemanggilan Antrean — Rutan Kelas IIB Siak (Supabase Realtime)</title>
                 <script src="https://cdn.tailwindcss.com"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
                 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                 <style>
@@ -1885,7 +2422,7 @@
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-black font-mono text-amber-300" id="tv-clock">09:00:00 WIB</div>
-                        <span class="text-xs text-emerald-400 font-bold">● SISTEM OPERASIONAL AKTIF</span>
+                        <span class="text-xs text-emerald-400 font-bold" id="tv-sync-status">● SUPABASE CLOUD REALTIME AKTIF</span>
                     </div>
                 </div>
 
@@ -1928,39 +2465,74 @@
                 </div>
 
                 <script>
-                    function updateTv() {
-                        const now = new Date();
-                        document.getElementById('tv-clock').innerText = now.toLocaleTimeString('id-ID') + ' WIB';
-                        
-                        const queues = JSON.parse(localStorage.getItem('rutan_siak_db_antrean') || '[]');
-                        const calling = queues.find(q => q.status === 'Dipanggil' || q.status === 'Sedang_Dilayani');
+                    const SB_URL = "${currentUrl}";
+                    const SB_KEY = "${currentKey}";
+                    let tvSupabase = null;
+
+                    if (SB_URL && SB_KEY && window.supabase) {
+                        try {
+                            tvSupabase = window.supabase.createClient(SB_URL, SB_KEY);
+                            tvSupabase.channel('tv-realtime')
+                                .on('postgres_changes', { event: '*', schema: 'public', table: 'pendaftaran_antrian' }, () => {
+                                    updateTvFromSupabase();
+                                })
+                                .subscribe();
+                        } catch (e) { console.warn(e); }
+                    }
+
+                    async function updateTvFromSupabase() {
+                        if (!tvSupabase) { updateTv(); return; }
+                        try {
+                            const today = new Date().toISOString().split('T')[0];
+                            const { data } = await tvSupabase.from('pendaftaran_antrian').select('*').eq('tgl_kunjungan', today).order('id', { ascending: true });
+                            if (data) {
+                                renderTvState(data);
+                            }
+                        } catch (e) { updateTv(); }
+                    }
+
+                    function renderTvState(queues) {
+                        const calling = queues.find(q => (q.status_antrian || q.status) === 'Dipanggil' || (q.status_antrian || q.status) === 'Sedang_Dilayani');
                         if(calling) {
-                            document.getElementById('tv-active-number').innerText = calling.nomorAntrean;
-                            document.getElementById('tv-visitor-name').innerText = calling.namaPengunjung;
-                            document.getElementById('tv-loket-badge').innerText = 'SILAKAN MENUJU LOKET ' + (calling.loketId || 1);
+                            document.getElementById('tv-active-number').innerText = calling.nomor_antrian || calling.nomorAntrean;
+                            document.getElementById('tv-visitor-name').innerText = calling.nama_pengunjung || calling.namaPengunjung;
+                            document.getElementById('tv-loket-badge').innerText = 'SILAKAN MENUJU LOKET ' + (calling.loket_pemanggil_id || calling.loketId || 1);
                         } else {
                             document.getElementById('tv-active-number').innerText = '--';
                             document.getElementById('tv-visitor-name').innerText = 'Menunggu Pemanggilan...';
                             document.getElementById('tv-loket-badge').innerText = 'LOKET PELAYANAN RUTAN SIAK';
                         }
 
-                        const waiting = queues.filter(q => q.status === 'Menunggu').slice(0, 4);
+                        const waiting = queues.filter(q => (q.status_antrian || q.status) === 'Menunggu').slice(0, 4);
                         const nextContainer = document.getElementById('tv-next-list');
                         if(waiting.length === 0) {
                             nextContainer.innerHTML = '<div class="text-xs text-slate-500 text-center py-6">Tidak ada antrean menunggu</div>';
                         } else {
                             nextContainer.innerHTML = waiting.map(w => \`
                                 <div class="flex justify-between items-center p-3 rounded-xl bg-slate-900 border border-white/5">
-                                    <span class="font-mono font-black text-amber-400 text-base">\${w.nomorAntrean}</span>
-                                    <span class="text-xs text-slate-200 font-bold truncate max-w-[140px]">\${w.namaPengunjung}</span>
-                                    <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 font-mono text-slate-400">\${w.kategori}</span>
+                                    <span class="font-mono font-black text-amber-400 text-base">\${w.nomor_antrian || w.nomorAntrean}</span>
+                                    <span class="text-xs text-slate-200 font-bold truncate max-w-[140px]">\${w.nama_pengunjung || w.namaPengunjung}</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 font-mono text-slate-400">\${w.kategori_kunjungan || w.kategori}</span>
                                 </div>
                             \`).join('');
                         }
                     }
-                    setInterval(updateTv, 1000);
+
+                    function updateTv() {
+                        const now = new Date();
+                        document.getElementById('tv-clock').innerText = now.toLocaleTimeString('id-ID') + ' WIB';
+                        const queues = JSON.parse(localStorage.getItem('rutan_siak_db_antrean') || '[]');
+                        renderTvState(queues);
+                    }
+
+                    setInterval(() => {
+                        const now = new Date();
+                        document.getElementById('tv-clock').innerText = now.toLocaleTimeString('id-ID') + ' WIB';
+                    }, 1000);
+
+                    setInterval(updateTvFromSupabase, 3000);
                     window.addEventListener('storage', updateTv);
-                    updateTv();
+                    updateTvFromSupabase();
                 <\/script>
             </body>
             </html>
@@ -1971,7 +2543,7 @@
         }
 
         // ==========================================
-        // 12. UTILITY & INITIALIZATION
+        // 15. INITIALIZATION & UTILITIES
         // ==========================================
         function formatIndonesianDate(dateStr) {
             if (!dateStr) return '-';
@@ -2025,6 +2597,7 @@
 
         window.onload = function() {
             initDatabase();
+            initSupabase();
             startClock();
             renderPublicLoketStatus();
 
