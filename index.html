@@ -186,7 +186,7 @@
             </span>
             <div class="overflow-hidden w-full relative">
                 <div class="animate-marquee font-medium text-slate-300">
-                    Selamat Datang di Portal Resmi Rutan Kelas IIB Siak Sri Indrapura • 📊 Hasil Survei IKM Juli 2026: SPAK 99,75 & SPKP 99,86 (Sangat Memuaskan) • Layanan Tatap Muka Senin s/d Kamis (09.00 - 12.00 WIB) • Seluruh Layanan Pemasyarakatan 100% GRATIS Bebas Pungli • Hotline WhatsApp: +62 821-7642-0280.
+                    Selamat Datang di Portal Resmi Rutan Kelas IIB Siak Sri Indrapura • 📊 Hasil Survei IKM Juli 2026: SPAK 99,75 & SPKP 99,86 (Sangat Memuaskan) • Layanan Kunjungan Tatap Muka: Senin & Rabu (Khusus Narkotika) • Selasa & Kamis (Khusus Pidana Umum) • Pukul 09.00 - 11.00 WIB (1 Sesi) • Seluruh Layanan 100% GRATIS Bebas Pungli • Hotline WhatsApp: +62 821-7642-0280.
                 </div>
             </div>
         </div>
@@ -227,9 +227,9 @@
 
                 <!-- Action CTA & Mobile Toggle -->
                 <div class="flex items-center gap-3">
-                    <button onclick="openBookingModal()" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all transform active:scale-95">
+                    <a href="antrian.html" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all transform active:scale-95">
                         <i class="fa-solid fa-ticket"></i> Daftar Antrean
-                    </button>
+                    </a>
                     
                     <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-slate-300 hover:text-amber-400 p-2 text-xl focus:outline-none">
                         <i class="fa-solid fa-bars" id="menu-icon"></i>
@@ -243,13 +243,15 @@
             <button onclick="switchTab('beranda'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Beranda</button>
             <button onclick="switchTab('profil'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Profil</button>
             <button onclick="switchTab('layanan'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Layanan Publik</button>
-            <a href="berita.html" class="block w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-amber-400 bg-amber-500/10">Berita & Publikasi (Baru)</a>
+            <a href="antrian.html" class="block w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold text-amber-300 bg-amber-500/10">🎟️ Antrean Online & Tiket Digital</a>
+            <a href="antrian.html#admin" class="block w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/5">🔐 Panel Petugas Pemanggilan</a>
+            <a href="berita.html" class="block w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-amber-400">Berita & Publikasi (Baru)</a>
             <button onclick="switchTab('galeri'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Galeri Kegiatan</button>
             <button onclick="switchTab('kontak'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-amber-500/10 hover:text-amber-400">Kontak & Lokasi</button>
             <div class="pt-2">
-                <button onclick="openBookingModal(); toggleMobileMenu()" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-2.5 rounded-xl shadow-lg">
+                <a href="antrian.html" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-2.5 rounded-xl shadow-lg">
                     <i class="fa-solid fa-calendar-check"></i> Daftar Antrean Kunjungan
-                </button>
+                </a>
             </div>
         </div>
     </header>
@@ -347,7 +349,7 @@
                                     </li>
                                     <li class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl border border-white/5">
                                         <span class="text-slate-300 font-medium"><i class="fa-regular fa-clock text-cyan-400 mr-1.5"></i> Jam Buka</span>
-                                        <span class="font-mono text-white font-bold">09:00 - 12:00 WIB</span>
+                                        <span class="font-mono text-white font-bold">09:00 - 11:00 WIB</span>
                                     </li>
                                 </ul>
 
@@ -626,18 +628,24 @@
                             </ul>
                         </div>
 
-                        <div class="glass-card p-6 md:p-8 rounded-3xl flex flex-col justify-between space-y-4">
+                        <div class="glass-card p-6 md:p-8 rounded-3xl flex flex-col justify-between space-y-4 border border-amber-500/30">
                             <div>
                                 <h3 class="text-lg font-black text-cyan-400 flex items-center gap-2 mb-2">
-                                    <i class="fa-solid fa-ticket"></i> Pendaftaran Antrean Digital
+                                    <i class="fa-solid fa-ticket"></i> Pendaftaran Antrean Digital Terpadu
                                 </h3>
                                 <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-                                    Ambil nomor tiket kunjungan secara digital sebelum datang ke Rutan untuk memangkas waktu tunggu di ruang pendaftaran.
+                                    Ambil nomor tiket kunjungan secara online, dapatkan e-tiket resmi ber-QR code, lacak posisi antrean secara langsung, dan manfaatkan sistem pemanggilan suara otomatis.
                                 </p>
                             </div>
-                            <button onclick="openBookingModal()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-3.5 px-6 rounded-xl shadow-lg transition-all text-center text-sm">
-                                <i class="fa-solid fa-calendar-check mr-1"></i> Klik Untuk Ambil Tiket Antrean
-                            </button>
+                            <div class="space-y-2">
+                                <a href="antrian.html" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-3.5 px-6 rounded-xl shadow-lg transition-all text-center text-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-calendar-check"></i> Buka Portal Antrean & Tiket Digital
+                                </a>
+                                <div class="flex justify-between items-center text-[11px] px-2 pt-1 text-slate-400">
+                                    <a href="antrian.html#tracking" class="hover:text-amber-400 flex items-center gap-1"><i class="fa-solid fa-search"></i> Lacak Tiket</a>
+                                    <a href="antrian.html#admin" class="hover:text-amber-400 flex items-center gap-1"><i class="fa-solid fa-user-shield"></i> Akses Petugas Loket</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -796,9 +804,16 @@
                 </div>
             </div>
 
-            <div class="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
-                <p>© 2026 Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. All rights reserved.</p>
-                <p class="text-slate-500 font-mono text-[11px]">Kementerian Imigrasi dan Pemasyarakatan RI</p>
+            <div class="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left border-t border-white/10 mt-6">
+                <div>
+                    <p>© 2026 Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura. All rights reserved.</p>
+                    <p class="text-slate-500 font-mono text-[11px]">Kementerian Imigrasi dan Pemasyarakatan RI • Menuju Wilayah Bebas dari Korupsi (WBK)</p>
+                </div>
+                <div class="flex items-center gap-3 text-xs font-semibold">
+                    <a href="antrian.html" class="text-amber-400 hover:underline">Sistem Antrean</a>
+                    <span class="text-slate-700">|</span>
+                    <a href="antrian.html#admin" class="text-slate-400 hover:text-amber-300">Login Administrator</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -904,31 +919,31 @@
             <h3 class="text-xl font-extrabold text-white mb-1 flex items-center gap-2">
                 <i class="fa-solid fa-ticket text-amber-400"></i> Pendaftaran Antrean Online
             </h3>
-            <p class="text-xs text-slate-400 mb-6">Silakan isi formulir untuk mendapatkan nomor tiket digital.</p>
+            <p class="text-xs text-slate-400 mb-6">Silakan isi formulir cepat atau gunakan portal antrean lengkap.</p>
 
             <form id="booking-form" onsubmit="submitBooking(event)" class="space-y-4 text-xs">
                 <div>
                     <label class="block font-bold text-slate-300 mb-1">Nama Lengkap Pengunjung</label>
-                    <input type="text" required placeholder="Sesuai e-KTP" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                    <input type="text" id="modal-reg-nama" required placeholder="Sesuai e-KTP" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">NIK (16 Digit)</label>
-                        <input type="text" required maxlength="16" placeholder="16 digit NIK" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                        <input type="text" id="modal-reg-nik" required maxlength="16" minlength="16" placeholder="16 digit NIK" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400 font-mono">
                     </div>
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">No. WhatsApp</label>
-                        <input type="tel" required placeholder="0812xxxx" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                        <input type="tel" id="modal-reg-wa" required placeholder="0812xxxx" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400 font-mono">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">Nama WBP</label>
-                        <input type="text" required placeholder="Nama WBP" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                        <input type="text" id="modal-reg-wbp" required placeholder="Nama WBP" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                     </div>
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">Hubungan</label>
-                        <select class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                        <select id="modal-reg-hubungan" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
                             <option>Orang Tua (Ayah/Ibu)</option>
                             <option>Suami / Istri</option>
                             <option>Anak Kandung</option>
@@ -936,14 +951,28 @@
                         </select>
                     </div>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-300 mb-1">Rencana Tanggal Kunjungan</label>
-                    <input type="date" required class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Kategori Perkara WBP</label>
+                        <select id="modal-reg-kategori" class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                            <option value="Narkotika">Khusus Narkotika (Senin & Rabu)</option>
+                            <option value="Pidana Umum">Khusus Pidana Umum (Selasa & Kamis)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Tanggal Kunjungan</label>
+                        <input type="date" id="modal-reg-tgl" required class="w-full px-3.5 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-400 font-mono text-xs">
+                    </div>
                 </div>
 
-                <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-3.5 rounded-xl transition-all shadow-lg text-sm">
-                    Cetak Tiket Antrean Digital
-                </button>
+                <div class="pt-2 space-y-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-3.5 rounded-xl transition-all shadow-lg text-sm">
+                        Cetak Tiket Antrean Digital
+                    </button>
+                    <a href="antrian.html" class="block w-full text-center text-xs text-amber-400 hover:underline pt-1">
+                        Buka Formulir Lengkap & Pilih Sesi Waktu <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
             </form>
 
             <div id="booking-success" class="hidden text-center py-6 space-y-4">
@@ -953,12 +982,17 @@
                 <h4 class="text-lg font-black text-white">Pendaftaran Antrean Berhasil!</h4>
                 <div class="p-4 rounded-2xl bg-slate-950/80 border border-amber-500/30 font-mono">
                     <span class="text-xs text-slate-400 block">NOMOR ANTREAN DIGITAL</span>
-                    <span class="text-4xl font-black text-amber-400" id="queue-number">A-024</span>
+                    <span class="text-4xl font-black text-amber-400" id="queue-number">A-001</span>
                 </div>
-                <p class="text-xs text-slate-300">Tunjukkan bukti antrean ini kepada petugas loket Rutan Siak pada hari kunjungan.</p>
-                <button onclick="closeBookingModal()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-6 rounded-xl border border-white/10">
-                    Tutup
-                </button>
+                <p class="text-xs text-slate-300">Data telah tersimpan di sistem antrean Rutan Siak. Tunjukkan nomor ini saat berkunjung.</p>
+                <div class="flex gap-2 justify-center pt-2">
+                    <a href="antrian.html" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs py-2.5 px-4 rounded-xl shadow">
+                        Buka E-Tiket & QR Code
+                    </a>
+                    <button onclick="closeBookingModal()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-4 rounded-xl border border-white/10">
+                        Tutup
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1210,8 +1244,52 @@
 
         function submitBooking(e) {
             e.preventDefault();
-            const randomCode = 'A-' + Math.floor(100 + Math.random() * 900);
-            document.getElementById('queue-number').innerText = randomCode;
+            const nama = document.getElementById('modal-reg-nama').value.trim();
+            const nik = document.getElementById('modal-reg-nik').value.trim();
+            const wa = document.getElementById('modal-reg-wa').value.trim();
+            const wbp = document.getElementById('modal-reg-wbp').value.trim();
+            const hub = document.getElementById('modal-reg-hubungan').value;
+            const kat = document.getElementById('modal-reg-kategori').value;
+            const tgl = document.getElementById('modal-reg-tgl').value;
+
+            const prefix = (kat === 'Narkotika') ? 'N' : 'P';
+            const queues = JSON.parse(localStorage.getItem('rutan_siak_db_antrean') || '[]');
+            const sameDay = queues.filter(q => q.tglKunjungan === tgl && q.kategori === kat);
+            const nextUrut = sameDay.length + 1;
+            const formattedCode = `${prefix}-${String(nextUrut).padStart(3, '0')}`;
+            const bookingCode = `SIK-${tgl.replace(/-/g, '')}-${formattedCode.replace('-', '')}`;
+
+            const newTicket = {
+                id: Date.now(),
+                kodeBooking: bookingCode,
+                nomorAntrean: formattedCode,
+                nomorUrut: nextUrut,
+                tglKunjungan: tgl,
+                sesi: '09:00 - 11:00 WIB',
+                kategori: kat,
+                namaPengunjung: nama,
+                nikPengunjung: nik,
+                jk: 'L',
+                noWA: wa,
+                alamat: 'Kabupaten Siak',
+                hubungan: hub,
+                pengikutDewasa: 0,
+                pengikutAnak: 0,
+                namaWBP: wbp,
+                blokWBP: 'Umum',
+                suratIzin: '-',
+                bawaBarang: 0,
+                rincianBarang: '-',
+                status: 'Menunggu',
+                jumlahPanggilan: 0,
+                waktuDaftar: new Date().toISOString(),
+                loketId: 1
+            };
+
+            queues.push(newTicket);
+            localStorage.setItem('rutan_siak_db_antrean', JSON.stringify(queues));
+
+            document.getElementById('queue-number').innerText = formattedCode;
             document.getElementById('booking-form').classList.add('hidden');
             document.getElementById('booking-success').classList.remove('hidden');
         }
@@ -1273,7 +1351,7 @@
             if (lowerQuery.includes('survey') || lowerQuery.includes('survei') || lowerQuery.includes('ikm') || lowerQuery.includes('spak') || lowerQuery.includes('spkp') || lowerQuery.includes('kepuasan')) {
                 responseText = "Berdasarkan hasil Survei IKM Periode <strong>Juli 2026</strong>, Rutan Kelas IIB Siak Sri Indrapura berhasil meraih nilai <strong>Survei Persepsi Antikorupsi (SPAK): 99,75/100</strong> dan <strong>Survei Persepsi Kualitas Pelayanan (SPKP): 99,86/100</strong>. Capaian ini menjadi bukti komitmen pelayanan publik yang prima, transparan, dan bebas korupsi.";
             } else if (lowerQuery.includes('jadwal') || lowerQuery.includes('hari') || lowerQuery.includes('kunjungan') || lowerQuery.includes('jam')) {
-                responseText = "Layanan kunjungan tatap muka dibuka setiap hari <strong>Senin s/d Kamis pukul 09.00 - 12.00 WIB</strong>.<br/>• <strong>Senin & Rabu:</strong> Khusus Tahanan<br/>• <strong>Selasa & Kamis:</strong> Khusus Narapidana.<br/>Jumat, Sabtu, dan Minggu libur layanan.";
+                responseText = "Layanan kunjungan tatap muka dibuka setiap hari <strong>Senin s/d Kamis pukul 09.00 - 11.00 WIB (1 Sesi)</strong>.<br/>• <strong>Senin & Rabu:</strong> Khusus Perkara Narkotika<br/>• <strong>Selasa & Kamis:</strong> Khusus Perkara Pidana Umum.<br/>Jumat (khusus titipan barang/makanan 09.00-11.00 WIB), Sabtu dan Minggu libur layanan.";
             } else if (lowerQuery.includes('bebas bersyarat') || lowerQuery.includes('pb') || lowerQuery.includes('cb') || lowerQuery.includes('integrasi') || lowerQuery.includes('syarat')) {
                 responseText = "Seluruh pengurusan Pembebasan Bersyarat (PB) dan Cuti Bersyarat (CB) adalah <strong>100% GRATIS tanpa biaya sepeserpun</strong>. Syarat utama: minimal telah menjalani 2/3 masa pidana (untuk PB) atau 1/2 masa pidana (untuk CB), berkelakuan baik, dan memiliki penjamin keluarga kandung.";
             } else if (lowerQuery.includes('antrean') || lowerQuery.includes('tiket') || lowerQuery.includes('daftar')) {
