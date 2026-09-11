@@ -200,6 +200,11 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('berkas-kunjungan', 'berkas-kunjungan', true)
 ON CONFLICT (id) DO UPDATE SET public = true;
 
+-- Kebijakan Storage: Hapus kebijakan lama jika ada agar aman di-run berulang kali
+DROP POLICY IF EXISTS "Public Upload Berkas Kunjungan" ON storage.objects;
+DROP POLICY IF EXISTS "Public Read Berkas Kunjungan" ON storage.objects;
+DROP POLICY IF EXISTS "Admin Delete Berkas Kunjungan" ON storage.objects;
+
 -- Kebijakan Storage: Publik Anonymous dapat mengunggah (upload) dokumen pendaftaran
 CREATE POLICY "Public Upload Berkas Kunjungan"
 ON storage.objects FOR INSERT
@@ -229,6 +234,21 @@ ALTER TABLE public.data_wbp ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pendaftaran_antrian ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.log_pemanggilan ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_trail ENABLE ROW LEVEL SECURITY;
+
+-- Hapus kebijakan lama pada tabel antrean jika ada (Idempotent Safe)
+DROP POLICY IF EXISTS "Public Anon Insert Antrian" ON public.pendaftaran_antrian;
+DROP POLICY IF EXISTS "Public Read Antrian" ON public.pendaftaran_antrian;
+DROP POLICY IF EXISTS "Allow Update Antrian" ON public.pendaftaran_antrian;
+DROP POLICY IF EXISTS "Allow Delete Antrian" ON public.pendaftaran_antrian;
+
+DROP POLICY IF EXISTS "Public Read Log Pemanggilan" ON public.log_pemanggilan;
+DROP POLICY IF EXISTS "Allow Insert Log Pemanggilan" ON public.log_pemanggilan;
+
+DROP POLICY IF EXISTS "Public Read Jadwal" ON public.jadwal_kunjungan;
+DROP POLICY IF EXISTS "Public Read Loket" ON public.loket_layanan;
+DROP POLICY IF EXISTS "Public Read WBP" ON public.data_wbp;
+DROP POLICY IF EXISTS "Public Read Users Admin" ON public.users_admin;
+DROP POLICY IF EXISTS "Allow Insert Audit" ON public.audit_trail;
 
 -- A. Policies untuk pendaftaran_antrian:
 -- 1. Pengunjung / Publik dapat mendaftar (INSERT)
@@ -267,7 +287,7 @@ ON public.log_pemanggilan FOR INSERT
 TO anon, authenticated
 WITH CHECK (true);
 
--- C. Policies untuk referensi: jadwal_kunjungan, loket_layanan, data_wbp
+-- C. Policies untuk referensi: jadwal_kunjungan, loket_layanan, data_wbp, users_admin
 CREATE POLICY "Public Read Jadwal" ON public.jadwal_kunjungan FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "Public Read Loket" ON public.loket_layanan FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "Public Read WBP" ON public.data_wbp FOR SELECT TO anon, authenticated USING (true);
@@ -513,10 +533,10 @@ INSERT INTO public.pendaftaran_antrian (
 ON CONFLICT (id) DO UPDATE SET nama_pengunjung = EXCLUDED.nama_pengunjung;
 
 -- Sinkronisasi urutan sequence serial PostgreSQL
-SELECT setval('public.users_admin_id_seq', (SELECT MAX(id) FROM public.users_admin));
-SELECT setval('public.loket_layanan_id_seq', (SELECT MAX(id) FROM public.loket_layanan));
-SELECT setval('public.jadwal_kunjungan_id_seq', (SELECT MAX(id) FROM public.jadwal_kunjungan));
-SELECT setval('public.data_wbp_id_seq', (SELECT MAX(id) FROM public.data_wbp));
+SELECT setval('public.users_admin_id_seq', (SELECT COALESCE(MAX(id), 1) FROM public.users_admin));
+SELECT setval('public.loket_layanan_id_seq', (SELECT COALESCE(MAX(id), 1) FROM public.loket_layanan));
+SELECT setval('public.jadwal_kunjungan_id_seq', (SELECT COALESCE(MAX(id), 1) FROM public.jadwal_kunjungan));
+SELECT setval('public.data_wbp_id_seq', (SELECT COALESCE(MAX(id), 1) FROM public.data_wbp));
 SELECT setval('public.pendaftaran_antrian_id_seq', (SELECT COALESCE(MAX(id), 1) FROM public.pendaftaran_antrian));
 
 -- ==============================================================================
