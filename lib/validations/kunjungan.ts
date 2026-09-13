@@ -44,7 +44,7 @@ export const FormKunjunganSchema = z.object({
   }),
 
   // 3. Waktu & Sesi Kunjungan
-  tanggal_kunjungan: z.string().refine((val) => {
+  tanggal_kunjungan: z.string().refine((val: string) => {
     const selected = new Date(val + 'T00:00:00');
     const day = selected.getDay();
     // 0 = Minggu, 6 = Sabtu (Kunjungan Tatap Muka Libur)
@@ -59,8 +59,8 @@ export const FormKunjunganSchema = z.object({
   deskripsi_titipan: z.string().optional(),
 
   // 5. Persetujuan Syarat & Tata Tertib
-  persetujuan_tata_tertib: z.literal(true, {
-    errorMap: () => ({ message: 'Anda wajib menyetujui seluruh tata tertib kunjungan' }),
+  persetujuan_tata_tertib: z.boolean().refine((val: boolean) => val === true, {
+    message: 'Anda wajib menyetujui seluruh tata tertib kunjungan',
   }),
 });
 
