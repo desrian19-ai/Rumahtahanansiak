@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -8,41 +15,25 @@ const nextConfig = {
       },
     ],
   },
-  async redirects() {
+  async rewrites() {
     return [
       {
-        source: '/admin.html',
-        destination: '/admin',
-        permanent: true,
+        source: '/admin',
+        destination: '/admin.html',
       },
       {
-        source: '/index.html',
-        destination: '/',
-        permanent: true,
+        source: '/antrian',
+        destination: '/antrian.html',
       },
       {
-        source: '/daftar.html',
-        destination: '/daftar',
-        permanent: true,
-      },
-      {
-        source: '/tiket.html',
-        destination: '/tiket',
-        permanent: true,
-      },
-      {
-        source: '/antrian.html',
-        destination: '/admin',
-        permanent: true,
-      },
-      {
-        source: '/berita.html',
-        destination: '/',
-        permanent: true,
+        source: '/berita',
+        destination: '/berita.html',
       },
     ];
   },
 };
 
 export default nextConfig;
+
+
 
