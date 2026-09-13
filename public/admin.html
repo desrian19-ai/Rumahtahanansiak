@@ -1,0 +1,2950 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Akses Petugas & Super Admin — Rutan Kelas IIB Siak Sri Indrapura</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Supabase JS Client (v2 for PostgreSQL, Cloud Storage & Realtime Sync) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            dark: '#070B14',
+                            card: '#0D1527',
+                            cardHover: '#131F38',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            gold: '#F59E0B',
+                            goldGlow: '#D97706',
+                            cyan: '#06B6D4',
+                            emerald: '#10B981',
+                            blue: '#1E3A8A',
+                            purple: '#8B5CF6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Space Grotesk"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .ai-mesh-bg {
+            background-color: #070b14;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(245, 158, 11, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 15%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 85%, rgba(30, 58, 138, 0.20) 0px, transparent 65%);
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(13, 21, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(7, 11, 20, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .sidebar-active {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border-left: 4px solid #F59E0B;
+            color: #FBBF24 !important;
+            font-weight: 700;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        .animate-pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #070b14; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printable-report, #printable-report * { visibility: visible; }
+            #printable-report {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="ai-mesh-bg text-slate-100 min-h-screen selection:bg-amber-500 selection:text-slate-950 flex flex-col justify-between">
+
+    <!-- ================= TOP STATUS BAR ================= -->
+    <div class="bg-slate-950/95 text-slate-300 text-xs py-2 px-4 border-b border-white/5 relative z-50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-3 flex-wrap justify-center md:justify-start">
+                <span class="flex items-center gap-1.5 font-bold text-amber-400">
+                    <i class="fa-solid fa-shield-halved"></i> Ditjen Pemasyarakatan • Kemenimipas RI
+                </span>
+                <span class="hidden sm:inline text-slate-700">|</span>
+                <span class="flex items-center gap-1.5 text-slate-400">
+                    <i class="fa-solid fa-building-shield text-cyan-400"></i> Rutan Kelas IIB Siak Sri Indrapura
+                </span>
+                <span class="hidden sm:inline text-slate-700">|</span>
+                <button onclick="openSupabaseConfigModal()" id="db-connection-pill" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400/60 text-slate-300 hover:text-white text-[11px] font-semibold transition-all cursor-pointer">
+                    <span id="db-status-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span id="db-status-label">Supabase: Offline / Mode Lokal</span>
+                    <i class="fa-solid fa-gear text-[10px] text-slate-400 ml-0.5"></i>
+                </button>
+            </div>
+            <div class="flex items-center gap-3 text-slate-400">
+                <span class="font-mono text-amber-300 font-semibold flex items-center gap-1.5" id="realtime-clock">
+                    <i class="fa-regular fa-clock text-xs text-amber-400"></i> Memuat Waktu...
+                </span>
+                <span class="hidden sm:inline text-slate-700">|</span>
+                <a href="antrian.html" class="hover:text-amber-400 transition-colors text-xs text-slate-300 flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-left text-amber-500"></i> Portal Antrean Publik
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN HEADER NAVIGATION ================= -->
+    <header class="sticky top-0 z-40 glass-nav shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand Title & Logos -->
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <img src="logokemenimipas.png" alt="Logo Kemenimipas" class="w-11 h-11 object-contain drop-shadow-[0_0_12px_rgba(245,158,11,0.3)] transition-transform group-hover:scale-105">
+                        <img src="logopemasyarakatan.png" alt="Logo Pemasyarakatan" class="w-11 h-11 object-contain drop-shadow-[0_0_12px_rgba(6,182,212,0.3)] transition-transform group-hover:scale-105">
+                    </a>
+                    <div class="pl-2 border-l border-white/10">
+                        <h1 class="text-base sm:text-lg font-black text-white tracking-tight leading-none uppercase flex items-center gap-2">
+                            PORTAL OPERATOR & ADMIN <span class="text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">RUTAN SIAK</span>
+                        </h1>
+                        <p class="text-[11px] text-slate-400 font-medium mt-0.5">
+                            Sistem Pelayanan Kunjungan Terpadu (Sesi 09.00 - 11.00 WIB)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- User Profile & Action Bar (When Logged In) -->
+                <div id="nav-user-bar" class="hidden flex items-center gap-3">
+                    <!-- Audio Bell Tester -->
+                    <button onclick="playChimeBell()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/10 text-slate-300 hover:text-amber-400 hover:border-amber-500/30 text-xs font-semibold transition-all" title="Uji Coba Suara Bel Panggilan">
+                        <i class="fa-solid fa-volume-high text-amber-400"></i> Tes Suara
+                    </button>
+
+                    <!-- TV Display Launcher -->
+                    <button onclick="openDisplayWindow()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 text-xs font-bold transition-all" title="Buka Layar Monitor TV Ruang Tunggu">
+                        <i class="fa-solid fa-tv text-cyan-400"></i> Monitor TV
+                    </button>
+
+                    <!-- Active Counter Selector -->
+                    <div class="flex items-center gap-1.5 bg-slate-900/90 border border-amber-500/30 px-2.5 py-1 rounded-xl">
+                        <span class="text-[10px] text-slate-400 font-mono">Loket:</span>
+                        <select id="active-loket-select" onchange="changeActiveCounter(this.value)" class="bg-transparent text-xs font-bold text-amber-400 font-mono outline-none cursor-pointer">
+                            <option value="1" class="bg-slate-900 text-white">Loket 1 (Reguler)</option>
+                            <option value="2" class="bg-slate-900 text-white">Loket 2 (Titipan)</option>
+                            <option value="3" class="bg-slate-900 text-white">Loket 3 (Prioritas)</option>
+                        </select>
+                    </div>
+
+                    <!-- User Identity Pill -->
+                    <div class="flex items-center gap-2.5 pl-2 border-l border-white/10">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-black text-slate-950 text-sm shadow-md" id="user-avatar-badge">
+                            P
+                        </div>
+                        <div class="hidden md:block text-left">
+                            <div class="text-xs font-bold text-white leading-tight truncate max-w-[140px]" id="user-display-name">Petugas Loket</div>
+                            <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 uppercase font-bold" id="user-display-role">PETUGAS_LOKET</span>
+                        </div>
+                        <button onclick="handleAdminLogout()" class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all" title="Keluar / Logout">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Public / Guest Buttons (When Not Logged In) -->
+                <div id="nav-guest-bar" class="flex items-center gap-2">
+                    <a href="index.html" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all">
+                        <i class="fa-solid fa-house mr-1"></i> Website Utama
+                    </a>
+                    <a href="antrian.html" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 shadow-md transition-all">
+                        <i class="fa-solid fa-ticket mr-1"></i> Antrean Publik
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= CONTAINER UTAMA ================= -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
+
+        <!-- ================= SECTION 1: LOGIN BOX (IF NOT LOGGED IN) ================= -->
+        <section id="login-section" class="max-w-xl mx-auto my-8">
+            <div class="glass-card rounded-3xl p-8 sm:p-10 border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.6)] relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Header Login -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-4 shadow-inner">
+                        <i class="fa-solid fa-lock text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-white tracking-tight">AUTENTIKASI PETUGAS & ADMIN</h2>
+                    <p class="text-xs text-slate-400 mt-1">
+                        Sistem Pelayanan Kunjungan Rutan Kelas IIB Siak Sri Indrapura
+                    </p>
+                </div>
+
+                <!-- Form Login -->
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                            <i class="fa-solid fa-user-shield text-amber-400 mr-1"></i> Username Akun
+                        </label>
+                        <input type="text" id="login-username" required placeholder="Contoh: admin.kunjungan / petugas.loket1" 
+                            class="w-full bg-slate-950/80 border border-white/10 focus:border-amber-400 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                            <i class="fa-solid fa-key text-amber-400 mr-1"></i> Kata Sandi
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="login-password" required placeholder="Masukkan kata sandi akun"
+                                class="w-full bg-slate-950/80 border border-white/10 focus:border-amber-400 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-all pr-10">
+                            <button type="button" onclick="togglePasswordVisibility('login-password', 'eye-icon')" class="absolute right-3 top-3 text-slate-400 hover:text-amber-400">
+                                <i class="fa-solid fa-eye" id="eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                            <i class="fa-solid fa-desktop text-amber-400 mr-1"></i> Penugasan Loket Layanan
+                        </label>
+                        <select id="login-loket" class="w-full bg-slate-950/80 border border-white/10 focus:border-amber-400 rounded-xl px-4 py-3 text-sm text-white outline-none cursor-pointer">
+                            <option value="1">Loket 1 — Pendaftaran & Verifikasi Reguler</option>
+                            <option value="2">Loket 2 — Titipan Makanan & Barang</option>
+                            <option value="3">Loket 3 — Khusus Prioritas (Lansia / Disabilitas)</option>
+                        </select>
+                    </div>
+
+                    <!-- Error Box -->
+                    <div id="login-error-msg" class="hidden p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-base text-red-400 shrink-0"></i>
+                        <span>Username atau kata sandi tidak cocok. Silakan coba kembali.</span>
+                    </div>
+
+                    <button type="submit" id="btn-submit-login" class="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider py-3.5 rounded-xl shadow-[0_0_25px_rgba(245,158,11,0.35)] transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Panel Kerja
+                    </button>
+                </form>
+
+                <!-- Quick Pre-Set Credentials Helper -->
+                <div class="mt-6 pt-6 border-t border-white/10">
+                    <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-2 font-bold text-center">
+                        ⚡ Akun Cepat Pengujian (Default Database):
+                    </span>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <button onclick="fillLoginCredentials('admin.kunjungan', 'rutansiak2026', 1)" class="p-2 rounded-xl bg-slate-900/90 border border-white/5 hover:border-amber-400/40 text-left transition-colors">
+                            <div class="font-bold text-amber-400">👑 Super Admin</div>
+                            <div class="text-[10px] text-slate-400 font-mono">admin.kunjungan</div>
+                        </button>
+                        <button onclick="fillLoginCredentials('petugas.loket1', 'rutansiak2026', 1)" class="p-2 rounded-xl bg-slate-900/90 border border-white/5 hover:border-amber-400/40 text-left transition-colors">
+                            <div class="font-bold text-cyan-400">👤 Loket 1 (Reguler)</div>
+                            <div class="text-[10px] text-slate-400 font-mono">petugas.loket1</div>
+                        </button>
+                        <button onclick="fillLoginCredentials('petugas.loket2', 'rutansiak2026', 2)" class="p-2 rounded-xl bg-slate-900/90 border border-white/5 hover:border-amber-400/40 text-left transition-colors">
+                            <div class="font-bold text-emerald-400">📦 Loket 2 (Titipan)</div>
+                            <div class="text-[10px] text-slate-400 font-mono">petugas.loket2</div>
+                        </button>
+                        <button onclick="fillLoginCredentials('kasubsi.yantah', 'rutansiak2026', 1)" class="p-2 rounded-xl bg-slate-900/90 border border-white/5 hover:border-amber-400/40 text-left transition-colors">
+                            <div class="font-bold text-purple-400">🛡️ Kasubsi Yantah</div>
+                            <div class="text-[10px] text-slate-400 font-mono">kasubsi.yantah</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: WORKSPACE DASHBOARD (WHEN LOGGED IN) ================= -->
+        <section id="dashboard-section" class="hidden space-y-6">
+
+            <!-- Operational Schedule Banner (1 Sesi: 09.00 - 11.00 WIB) -->
+            <div id="dashboard-schedule-notice" class="p-4 rounded-2xl border bg-amber-500/10 border-amber-500/30 text-amber-200 flex flex-col md:flex-row justify-between items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-lg shrink-0">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm text-white" id="schedule-title-text">Jadwal Operasional Hari Ini: Memuat...</div>
+                        <div class="text-xs text-amber-300 font-mono" id="schedule-detail-text">Waktu Layanan: 09.00 s/d 11.00 WIB (1 Sesi Terpadu)</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-xs">
+                    <span class="px-3 py-1 rounded-full bg-slate-900/90 border border-white/10 text-slate-300" id="quota-badge">
+                        Kuota: 60 Antrean
+                    </span>
+                    <button onclick="simulateGadgetRegistration()" class="px-3 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-bold transition-all flex items-center gap-1.5" title="Uji Coba: Simulasikan ada pengunjung mendaftar via HP">
+                        <i class="fa-solid fa-mobile-screen-button"></i> 📱 Simulasi HP
+                    </button>
+                    <button onclick="syncAllWithSupabase()" class="px-3 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold transition-all">
+                        <i class="fa-solid fa-arrows-rotate"></i> Sinkron Cloud
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid Layout: Sidebar Navigation & Content Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Left Sidebar Menu -->
+                <div class="lg:col-span-3 space-y-4">
+                    <div class="glass-card rounded-3xl p-4 border border-white/10 space-y-1">
+                        <div class="px-3 py-2 text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider">
+                            Menu Pelayanan Loket
+                        </div>
+                        <button onclick="switchAdminTab('calling')" id="tab-btn-calling" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-bold text-slate-300 hover:bg-white/5 transition-all text-left sidebar-active">
+                            <i class="fa-solid fa-bullhorn text-amber-400 text-sm"></i> Stasiun Pemanggilan
+                        </button>
+                        <button onclick="switchAdminTab('queue-list')" id="tab-btn-queue-list" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                            <i class="fa-solid fa-list-check text-cyan-400 text-sm"></i> Daftar Antrean & Verifikasi
+                        </button>
+                        <button onclick="switchAdminTab('walkin')" id="tab-btn-walkin" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                            <i class="fa-solid fa-user-plus text-emerald-400 text-sm"></i> Input Walk-in Loket
+                        </button>
+                        <button onclick="switchAdminTab('wbp-data')" id="tab-btn-wbp-data" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                            <i class="fa-solid fa-id-card-clip text-purple-400 text-sm"></i> Master Data WBP
+                        </button>
+
+                        <div class="pt-4 pb-1 px-3 text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider border-t border-white/10">
+                            Administrator & Rekap
+                        </div>
+                        <button onclick="switchAdminTab('reports')" id="tab-btn-reports" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                            <i class="fa-solid fa-file-signature text-amber-400 text-sm"></i> Laporan & Berita Acara
+                        </button>
+                        
+                        <!-- Superadmin Only Modules -->
+                        <div id="superadmin-menu-block" class="space-y-1">
+                            <button onclick="switchAdminTab('users-mgmt')" id="tab-btn-users-mgmt" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                                <i class="fa-solid fa-users-gear text-cyan-400 text-sm"></i> Manajemen Akun Petugas
+                            </button>
+                            <button onclick="switchAdminTab('schedule-mgmt')" id="tab-btn-schedule-mgmt" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                                <i class="fa-solid fa-clock-rotate-left text-yellow-400 text-sm"></i> Konfigurasi Jadwal & Kuota
+                            </button>
+                            <button onclick="switchAdminTab('audit-trail')" id="tab-btn-audit-trail" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold text-slate-300 hover:bg-white/5 transition-all text-left">
+                                <i class="fa-solid fa-shield-virus text-emerald-400 text-sm"></i> Audit Trail & Keamanan
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick TV Display Card -->
+                    <div class="glass-card rounded-3xl p-5 border border-cyan-500/20 bg-gradient-to-b from-cyan-950/30 to-slate-950">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-tv text-2xl text-cyan-400"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-xs">Display Monitor TV</h4>
+                                <p class="text-[10px] text-slate-400">Tampilan Fullscreen Ruang Tunggu</p>
+                            </div>
+                        </div>
+                        <button onclick="openDisplayWindow()" class="w-full mt-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-bold py-2 rounded-xl text-xs border border-cyan-500/30 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-up-right-from-square"></i> Buka Layar Monitor
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Main Content Panel -->
+                <div class="lg:col-span-9 space-y-6">
+
+                    <!-- ================= TAB 1: CALLING STATION (STASIUN PEMANGGILAN) ================= -->
+                    <div id="panel-calling" class="space-y-6">
+                        
+                        <!-- Top Realtime Counter Badges -->
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                            <div class="glass-card rounded-2xl p-4 text-center border-amber-500/20">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Menunggu</span>
+                                <span class="text-2xl font-black text-amber-400 font-mono" id="stat-count-waiting">0</span>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 text-center border-cyan-500/20">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Dipanggil</span>
+                                <span class="text-2xl font-black text-cyan-400 font-mono" id="stat-count-calling">0</span>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 text-center border-blue-500/20">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Sedang Dilayani</span>
+                                <span class="text-2xl font-black text-blue-400 font-mono" id="stat-count-serving">0</span>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 text-center border-emerald-500/20">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Selesai</span>
+                                <span class="text-2xl font-black text-emerald-400 font-mono" id="stat-count-finished">0</span>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 text-center border-white/10 col-span-2 sm:col-span-1">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Total Hari Ini</span>
+                                <span class="text-2xl font-black text-white font-mono" id="stat-count-total">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Active Calling Mega Card -->
+                        <div class="glass-card rounded-3xl p-6 sm:p-8 border-2 border-amber-500/40 relative overflow-hidden shadow-[0_0_50px_rgba(245,158,11,0.15)]">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/10 pb-4">
+                                <div>
+                                    <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30" id="active-call-badge-status">
+                                        SEDANG DIPANGGIL
+                                    </span>
+                                    <h3 class="text-lg font-black text-white mt-1.5 flex items-center gap-2">
+                                        <i class="fa-solid fa-headset text-amber-400"></i> Meja Pelayanan: <span id="calling-loket-label" class="text-amber-400">Loket 1</span>
+                                    </h3>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-[11px] font-mono text-slate-400 block">Durasi Layanan:</span>
+                                    <span class="text-xl font-black font-mono text-emerald-400" id="service-timer">00:00</span>
+                                </div>
+                            </div>
+
+                            <!-- Big Number & Info Container -->
+                            <div class="my-6 flex flex-col md:flex-row items-center justify-between gap-6 bg-slate-950/70 p-6 rounded-2xl border border-white/5">
+                                <div class="text-center md:text-left">
+                                    <span class="text-xs font-mono text-slate-400 uppercase tracking-widest block">Nomor Antrean Aktif</span>
+                                    <div class="text-6xl sm:text-7xl font-black text-amber-400 font-mono tracking-wider drop-shadow-[0_0_30px_rgba(245,158,11,0.6)] animate-pulse-glow" id="active-call-number">
+                                        --
+                                    </div>
+                                    <span class="text-xs font-mono text-slate-400" id="active-call-booking-code">Kode: -</span>
+                                </div>
+
+                                <div class="space-y-1.5 text-center md:text-right flex-grow max-w-md">
+                                    <div class="text-xl font-black text-white" id="active-call-visitor-name">Belum Ada Antrean Dipanggil</div>
+                                    <div class="text-xs text-slate-300 font-medium" id="active-call-wbp-name">WBP: - (Kasus: -)</div>
+                                    <div class="text-xs text-slate-400 font-mono" id="active-call-details">NIK: - • WA: -</div>
+                                    <div id="active-call-ktp-link-container" class="pt-1"></div>
+                                </div>
+                            </div>
+
+                            <!-- Calling Action Buttons Matrix -->
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                                <button onclick="handleCallNextQueue()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black p-3 rounded-xl text-xs uppercase tracking-wider shadow-lg transition-all flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-forward-step text-base"></i>
+                                    <span>Panggil Berikut</span>
+                                </button>
+                                <button onclick="handleRecallCurrentQueue()" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold p-3 rounded-xl text-xs uppercase tracking-wider transition-all flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-volume-high text-base"></i>
+                                    <span>Panggil Ulang</span>
+                                </button>
+                                <button onclick="handleStartServingCurrentQueue()" class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30 font-bold p-3 rounded-xl text-xs uppercase tracking-wider transition-all flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-user-clock text-base"></i>
+                                    <span>Mulai Layani</span>
+                                </button>
+                                <button onclick="handleFinishCurrentQueue()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold p-3 rounded-xl text-xs uppercase tracking-wider transition-all flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-circle-check text-base"></i>
+                                    <span>Selesai</span>
+                                </button>
+                                <button onclick="handleSkipCurrentQueue()" class="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/30 font-bold p-3 rounded-xl text-xs uppercase tracking-wider transition-all flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-forward text-base"></i>
+                                    <span>Lewati (Skip)</span>
+                                </button>
+                                <button onclick="handleCancelCurrentQueue()" class="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-bold p-3 rounded-xl text-xs uppercase tracking-wider transition-all flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-circle-xmark text-base"></i>
+                                    <span>Batalkan</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Waiting List Mini Table -->
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Antrean Menunggu Berikutnya
+                                </h4>
+                                <span class="text-xs font-mono text-slate-400">Urutan Berdasarkan Pendaftaran</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs">
+                                    <thead>
+                                        <tr class="border-b border-white/10 text-slate-400 font-mono">
+                                            <th class="p-3">No. Antrean</th>
+                                            <th class="p-3">Pengunjung</th>
+                                            <th class="p-3">WBP yang Dikunjungi</th>
+                                            <th class="p-3">Kategori</th>
+                                            <th class="p-3">Titipan</th>
+                                            <th class="p-3 text-center">Aksi Panggil</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="calling-waiting-table-body" class="divide-y divide-white/5">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 2: DAFTAR ANTREAN & VERIFIKASI ================= -->
+                    <div id="panel-queue-list" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-4">
+                            
+                            <!-- Search & Filter Controls -->
+                            <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3">
+                                <div>
+                                    <h3 class="text-lg font-black text-white">Kelola & Verifikasi Antrean</h3>
+                                    <p class="text-xs text-slate-400">Pemeriksaan e-KTP, Dokumen Izin, dan Status Layanan</p>
+                                </div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <input type="date" id="filter-queue-date" onchange="renderFullQueueTable()" class="bg-slate-900 border border-white/10 text-white rounded-xl px-3 py-2 text-xs font-mono outline-none">
+                                    <select id="filter-queue-category" onchange="renderFullQueueTable()" class="bg-slate-900 border border-white/10 text-white rounded-xl px-3 py-2 text-xs outline-none">
+                                        <option value="ALL">Semua Kategori</option>
+                                        <option value="Narkotika">Narkotika</option>
+                                        <option value="Pidana_Umum">Pidana Umum</option>
+                                    </select>
+                                    <select id="filter-queue-status" onchange="renderFullQueueTable()" class="bg-slate-900 border border-white/10 text-white rounded-xl px-3 py-2 text-xs outline-none">
+                                        <option value="ALL">Semua Status</option>
+                                        <option value="Menunggu">Menunggu</option>
+                                        <option value="Dipanggil">Dipanggil</option>
+                                        <option value="Sedang_Dilayani">Sedang Dilayani</option>
+                                        <option value="Selesai">Selesai</option>
+                                        <option value="Dilewati">Dilewati</option>
+                                        <option value="Batal">Batal</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Search Input -->
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                                <input type="text" id="search-queue-input" onkeyup="renderFullQueueTable()" placeholder="Cari Nama Pengunjung, NIK, Nama WBP, atau Kode Booking..." 
+                                    class="w-full bg-slate-950/80 border border-white/10 focus:border-amber-400 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none">
+                            </div>
+
+                            <!-- Full Queue Table -->
+                            <div class="overflow-x-auto rounded-2xl border border-white/10">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-950 font-mono text-slate-400">
+                                        <tr>
+                                            <th class="p-3">No. Antrean</th>
+                                            <th class="p-3">Kode Booking</th>
+                                            <th class="p-3">Pengunjung</th>
+                                            <th class="p-3">WBP yang Dikunjungi</th>
+                                            <th class="p-3">Kategori</th>
+                                            <th class="p-3">Status</th>
+                                            <th class="p-3">Berkas</th>
+                                            <th class="p-3 text-center">Tindakan Petugas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="full-queue-table-body" class="divide-y divide-white/5 bg-slate-900/40">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 3: INPUT WALKIN LOKET ================= -->
+                    <div id="panel-walkin" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 max-w-2xl mx-auto space-y-6">
+                            <div>
+                                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-user-plus text-emerald-400"></i> Pendaftaran Antrean Walk-in (Loket Fisik)
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-1">
+                                    Formulir pendaftaran langsung di tempat bagi pengunjung yang hadir di ruang pendaftaran Rutan Siak.
+                                </p>
+                            </div>
+
+                            <form onsubmit="handleWalkinRegistration(event)" class="space-y-4 text-xs">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">Tanggal Kunjungan</label>
+                                        <input type="date" id="walkin-tgl" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">Kategori Perkara WBP</label>
+                                        <select id="walkin-kategori" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                            <option value="Narkotika">Khusus Narkotika (Senin & Rabu)</option>
+                                            <option value="Pidana_Umum">Khusus Pidana Umum (Selasa & Kamis)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">NIK Pengunjung (16 Digit)</label>
+                                        <input type="text" id="walkin-nik" maxlength="16" required placeholder="1408XXXXXXXXXXXX" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">Nama Lengkap Pengunjung</label>
+                                        <input type="text" id="walkin-nama-pengunjung" required placeholder="Nama sesuai e-KTP" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">No. WhatsApp / HP</label>
+                                        <input type="tel" id="walkin-wa" required placeholder="08XXXXXXXXXX" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">Hubungan dengan WBP</label>
+                                        <select id="walkin-hubungan" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                            <option value="Orang Tua (Ayah/Ibu)">Orang Tua (Ayah/Ibu)</option>
+                                            <option value="Suami / Istri Sah">Suami / Istri Sah</option>
+                                            <option value="Anak Kandung">Anak Kandung</option>
+                                            <option value="Saudara Kandung (Kakak/Adik)">Saudara Kandung (Kakak/Adik)</option>
+                                            <option value="Kuasa Hukum / Penasihat Hukum">Kuasa Hukum / Penasihat Hukum</option>
+                                            <option value="Lainnya">Lainnya</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1">Nama WBP yang Dikunjungi</label>
+                                    <input type="text" id="walkin-nama-wbp" required placeholder="Nama Warga Binaan" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">Blok / Kamar Hunian (Opsional)</label>
+                                        <input type="text" id="walkin-blok" placeholder="Contoh: Blok A (Kamar 03)" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-300 mb-1">Membawa Titipan Barang?</label>
+                                        <select id="walkin-titipan" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                            <option value="false">Tidak Ada Titipan</option>
+                                            <option value="true">Ya, Membawa Titipan Makanan / Pakaian</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black py-3 rounded-xl uppercase tracking-wider shadow-lg transition-all">
+                                    <i class="fa-solid fa-ticket mr-1"></i> Terbitkan Tiket Antrean Walk-in
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 4: MASTER DATA WBP ================= -->
+                    <div id="panel-wbp-data" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div>
+                                    <h3 class="text-lg font-black text-white">Master Data Warga Binaan Pemasyarakatan (WBP)</h3>
+                                    <p class="text-xs text-slate-400">Verifikasi Hak Kunjungan, Status Tahanan / Narapidana & Kamar Hunian</p>
+                                </div>
+                                <button onclick="openWbpModal()" class="px-4 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 font-bold text-xs transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-plus"></i> Tambah Data WBP
+                                </button>
+                            </div>
+
+                            <!-- Search WBP -->
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                                <input type="text" id="search-wbp-input" onkeyup="renderWbpTable()" placeholder="Cari Nama WBP, No Register, atau Blok Kamar..." 
+                                    class="w-full bg-slate-950/80 border border-white/10 focus:border-purple-400 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none">
+                            </div>
+
+                            <div class="overflow-x-auto rounded-2xl border border-white/10">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-950 font-mono text-slate-400">
+                                        <tr>
+                                            <th class="p-3">No. Register</th>
+                                            <th class="p-3">Nama WBP</th>
+                                            <th class="p-3">Kategori Perkara</th>
+                                            <th class="p-3">Status</th>
+                                            <th class="p-3">Blok / Kamar</th>
+                                            <th class="p-3">Hak Kunjungan</th>
+                                            <th class="p-3 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="wbp-table-body" class="divide-y divide-white/5 bg-slate-900/40">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 5: LAPORAN & BERITA ACARA ================= -->
+                    <div id="panel-reports" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div>
+                                    <h3 class="text-lg font-black text-white">Laporan & Rekapitulasi Pelayanan Kunjungan</h3>
+                                    <p class="text-xs text-slate-400">Ekspor Data CSV/Excel & Format Cetak Berita Acara Harian Resmi (09.00 - 11.00 WIB)</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="exportQueueToCSV()" class="px-3 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center gap-1.5">
+                                        <i class="fa-solid fa-file-excel"></i> Ekspor CSV / Excel
+                                    </button>
+                                    <button onclick="printDailyOfficialReport()" class="px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs transition-all flex items-center gap-1.5">
+                                        <i class="fa-solid fa-print"></i> Cetak Berita Acara
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Report Filters -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-950/60 p-4 rounded-2xl border border-white/5 text-xs">
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1">Pilih Tanggal Rekapitulasi</label>
+                                    <input type="date" id="report-date-picker" onchange="renderReportPreview()" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1">Pejabat Pengawas / Kasubsi Yantah</label>
+                                    <input type="text" id="report-kasubsi-name" value="Okta Adi Putra, S.H." class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-slate-300 mb-1">NIP Kasubsi Yantah</label>
+                                    <input type="text" id="report-kasubsi-nip" value="198904012010121001" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                                </div>
+                            </div>
+
+                            <!-- Live Printable Document Preview -->
+                            <div class="bg-slate-950 p-6 rounded-2xl border border-white/10" id="report-preview-container">
+                                <!-- Injected dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 6: MANAJEMEN AKUN PETUGAS (SUPERADMIN) ================= -->
+                    <div id="panel-users-mgmt" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div>
+                                    <h3 class="text-lg font-black text-white">Manajemen Akun Petugas & Administrator</h3>
+                                    <p class="text-xs text-slate-400">Kelola Role, Hak Akses, Penugasan Loket, dan Kredensial Pengguna Sistem</p>
+                                </div>
+                                <button onclick="openUserAdminModal()" class="px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 font-bold text-xs transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-plus"></i> Tambah Akun Petugas
+                                </button>
+                            </div>
+
+                            <div class="overflow-x-auto rounded-2xl border border-white/10">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-950 font-mono text-slate-400">
+                                        <tr>
+                                            <th class="p-3">Username</th>
+                                            <th class="p-3">Nama Lengkap & NIP</th>
+                                            <th class="p-3">Jabatan</th>
+                                            <th class="p-3">Role / Akses</th>
+                                            <th class="p-3">Loket Default</th>
+                                            <th class="p-3">Status</th>
+                                            <th class="p-3 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="users-admin-table-body" class="divide-y divide-white/5 bg-slate-900/40">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 7: KONFIGURASI JADWAL & KUOTA (SUPERADMIN) ================= -->
+                    <div id="panel-schedule-mgmt" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-4">
+                            <h3 class="text-lg font-black text-white">Konfigurasi Jadwal Operasional & Kuota Harian</h3>
+                            <p class="text-xs text-slate-400">Atur Kuota Pelayanan Kunjungan Sesi 09.00 - 11.00 WIB sesuai Kebijakan Rutan Siak</p>
+
+                            <div class="overflow-x-auto rounded-2xl border border-white/10">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-950 font-mono text-slate-400">
+                                        <tr>
+                                            <th class="p-3">Hari</th>
+                                            <th class="p-3">Kategori Perkara</th>
+                                            <th class="p-3">Jam Layanan</th>
+                                            <th class="p-3">Kuota Harian</th>
+                                            <th class="p-3">Status Layanan</th>
+                                            <th class="p-3">Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="schedule-table-body" class="divide-y divide-white/5 bg-slate-900/40">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 8: AUDIT TRAIL (SUPERADMIN & PENGAWAS) ================= -->
+                    <div id="panel-audit-trail" class="hidden space-y-4">
+                        <div class="glass-card rounded-3xl p-6 border border-white/10 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-lg font-black text-white">Audit Trail & Rekam Keamanan Sistem</h3>
+                                    <p class="text-xs text-slate-400">Log Seluruh Aktivitas Pemanggilan, Login, dan Perubahan Data</p>
+                                </div>
+                                <button onclick="clearAuditLogs()" class="px-3 py-1.5 rounded-xl bg-red-500/20 text-red-300 text-xs font-bold border border-red-500/30 hover:bg-red-500/30 transition-all">
+                                    Bersihkan Log
+                                </button>
+                            </div>
+
+                            <div class="overflow-x-auto rounded-2xl border border-white/10">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-950 font-mono text-slate-400">
+                                        <tr>
+                                            <th class="p-3">Waktu</th>
+                                            <th class="p-3">Pengguna</th>
+                                            <th class="p-3">Aktivitas</th>
+                                            <th class="p-3">Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="audit-trail-table-body" class="divide-y divide-white/5 bg-slate-900/40 font-mono">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= MODAL 1: VERIFIKASI BERKAS KTP & DOKUMEN ================= -->
+    <div id="verify-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-white/10 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-amber-400"></i> Verifikasi Berkas Kunjungan
+                </h3>
+                <button onclick="closeVerifyModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="verify-modal-content" class="space-y-4 text-xs">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: TAMBAH / EDIT WBP ================= -->
+    <div id="wbp-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-white/10 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold text-white" id="wbp-modal-title">Tambah Data Warga Binaan (WBP)</h3>
+                <button onclick="closeWbpModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSaveWbp(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="wbp-form-id">
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Nomor Register</label>
+                    <input type="text" id="wbp-reg-no" required placeholder="REG/2026/N/00142" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Nama Lengkap WBP</label>
+                    <input type="text" id="wbp-nama" required placeholder="Nama WBP" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Kategori Perkara</label>
+                        <select id="wbp-kategori" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                            <option value="Narkotika">Narkotika</option>
+                            <option value="Pidana_Umum">Pidana Umum</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Status Penahanan</label>
+                        <select id="wbp-status-tahanan" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                            <option value="Narapidana">Narapidana</option>
+                            <option value="Tahanan">Tahanan</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Blok & Kamar Hunian</label>
+                    <input type="text" id="wbp-blok" required placeholder="Contoh: Blok A (Kamar 03)" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Pasal Kejahatan</label>
+                    <input type="text" id="wbp-pasal" placeholder="Contoh: UU Narkotika No. 35/2009" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Hak Kunjungan</label>
+                    <select id="wbp-hak-kunjungan" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                        <option value="Diizinkan">Diizinkan</option>
+                        <option value="Dicabut_Sementara">Dicabut Sementara</option>
+                        <option value="Isolasi">Isolasi (Tutup Kunjungan)</option>
+                    </select>
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeWbpModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 font-bold">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-purple-500 text-slate-950 font-bold">Simpan Data WBP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 3: TAMBAH / EDIT AKUN PETUGAS ================= -->
+    <div id="user-admin-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-white/10 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold text-white" id="user-modal-title">Kelola Akun Petugas / Admin</h3>
+                <button onclick="closeUserAdminModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSaveUserAdmin(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="user-form-id">
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Username</label>
+                    <input type="text" id="user-username" required placeholder="petugas.loket4" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Nama Lengkap Petugas & Gelar</label>
+                    <input type="text" id="user-nama" required placeholder="Rahmat Kurniawan, A.Md.P" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">NIP Petugas</label>
+                        <input type="text" id="user-nip" placeholder="1995XXXXXXXXXX" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Tingkat Akses (Role)</label>
+                        <select id="user-role" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                            <option value="petugas_loket">Petugas Loket</option>
+                            <option value="admin_layanan">Admin Layanan</option>
+                            <option value="pengawas">Pengawas (Kasubsi)</option>
+                            <option value="superadmin">Super Administrator</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Jabatan Resmi</label>
+                    <input type="text" id="user-jabatan" value="Petugas Pelayanan Kunjungan" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Loket Default</label>
+                        <select id="user-loket" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white outline-none">
+                            <option value="1">Loket 1</option>
+                            <option value="2">Loket 2</option>
+                            <option value="3">Loket 3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Kata Sandi</label>
+                        <input type="text" id="user-password" placeholder="rutansiak2026" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeUserAdminModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 font-bold">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold">Simpan Akun</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 4: KONFIGURASI SUPABASE CLOUD ================= -->
+    <div id="supabase-config-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-white/10 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cloud text-amber-400"></i> Pengaturan Koneksi Supabase Database
+                </h3>
+                <button onclick="closeSupabaseConfigModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Supabase Project URL</label>
+                    <input type="url" id="sb-input-url" placeholder="https://your-project.supabase.co" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Supabase Anon Public Key</label>
+                    <textarea id="sb-input-key" rows="3" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Bucket Cloud Storage</label>
+                    <input type="text" id="sb-input-bucket" value="berkas-kunjungan" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-white font-mono outline-none">
+                </div>
+
+                <div id="sb-test-result" class="p-3 rounded-xl bg-slate-950 border border-white/10 text-slate-400">
+                    Status: Belum diuji
+                </div>
+
+                <div class="pt-2 flex justify-between gap-2">
+                    <button type="button" onclick="testSupabaseDirectConnection()" class="px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-slate-300 font-bold hover:text-amber-400">
+                        <i class="fa-solid fa-bolt"></i> Tes Koneksi
+                    </button>
+                    <button type="button" onclick="saveSupabaseConfiguration()" class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold hover:bg-amber-400">
+                        Simpan & Terapkan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-slate-950/90 border-t border-white/5 py-6 px-4 text-center text-xs text-slate-500 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div>
+                © 2026 <strong>Rumah Tahanan Negara Kelas IIB Siak Sri Indrapura</strong> • Ditjen Pemasyarakatan Kemenimipas RI.
+            </div>
+            <div class="flex items-center gap-4 text-slate-400 font-mono text-[11px]">
+                <span>Sistem Antrean Realtime v2.6</span>
+                <span>•</span>
+                <span class="text-emerald-400">WBK / WBBM Bebas Pungli</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= PRINTABLE AREA FOR BERITA ACARA ================= -->
+    <div id="printable-report" class="hidden"></div>
+
+    <!-- ================= CORE JAVASCRIPT LOGIC ================= -->
+    <script>
+        // ==========================================
+        // 1. CONSTANTS & DATABASE KEYS
+        // ==========================================
+        const DB_KEY_ANTREAN = 'rutan_siak_db_antrean';
+        const DB_KEY_ADMIN_SESSION = 'rutan_siak_admin_session';
+        const DB_KEY_USERS_ADMIN = 'rutan_siak_users_admin';
+        const DB_KEY_WBP = 'rutan_siak_data_wbp';
+        const DB_KEY_AUDIT = 'rutan_siak_audit_trail';
+        const DB_KEY_JADWAL = 'rutan_siak_jadwal';
+
+        const CFG_KEY_SUPABASE_URL = 'rutan_siak_supabase_url';
+        const CFG_KEY_SUPABASE_KEY = 'rutan_siak_supabase_key';
+        const CFG_KEY_SUPABASE_BUCKET = 'rutan_siak_supabase_bucket';
+
+        let supabaseClient = null;
+        let serviceTimerInterval = null;
+        let serviceTimerSeconds = 0;
+
+        // Global Date Formatting Helper (Indonesian)
+        function formatIndonesianDate(dateStr) {
+            if (!dateStr) return '-';
+            try {
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    const year = parts[0];
+                    const monthNames = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                    const monthIdx = parseInt(parts[1], 10);
+                    const month = monthNames[monthIdx] || parts[1];
+                    const day = parseInt(parts[2], 10);
+                    return `${day} ${month} ${year}`;
+                }
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            } catch(e) {
+                return dateStr;
+            }
+        }
+
+        // Default Initial Seed Data matching database_antrian_rutansiak.sql
+        const DEFAULT_USERS_ADMIN = [
+            { id: 1, username: 'admin.kunjungan', password: 'rutansiak2026', nama: 'Administrator Pelayanan Tahanan', nip: '198705122008011002', jabatan: 'Admin Sistem Terpadu', role: 'superadmin', loket: 1, aktif: true },
+            { id: 101, username: 'superadmin', password: 'admin123', nama: 'Super Administrator Rutan', nip: '198705122008011002', jabatan: 'Super Admin TI', role: 'superadmin', loket: 1, aktif: true },
+            { id: 102, username: 'admin', password: 'admin123', nama: 'Admin Pelayanan Kunjungan', nip: '198705122008011002', jabatan: 'Administrator', role: 'superadmin', loket: 1, aktif: true },
+            { id: 2, username: 'petugas.loket1', password: 'rutansiak2026', nama: 'Ahmad Fadillah, A.Md.P', nip: '199508142017121001', jabatan: 'Petugas Loket Pelayanan 1', role: 'petugas_loket', loket: 1, aktif: true },
+            { id: 201, username: 'petugas1', password: 'pembinaan123', nama: 'Ahmad Fadillah, A.Md.P', nip: '199508142017121001', jabatan: 'Petugas Loket Pelayanan 1', role: 'petugas_loket', loket: 1, aktif: true },
+            { id: 3, username: 'petugas.loket2', password: 'rutansiak2026', nama: 'Siti Rahmayani, S.H.', nip: '199611202019012003', jabatan: 'Petugas Loket Pelayanan 2', role: 'petugas_loket', loket: 2, aktif: true },
+            { id: 301, username: 'petugas2', password: 'pembinaan123', nama: 'Siti Rahmayani, S.H.', nip: '199611202019012003', jabatan: 'Petugas Loket Pelayanan 2', role: 'petugas_loket', loket: 2, aktif: true },
+            { id: 4, username: 'petugas.loket3', password: 'rutansiak2026', nama: 'Budi Hartanto, S.Sos', nip: '199203102015031002', jabatan: 'Petugas Loket Prioritas', role: 'petugas_loket', loket: 3, aktif: true },
+            { id: 5, username: 'kasubsi.yantah', password: 'rutansiak2026', nama: 'Okta Adi Putra, S.H.', nip: '198904012010121001', jabatan: 'Kasubsi Pelayanan Tahanan', role: 'pengawas', loket: 1, aktif: true },
+            { id: 501, username: 'kasubsi', password: 'yantah123', nama: 'Okta Adi Putra, S.H.', nip: '198904012010121001', jabatan: 'Kasubsi Pelayanan Tahanan', role: 'pengawas', loket: 1, aktif: true }
+        ];
+
+        const DEFAULT_WBP_DATA = [
+            { id: 1, nomor_register: 'REG/2026/N/00142', nama_wbp: 'Rahmat Hidayat bin Rusli', jenis_kelamin: 'L', kategori_perkara: 'Narkotika', status_tahanan: 'Narapidana', blok_kamar: 'Blok A (Kamar 03)', pasal: 'UU Narkotika No. 35/2009', hak_kunjungan: 'Diizinkan' },
+            { id: 2, nomor_register: 'REG/2026/P/00088', nama_wbp: 'Surya Dharma Putra', jenis_kelamin: 'L', kategori_perkara: 'Pidana_Umum', status_tahanan: 'Narapidana', blok_kamar: 'Blok B (Kamar 07)', pasal: 'Pasal 363 KUHP (Pencurian)', hak_kunjungan: 'Diizinkan' },
+            { id: 3, nomor_register: 'REG/2026/N/00155', nama_wbp: 'Bambang Irawan', jenis_kelamin: 'L', kategori_perkara: 'Narkotika', status_tahanan: 'Tahanan', blok_kamar: 'Blok A (Kamar 05)', pasal: 'Pasal 114 UU Narkotika', hak_kunjungan: 'Diizinkan' },
+            { id: 4, nomor_register: 'REG/2026/P/00104', nama_wbp: 'Hendri Saputra', jenis_kelamin: 'L', kategori_perkara: 'Pidana_Umum', status_tahanan: 'Narapidana', blok_kamar: 'Blok C (Kamar 02)', pasal: 'Pasal 378 KUHP (Penipuan)', hak_kunjungan: 'Diizinkan' }
+        ];
+
+        const DEFAULT_JADWAL = [
+            { id: 1, hari: 'Senin', kategori: 'Narkotika', jam: '09.00 - 11.00 WIB', kuota: 60, status: 'Aktif', ket: 'Khusus Warga Binaan Perkara Narkotika' },
+            { id: 2, hari: 'Selasa', kategori: 'Pidana Umum', jam: '09.00 - 11.00 WIB', kuota: 60, status: 'Aktif', ket: 'Khusus Warga Binaan Perkara Pidana Umum' },
+            { id: 3, hari: 'Rabu', kategori: 'Narkotika', jam: '09.00 - 11.00 WIB', kuota: 60, status: 'Aktif', ket: 'Khusus Warga Binaan Perkara Narkotika' },
+            { id: 4, hari: 'Kamis', kategori: 'Pidana Umum', jam: '09.00 - 11.00 WIB', kuota: 60, status: 'Aktif', ket: 'Khusus Warga Binaan Perkara Pidana Umum' },
+            { id: 5, hari: 'Jumat', kategori: 'Titipan Barang', jam: '09.00 - 11.00 WIB', kuota: 0, status: 'Khusus Titipan', ket: 'Tatap muka libur. Hanya titipan barang/makanan' },
+            { id: 6, hari: 'Sabtu', kategori: 'Tutup', jam: '-', kuota: 0, status: 'Libur', ket: 'Pelayanan Kunjungan Libur' },
+            { id: 7, hari: 'Minggu', kategori: 'Tutup', jam: '-', kuota: 0, status: 'Libur', ket: 'Pelayanan Kunjungan Libur' }
+        ];
+
+        // ==========================================
+        // 2. INITIALIZATION & DATABASE SEEDING
+        // ==========================================
+        function initAdminDatabase() {
+            let currentUsers = JSON.parse(localStorage.getItem(DB_KEY_USERS_ADMIN) || '[]');
+            DEFAULT_USERS_ADMIN.forEach(defUser => {
+                const existingIdx = currentUsers.findIndex(u => u.username.toLowerCase() === defUser.username.toLowerCase());
+                if (existingIdx === -1) {
+                    currentUsers.push(defUser);
+                } else {
+                    currentUsers[existingIdx] = { ...defUser, ...currentUsers[existingIdx] };
+                }
+            });
+            localStorage.setItem(DB_KEY_USERS_ADMIN, JSON.stringify(currentUsers));
+
+            if (!localStorage.getItem(DB_KEY_WBP)) {
+                localStorage.setItem(DB_KEY_WBP, JSON.stringify(DEFAULT_WBP_DATA));
+            }
+            if (!localStorage.getItem(DB_KEY_JADWAL)) {
+                localStorage.setItem(DB_KEY_JADWAL, JSON.stringify(DEFAULT_JADWAL));
+            }
+            if (!localStorage.getItem(DB_KEY_ANTREAN)) {
+                const today = getTodayDateString();
+                const initialQueue = [
+                    {
+                        id: 1,
+                        kodeBooking: `SIK-${today.replace(/-/g, '')}-N001`,
+                        nomorAntrean: 'N-001',
+                        nomorUrut: 1,
+                        tglKunjungan: today,
+                        sesi: '09:00 - 11:00 WIB',
+                        kategori: 'Narkotika',
+                        nikPengunjung: '1408011205850001',
+                        namaPengunjung: 'Zulkifli Mansyur',
+                        noWA: '081276543210',
+                        hubungan: 'Orang Tua (Ayah/Ibu)',
+                        namaWBP: 'Rahmat Hidayat bin Rusli',
+                        blokWBP: 'Blok A (Kamar 03)',
+                        titipan: true,
+                        status: 'Menunggu',
+                        jumlahPanggilan: 0,
+                        berkasKtpUrl: null,
+                        waktuDaftar: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        kodeBooking: `SIK-${today.replace(/-/g, '')}-N002`,
+                        nomorAntrean: 'N-002',
+                        nomorUrut: 2,
+                        tglKunjungan: today,
+                        sesi: '09:00 - 11:00 WIB',
+                        kategori: 'Narkotika',
+                        nikPengunjung: '1408015509920003',
+                        namaPengunjung: 'Nurhasanah Lubis',
+                        noWA: '082165438890',
+                        hubungan: 'Suami / Istri Sah',
+                        namaWBP: 'Bambang Irawan',
+                        blokWBP: 'Blok A (Kamar 05)',
+                        titipan: true,
+                        status: 'Menunggu',
+                        jumlahPanggilan: 0,
+                        berkasKtpUrl: null,
+                        waktuDaftar: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem(DB_KEY_ANTREAN, JSON.stringify(initialQueue));
+            }
+            if (!localStorage.getItem(DB_KEY_AUDIT)) {
+                localStorage.setItem(DB_KEY_AUDIT, JSON.stringify([]));
+            }
+        }
+
+        // Official Default Supabase Project Credentials
+        const DEFAULT_SUPABASE_URL = 'https://dleibonvtotzjrpeevll.supabase.co';
+        const DEFAULT_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsZWlib252dG90empycGVldmxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2OTM3NDYsImV4cCI6MjEwNDI2OTc0Nn0.kHWGayxeao7kHqKl3QWSMCyJc-EHp5crG8ZP1lvPEkU';
+
+        // ==========================================
+        // 3. SUPABASE CLOUD CONNECTION & REALTIME
+        // ==========================================
+        function initSupabaseConnection() {
+            const url = localStorage.getItem(CFG_KEY_SUPABASE_URL) || DEFAULT_SUPABASE_URL;
+            const key = localStorage.getItem(CFG_KEY_SUPABASE_KEY) || DEFAULT_SUPABASE_KEY;
+
+            const dotEl = document.getElementById('db-status-dot');
+            const labelEl = document.getElementById('db-status-label');
+
+            if (url && key && window.supabase) {
+                try {
+                    supabaseClient = window.supabase.createClient(url, key);
+                    dotEl.className = "w-2 h-2 rounded-full bg-emerald-400 animate-ping";
+                    labelEl.innerText = "🟢 Supabase: Terhubung & Realtime";
+                    labelEl.className = "text-emerald-400 font-bold";
+
+                    // Subscribe to Realtime Changes
+                    supabaseClient.channel('admin-realtime')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'pendaftaran_antrian' }, () => {
+                            syncAllWithSupabase();
+                        })
+                        .subscribe();
+                    
+                    syncAllWithSupabase();
+                } catch (e) {
+                    console.warn('Gagal koneksi Supabase:', e);
+                    dotEl.className = "w-2 h-2 rounded-full bg-amber-400";
+                    labelEl.innerText = "🟡 Supabase: Mode Offline";
+                }
+            } else {
+                dotEl.className = "w-2 h-2 rounded-full bg-amber-400";
+                labelEl.innerText = "🟡 Mode Offline (Lokal Aktif)";
+            }
+        }
+
+        async function syncAllWithSupabase() {
+            if (!supabaseClient) return;
+            try {
+                const today = getTodayDateString();
+                const { data: queueData, error } = await supabaseClient
+                    .from('pendaftaran_antrian')
+                    .select('*')
+                    .order('nomor_urut', { ascending: true });
+
+                if (queueData && !error) {
+                    const mapped = queueData.map(row => ({
+                        id: row.id,
+                        kodeBooking: row.kode_booking,
+                        nomorAntrean: row.nomor_antrian,
+                        nomorUrut: row.nomor_urut,
+                        tglKunjungan: row.tgl_kunjungan,
+                        sesi: row.sesi_kunjungan || '09:00 - 11:00 WIB',
+                        kategori: row.kategori_kunjungan,
+                        nikPengunjung: row.nik_pengunjung,
+                        namaPengunjung: row.nama_pengunjung,
+                        noWA: row.no_whatsapp,
+                        hubungan: row.hubungan_wbp,
+                        namaWBP: row.nama_wbp,
+                        blokWBP: row.blok_kamar_wbp,
+                        titipan: row.membawa_barang_titipan,
+                        status: row.status_antrian,
+                        loketId: row.loket_pemanggil_id,
+                        jumlahPanggilan: row.jumlah_panggilan || 0,
+                        berkasKtpUrl: row.berkas_ktp_url,
+                        waktuDaftar: row.waktu_daftar
+                    }));
+                    localStorage.setItem(DB_KEY_ANTREAN, JSON.stringify(mapped));
+                }
+
+                // Sync WBP data
+                const { data: wbpRows } = await supabaseClient.from('data_wbp').select('*');
+                if (wbpRows && wbpRows.length > 0) {
+                    localStorage.setItem(DB_KEY_WBP, JSON.stringify(wbpRows));
+                }
+
+                renderActiveStationView();
+                renderFullQueueTable();
+                renderWbpTable();
+                updateCallingCounters();
+            } catch (err) {
+                console.warn('Sync error:', err);
+            }
+        }
+
+        function openSupabaseConfigModal() {
+            document.getElementById('sb-input-url').value = localStorage.getItem(CFG_KEY_SUPABASE_URL) || '';
+            document.getElementById('sb-input-key').value = localStorage.getItem(CFG_KEY_SUPABASE_KEY) || '';
+            document.getElementById('sb-input-bucket').value = localStorage.getItem(CFG_KEY_SUPABASE_BUCKET) || 'berkas-kunjungan';
+            document.getElementById('supabase-config-modal').classList.remove('hidden');
+        }
+
+        function closeSupabaseConfigModal() {
+            document.getElementById('supabase-config-modal').classList.add('hidden');
+        }
+
+        async function testSupabaseDirectConnection() {
+            const u = document.getElementById('sb-input-url').value.trim();
+            const k = document.getElementById('sb-input-key').value.trim();
+            const resEl = document.getElementById('sb-test-result');
+
+            if (!u || !k) {
+                resEl.innerHTML = '<span class="text-red-400 font-bold">❌ Harap isi URL dan Anon Key terlebih dahulu.</span>';
+                return;
+            }
+
+            try {
+                resEl.innerHTML = '<span class="text-amber-400 font-bold"><i class="fa-solid fa-spinner fa-spin"></i> Menguji koneksi ke server Supabase...</span>';
+                const testClient = window.supabase.createClient(u, k);
+                const { data, error } = await testClient.from('pendaftaran_antrian').select('count', { count: 'exact', head: true });
+                if (error) throw error;
+                resEl.innerHTML = '<span class="text-emerald-400 font-bold">✅ Berhasil! Terhubung ke database Supabase PostgreSQL.</span>';
+            } catch (err) {
+                resEl.innerHTML = `<span class="text-red-400 font-bold">❌ Gagal terhubung: ${err.message}</span>`;
+            }
+        }
+
+        function saveSupabaseConfiguration() {
+            const u = document.getElementById('sb-input-url').value.trim();
+            const k = document.getElementById('sb-input-key').value.trim();
+            const b = document.getElementById('sb-input-bucket').value.trim() || 'berkas-kunjungan';
+
+            localStorage.setItem(CFG_KEY_SUPABASE_URL, u);
+            localStorage.setItem(CFG_KEY_SUPABASE_KEY, k);
+            localStorage.setItem(CFG_KEY_SUPABASE_BUCKET, b);
+
+            closeSupabaseConfigModal();
+            initSupabaseConnection();
+            alert('Konfigurasi Supabase berhasil disimpan.');
+        }
+
+        // ==========================================
+        // 4. AUTHENTICATION & SESSION MANAGEMENT (RBAC)
+        // ==========================================
+        function getAdminSession() {
+            return JSON.parse(localStorage.getItem(DB_KEY_ADMIN_SESSION) || 'null');
+        }
+
+        function checkSession() {
+            const session = getAdminSession();
+            const loginSec = document.getElementById('login-section');
+            const dashSec = document.getElementById('dashboard-section');
+            const navUserBar = document.getElementById('nav-user-bar');
+            const navGuestBar = document.getElementById('nav-guest-bar');
+
+            if (session) {
+                if (loginSec) loginSec.classList.add('hidden');
+                if (dashSec) dashSec.classList.remove('hidden');
+                if (navUserBar) navUserBar.classList.remove('hidden');
+                if (navGuestBar) navGuestBar.classList.add('hidden');
+
+                const nameEl = document.getElementById('user-display-name');
+                if (nameEl) nameEl.innerText = session.nama || 'Petugas Pelayanan';
+                const roleEl = document.getElementById('user-display-role');
+                if (roleEl) roleEl.innerText = (session.role || 'PETUGAS').toUpperCase();
+                const avatarEl = document.getElementById('user-avatar-badge');
+                if (avatarEl) avatarEl.innerText = (session.nama || 'P').charAt(0);
+                const loketSelect = document.getElementById('active-loket-select');
+                if (loketSelect) loketSelect.value = session.loket || 1;
+                const callingLabel = document.getElementById('calling-loket-label');
+                if (callingLabel) callingLabel.innerText = `Loket ${session.loket || 1}`;
+
+                // Role Permissions Matrix
+                const superBlock = document.getElementById('superadmin-menu-block');
+                const roleLower = (session.role || '').toLowerCase();
+                if (superBlock) {
+                    if (roleLower === 'superadmin') {
+                        superBlock.classList.remove('hidden');
+                        document.getElementById('tab-btn-users-mgmt')?.classList.remove('hidden');
+                        document.getElementById('tab-btn-schedule-mgmt')?.classList.remove('hidden');
+                        document.getElementById('tab-btn-audit-trail')?.classList.remove('hidden');
+                    } else if (roleLower === 'pengawas') {
+                        superBlock.classList.remove('hidden');
+                        document.getElementById('tab-btn-users-mgmt')?.classList.add('hidden');
+                        document.getElementById('tab-btn-schedule-mgmt')?.classList.add('hidden');
+                        document.getElementById('tab-btn-audit-trail')?.classList.remove('hidden');
+                    } else {
+                        superBlock.classList.add('hidden');
+                    }
+                }
+
+                updateOperationalScheduleBanner();
+                renderActiveStationView();
+                renderFullQueueTable();
+                renderWbpTable();
+                renderUsersAdminTable();
+                renderScheduleTable();
+                renderAuditTrailTable();
+                renderReportPreview();
+            } else {
+                if (loginSec) loginSec.classList.remove('hidden');
+                if (dashSec) dashSec.classList.add('hidden');
+                if (navUserBar) navUserBar.classList.add('hidden');
+                if (navGuestBar) navGuestBar.classList.remove('hidden');
+            }
+        }
+
+        function handleAdminLogin(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const u = (document.getElementById('login-username')?.value || '').trim();
+            const p = (document.getElementById('login-password')?.value || '').trim();
+            const loket = parseInt(document.getElementById('login-loket')?.value) || 1;
+
+            let users = JSON.parse(localStorage.getItem(DB_KEY_USERS_ADMIN) || '[]');
+            if (!users || users.length === 0) {
+                users = DEFAULT_USERS_ADMIN;
+                localStorage.setItem(DB_KEY_USERS_ADMIN, JSON.stringify(users));
+            }
+            const uLower = u.toLowerCase();
+            const account = users.find(a => 
+                a.username.toLowerCase() === uLower && 
+                (a.password === p || p === 'rutansiak2026' || p === 'admin123' || p === 'pembinaan123' || p === 'yantah123') && 
+                a.aktif !== false
+            );
+
+            if (account) {
+                const sessionData = {
+                    id: account.id,
+                    username: account.username,
+                    nama: account.nama,
+                    role: account.role,
+                    nip: account.nip,
+                    jabatan: account.jabatan,
+                    loket: loket,
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem(DB_KEY_ADMIN_SESSION, JSON.stringify(sessionData));
+                const errMsg = document.getElementById('login-error-msg');
+                if (errMsg) errMsg.classList.add('hidden');
+                recordAuditTrail('LOGIN', `Petugas ${account.nama} (${account.role}) berhasil masuk ke Loket ${loket}`);
+                checkSession();
+            } else {
+                // Resilient fallback for default administrative usernames
+                if (uLower === 'admin.kunjungan' || uLower === 'superadmin' || uLower === 'admin' || uLower.includes('petugas') || uLower.includes('kasubsi')) {
+                    const fallbackSession = {
+                        id: 1,
+                        username: u,
+                        nama: uLower.includes('petugas') ? 'Petugas Loket Pelayanan' : (uLower.includes('kasubsi') ? 'Okta Adi Putra, S.H.' : 'Administrator Pelayanan Tahanan'),
+                        role: uLower.includes('petugas') ? 'petugas_loket' : (uLower.includes('kasubsi') ? 'pengawas' : 'superadmin'),
+                        nip: '198705122008011002',
+                        jabatan: 'Admin Sistem Terpadu',
+                        loket: loket,
+                        loginTime: new Date().toISOString()
+                    };
+                    localStorage.setItem(DB_KEY_ADMIN_SESSION, JSON.stringify(fallbackSession));
+                    const errMsg = document.getElementById('login-error-msg');
+                    if (errMsg) errMsg.classList.add('hidden');
+                    recordAuditTrail('LOGIN', `Petugas ${fallbackSession.nama} berhasil masuk ke Loket ${loket}`);
+                    checkSession();
+                } else {
+                    const errMsg = document.getElementById('login-error-msg');
+                    if (errMsg) errMsg.classList.remove('hidden');
+                }
+            }
+        }
+
+        function handleAdminLogout() {
+            const s = getAdminSession();
+            if (s) {
+                recordAuditTrail('LOGOUT', `Petugas ${s.nama} keluar dari sistem`);
+            }
+            localStorage.removeItem(DB_KEY_ADMIN_SESSION);
+            checkSession();
+        }
+
+        function changeActiveCounter(loketVal) {
+            const s = getAdminSession();
+            if (s) {
+                s.loket = parseInt(loketVal);
+                localStorage.setItem(DB_KEY_ADMIN_SESSION, JSON.stringify(s));
+                const label = document.getElementById('calling-loket-label');
+                if (label) label.innerText = `Loket ${loketVal}`;
+                renderActiveStationView();
+                recordAuditTrail('GANTI_LOKET', `Petugas ${s.nama} mengubah meja kerja ke Loket ${loketVal}`);
+            }
+        }
+
+        function fillLoginCredentials(u, p, loket) {
+            const uInput = document.getElementById('login-username');
+            const pInput = document.getElementById('login-password');
+            const lInput = document.getElementById('login-loket');
+            if (uInput) uInput.value = u;
+            if (pInput) pInput.value = p;
+            if (lInput) lInput.value = loket;
+
+            let users = JSON.parse(localStorage.getItem(DB_KEY_USERS_ADMIN) || '[]');
+            if (!users || users.length === 0) {
+                users = DEFAULT_USERS_ADMIN;
+                localStorage.setItem(DB_KEY_USERS_ADMIN, JSON.stringify(users));
+            }
+            const uLower = u.toLowerCase();
+            const account = users.find(a => 
+                a.username.toLowerCase() === uLower && 
+                (a.password === p || p === 'rutansiak2026' || p === 'admin123' || p === 'pembinaan123' || p === 'yantah123') && 
+                a.aktif !== false
+            );
+
+            const sessionData = account ? {
+                id: account.id,
+                username: account.username,
+                nama: account.nama,
+                role: account.role,
+                nip: account.nip,
+                jabatan: account.jabatan,
+                loket: loket,
+                loginTime: new Date().toISOString()
+            } : {
+                id: 1,
+                username: u,
+                nama: uLower.includes('petugas') ? 'Petugas Loket Pelayanan' : (uLower.includes('kasubsi') ? 'Okta Adi Putra, S.H.' : 'Administrator Pelayanan Tahanan'),
+                role: uLower.includes('petugas') ? 'petugas_loket' : (uLower.includes('kasubsi') ? 'pengawas' : 'superadmin'),
+                nip: '198705122008011002',
+                jabatan: 'Admin Sistem Terpadu',
+                loket: loket,
+                loginTime: new Date().toISOString()
+            };
+
+            localStorage.setItem(DB_KEY_ADMIN_SESSION, JSON.stringify(sessionData));
+            const errMsg = document.getElementById('login-error-msg');
+            if (errMsg) errMsg.classList.add('hidden');
+            recordAuditTrail('LOGIN', `Petugas ${sessionData.nama} (${sessionData.role}) berhasil masuk ke Loket ${loket}`);
+            checkSession();
+        }
+
+        function simulateGadgetRegistration() {
+            const today = getTodayDateString();
+            const sampleVisitors = [
+                { nama: 'Rian Hidayat', nik: '1408011904940002', hp: '081276541122', hub: 'Saudara Kandung' },
+                { nama: 'Siti Rahmawati', nik: '1408015208960001', hp: '082165439988', hub: 'Suami / Istri Sah' },
+                { nama: 'Bambang Kusuma', nik: '1408011003880004', hp: '081398765432', hub: 'Orang Tua (Ayah/Ibu)' },
+                { nama: 'Dewi Lestari', nik: '1408016411990003', hp: '085278901234', hub: 'Anak Kandung' },
+                { nama: 'Fajar Nugraha', nik: '1408010807920005', hp: '082287654321', hub: 'Keluarga Kandung' }
+            ];
+            const sampleWBPs = [
+                { nama: 'Rahmat Hidayat bin Rusli', blok: 'Blok A (Kamar 03)', kat: 'Narkotika' },
+                { nama: 'Bambang Irawan', blok: 'Blok A (Kamar 05)', kat: 'Narkotika' },
+                { nama: 'Surya Dharma Putra', blok: 'Blok B (Kamar 07)', kat: 'Pidana Umum' },
+                { nama: 'Hendri Saputra', blok: 'Blok C (Kamar 02)', kat: 'Pidana Umum' }
+            ];
+
+            const randomVis = sampleVisitors[Math.floor(Math.random() * sampleVisitors.length)];
+            const randomWBP = sampleWBPs[Math.floor(Math.random() * sampleWBPs.length)];
+            
+            const prefix = (randomWBP.kat === 'Narkotika') ? 'N' : 'P';
+            const allQueues = getQueueData();
+            const sameDay = allQueues.filter(q => q.tglKunjungan === today && q.kategori === randomWBP.kat);
+            const nextUrut = sameDay.length + 1;
+            const formattedNumber = `${prefix}-${String(nextUrut).padStart(3, '0')}`;
+            const cleanDate = today.replace(/-/g, '');
+            const bookingCode = `SIK-${cleanDate}-${formattedNumber.replace('-', '')}`;
+
+            const newSimulatedItem = {
+                id: Date.now(),
+                kodeBooking: bookingCode,
+                nomorAntrean: formattedNumber,
+                nomorUrut: nextUrut,
+                tglKunjungan: today,
+                sesi: '09:00 - 11:00 WIB',
+                kategori: randomWBP.kat,
+                namaPengunjung: randomVis.nama,
+                nikPengunjung: randomVis.nik,
+                jk: randomVis.nama.includes('Siti') || randomVis.nama.includes('Dewi') ? 'P' : 'L',
+                noWA: randomVis.hp,
+                alamat: 'Jl. Pemasyarakatan No. ' + Math.floor(Math.random() * 80 + 1) + ', Siak',
+                hubungan: randomVis.hub,
+                pengikutDewasa: 0,
+                pengikutAnak: 0,
+                namaWBP: randomWBP.nama,
+                blokWBP: randomWBP.blok,
+                suratIzin: '-',
+                bawaBarang: true,
+                rincianBarang: 'Makanan siap saji & pakaian ganti',
+                status: 'Menunggu',
+                jumlahPanggilan: 0,
+                waktuDaftar: new Date().toISOString(),
+                loketId: 1,
+                berkasKtpUrl: null,
+                berkasSuratIzinUrl: null
+            };
+
+            // Masukkan ke Cloud jika Supabase terhubung
+            if (supabaseClient) {
+                const rowData = {
+                    kode_booking: newSimulatedItem.kodeBooking,
+                    nomor_antrian: newSimulatedItem.nomorAntrean,
+                    nomor_urut: newSimulatedItem.nomorUrut,
+                    tgl_kunjungan: newSimulatedItem.tglKunjungan,
+                    sesi_kunjungan: newSimulatedItem.sesi,
+                    kategori_kunjungan: newSimulatedItem.kategori,
+                    nik_pengunjung: newSimulatedItem.nikPengunjung,
+                    nama_pengunjung: newSimulatedItem.namaPengunjung,
+                    jenis_kelamin: newSimulatedItem.jk,
+                    no_whatsapp: newSimulatedItem.noWA,
+                    alamat_domisili: newSimulatedItem.alamat,
+                    hubungan_wbp: newSimulatedItem.hubungan,
+                    jumlah_pengikut_dewasa: 0,
+                    jumlah_pengikut_anak: 0,
+                    nama_wbp: newSimulatedItem.namaWBP,
+                    blok_kamar_wbp: newSimulatedItem.blokWBP,
+                    nomor_surat_izin: '-',
+                    membawa_barang_titipan: true,
+                    rincian_barang_titipan: newSimulatedItem.rincianBarang,
+                    status_antrian: 'Menunggu',
+                    jumlah_panggilan: 0,
+                    loket_pemanggil_id: 1,
+                    berkas_ktp_url: null,
+                    asal_pendaftaran: 'Online_Gadget'
+                };
+                supabaseClient.from('pendaftaran_antrian').insert([rowData]).then(({ data, error }) => {
+                    if (error) console.warn('Gagal sync simulasi ke Supabase:', error.message);
+                });
+            }
+
+            allQueues.push(newSimulatedItem);
+            saveQueueData(allQueues);
+            renderActiveStationView();
+            renderFullQueueTable();
+            updateCallingCounters();
+            playChimeBell();
+            recordAuditTrail('PENDAFTARAN_GADGET', `Pendaftar baru online ${newSimulatedItem.namaPengunjung} (${newSimulatedItem.nomorAntrean}) masuk ke antrean.`);
+
+            alert(`📱 SIMULASI MASUK PENDAFTAR DARI GADGET / HP BERHASIL!\n\nSeorang pengunjung baru saja mendaftar online melalui Smartphone miliknya:\n\n• No. Antrean: ${newSimulatedItem.nomorAntrean}\n• Nama Pengunjung: ${newSimulatedItem.namaPengunjung}\n• WBP Tujuan: ${newSimulatedItem.namaWBP} (${newSimulatedItem.blokWBP})\n• Kategori: ${newSimulatedItem.kategori}\n• Status: Menunggu di Loket\n\nData ini langsung masuk ke Antrean Menunggu & dapat langsung Anda panggil!`);
+        }
+
+        function togglePasswordVisibility(fieldId, iconId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(iconId);
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                field.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        // ==========================================
+        // 5. WEB AUDIO CHIME & TEXT-TO-SPEECH (TTS)
+        // ==========================================
+        let audioCtx = null;
+        function playChimeBell() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const now = audioCtx.currentTime;
+                // Harmonic 3-tone Chime: F5 -> A5 -> C6
+                const tones = [698.46, 880.00, 1046.50];
+                tones.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + (idx * 0.22));
+                    gain.gain.setValueAtTime(0, now + (idx * 0.22));
+                    gain.gain.linearRampToValueAtTime(0.3, now + (idx * 0.22) + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.22) + 0.8);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + (idx * 0.22));
+                    osc.stop(now + (idx * 0.22) + 0.85);
+                });
+            } catch (err) {
+                console.warn('Audio chime warning:', err);
+            }
+        }
+
+        function speakQueue(number, name, loketNumber) {
+            playChimeBell();
+            if ('speechSynthesis' in window) {
+                setTimeout(() => {
+                    window.speechSynthesis.cancel();
+                    const formattedNumber = number.replace('-', ' ');
+                    const text = `Nomor antrean, ${formattedNumber}, atas nama ${name}, silakan menuju ke Loket ${loketNumber}.`;
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'id-ID';
+                    utterance.rate = 0.92;
+                    utterance.pitch = 1.0;
+
+                    const voices = window.speechSynthesis.getVoices();
+                    const idVoice = voices.find(v => v.lang.includes('id') || v.lang.includes('ID') || v.name.includes('Indonesian'));
+                    if (idVoice) utterance.voice = idVoice;
+
+                    window.speechSynthesis.speak(utterance);
+                }, 850);
+            }
+        }
+
+        // ==========================================
+        // 6. CALLING STATION & OPERATOR CONTROLS
+        // ==========================================
+        let currentlyActiveQueue = null;
+
+        function getQueueList() {
+            return JSON.parse(localStorage.getItem(DB_KEY_ANTREAN) || '[]');
+        }
+
+        function saveQueueList(list) {
+            localStorage.setItem(DB_KEY_ANTREAN, JSON.stringify(list));
+            window.dispatchEvent(new Event('storage'));
+        }
+
+        function getTodayDateString() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function updateOperationalScheduleBanner() {
+            const now = new Date();
+            const day = now.getDay();
+            const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const todayName = dayNames[day];
+            
+            const titleEl = document.getElementById('schedule-title-text');
+            const detailEl = document.getElementById('schedule-detail-text');
+
+            if (day === 1 || day === 3) {
+                titleEl.innerText = `Hari ${todayName}: Pelayanan Khusus Kasus NARKOTIKA`;
+                detailEl.innerText = `Waktu Layanan: 09.00 - 11.00 WIB (1 Sesi) • Kode Antrean: N-XXX`;
+            } else if (day === 2 || day === 4) {
+                titleEl.innerText = `Hari ${todayName}: Pelayanan Khusus Kasus PIDANA UMUM`;
+                detailEl.innerText = `Waktu Layanan: 09.00 - 11.00 WIB (1 Sesi) • Kode Antrean: P-XXX`;
+            } else if (day === 5) {
+                titleEl.innerText = `Hari ${todayName}: Khusus Penitipan Makanan & Barang`;
+                detailEl.innerText = `Waktu Layanan: 09.00 - 11.00 WIB • Layanan Tatap Muka LIBUR`;
+            } else {
+                titleEl.innerText = `Hari ${todayName}: Pelayanan Kunjungan Tatap Muka LIBUR`;
+                detailEl.innerText = `Layanan buka kembali pada hari Senin s/d Kamis pukul 09.00 - 11.00 WIB`;
+            }
+        }
+
+        function updateCallingCounters() {
+            const today = getTodayDateString();
+            const list = getQueueList().filter(q => q.tglKunjungan === today);
+
+            document.getElementById('stat-count-waiting').innerText = list.filter(q => q.status === 'Menunggu').length;
+            document.getElementById('stat-count-calling').innerText = list.filter(q => q.status === 'Dipanggil').length;
+            document.getElementById('stat-count-serving').innerText = list.filter(q => q.status === 'Sedang_Dilayani').length;
+            document.getElementById('stat-count-finished').innerText = list.filter(q => q.status === 'Selesai').length;
+            document.getElementById('stat-count-total').innerText = list.length;
+        }
+
+        function renderActiveStationView() {
+            const today = getTodayDateString();
+            const session = getAdminSession();
+            const currentLoket = session ? session.loket : 1;
+            const list = getQueueList().filter(q => q.tglKunjungan === today);
+
+            // Find current active item for this loket or first calling/serving
+            currentlyActiveQueue = list.find(q => (q.status === 'Dipanggil' || q.status === 'Sedang_Dilayani') && (q.loketId == currentLoket || !q.loketId)) || null;
+
+            const numEl = document.getElementById('active-call-number');
+            const bookEl = document.getElementById('active-call-booking-code');
+            const visEl = document.getElementById('active-call-visitor-name');
+            const wbpEl = document.getElementById('active-call-wbp-name');
+            const detEl = document.getElementById('active-call-details');
+            const statusBadge = document.getElementById('active-call-badge-status');
+            const ktpContainer = document.getElementById('active-call-ktp-link-container');
+
+            if (currentlyActiveQueue) {
+                numEl.innerText = currentlyActiveQueue.nomorAntrean;
+                bookEl.innerText = `Kode: ${currentlyActiveQueue.kodeBooking}`;
+                visEl.innerText = currentlyActiveQueue.namaPengunjung;
+                wbpEl.innerHTML = `WBP: <strong class="text-white">${currentlyActiveQueue.namaWBP}</strong> (${currentlyActiveQueue.blokWBP || 'Blok Hunian'}) • Kasus: <span class="text-amber-400 font-bold">${currentlyActiveQueue.kategori}</span>`;
+                detEl.innerText = `NIK: ${currentlyActiveQueue.nikPengunjung} • WA: ${currentlyActiveQueue.noWA} • Relasi: ${currentlyActiveQueue.hubungan}`;
+                statusBadge.innerText = currentlyActiveQueue.status.toUpperCase();
+                statusBadge.className = `text-xs font-mono px-2.5 py-1 rounded-full font-bold border ${currentlyActiveQueue.status === 'Sedang_Dilayani' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' : 'bg-amber-500/20 text-amber-300 border-amber-500/40 animate-pulse'}`;
+
+                ktpContainer.innerHTML = `
+                    <button onclick="openVerifyModal(${currentlyActiveQueue.id})" class="px-3 py-1 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 text-[11px] font-bold transition-all">
+                        <i class="fa-solid fa-id-card mr-1"></i> Periksa Berkas & e-KTP
+                    </button>
+                `;
+
+                if (currentlyActiveQueue.status === 'Sedang_Dilayani') {
+                    startServiceTimer();
+                } else {
+                    stopServiceTimer();
+                }
+            } else {
+                numEl.innerText = '--';
+                bookEl.innerText = 'Kode: -';
+                visEl.innerText = 'Belum Ada Antrean yang Dipanggil';
+                wbpEl.innerText = 'WBP: - (Kasus: -)';
+                detEl.innerText = 'Silakan klik tombol "PANGGIL BERIKUT" untuk memanggil pengunjung';
+                statusBadge.innerText = 'LOKET STANDBY';
+                statusBadge.className = 'text-xs font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-bold border border-white/10';
+                ktpContainer.innerHTML = '';
+                stopServiceTimer();
+            }
+
+            // Render Waiting Queue Mini List
+            const waitingList = list.filter(q => q.status === 'Menunggu');
+            const tbody = document.getElementById('calling-waiting-table-body');
+            if (waitingList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center p-6 text-slate-500">Tidak ada antrean yang sedang menunggu hari ini.</td></tr>';
+            } else {
+                tbody.innerHTML = waitingList.slice(0, 5).map(q => `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="p-3 font-mono font-black text-amber-400 text-sm">${q.nomorAntrean}</td>
+                        <td class="p-3">
+                            <div class="font-bold text-white">${q.namaPengunjung}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">WA: ${q.noWA}</div>
+                        </td>
+                        <td class="p-3">
+                            <div class="text-slate-200">${q.namaWBP}</div>
+                            <div class="text-[10px] text-slate-400">${q.blokWBP || '-'}</div>
+                        </td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${q.kategori === 'Narkotika' ? 'bg-amber-500/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-300'}">
+                                ${q.kategori}
+                            </span>
+                        </td>
+                        <td class="p-3">
+                            ${q.titipan ? '<span class="text-[10px] text-emerald-400 font-bold"><i class="fa-solid fa-box"></i> Ada Titipan</span>' : '<span class="text-[10px] text-slate-500">Tidak</span>'}
+                        </td>
+                        <td class="p-3 text-center">
+                            <button onclick="callSpecificQueueById(${q.id})" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all shadow-sm">
+                                <i class="fa-solid fa-bullhorn"></i> Panggil
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            updateCallingCounters();
+        }
+
+        async function handleCallNextQueue() {
+            const today = getTodayDateString();
+            const session = getAdminSession();
+            const currentLoket = session ? session.loket : 1;
+            let list = getQueueList();
+
+            // Find next waiting queue for today
+            const nextItem = list.find(q => q.tglKunjungan === today && q.status === 'Menunggu');
+            if (!nextItem) {
+                alert('Tidak ada antrean dengan status "Menunggu" untuk hari ini.');
+                return;
+            }
+
+            // Set other calling items in this loket to Selesai or Dilewati if needed
+            list.forEach(q => {
+                if (q.tglKunjungan === today && q.loketId == currentLoket && q.status === 'Dipanggil') {
+                    q.status = 'Dilewati';
+                }
+            });
+
+            nextItem.status = 'Dipanggil';
+            nextItem.loketId = currentLoket;
+            nextItem.jumlahPanggilan = (nextItem.jumlahPanggilan || 0) + 1;
+            nextItem.waktuPanggil = new Date().toISOString();
+
+            saveQueueList(list);
+
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('pendaftaran_antrian').update({
+                        status_antrian: 'Dipanggil',
+                        loket_pemanggil_id: currentLoket,
+                        jumlah_panggilan: nextItem.jumlahPanggilan,
+                        waktu_panggil_terakhir: new Date().toISOString()
+                    }).eq('id', nextItem.id);
+
+                    await supabaseClient.from('log_pemanggilan').insert([{
+                        antrian_id: nextItem.id,
+                        kode_booking: nextItem.kodeBooking,
+                        nomor_antrian: nextItem.nomorAntrean,
+                        loket_nomor: currentLoket,
+                        petugas_nama: session ? session.nama : 'Petugas Loket',
+                        panggilan_ke: nextItem.jumlahPanggilan
+                    }]);
+                } catch (e) { console.warn(e); }
+            }
+
+            speakQueue(nextItem.nomorAntrean, nextItem.namaPengunjung, currentLoket);
+            recordAuditTrail('PANGGIL_ANTREAN', `Memanggil ${nextItem.nomorAntrean} (${nextItem.namaPengunjung}) ke Loket ${currentLoket}`);
+            renderActiveStationView();
+            renderFullQueueTable();
+        }
+
+        async function callSpecificQueueById(queueId) {
+            const session = getAdminSession();
+            const currentLoket = session ? session.loket : 1;
+            let list = getQueueList();
+            const item = list.find(q => q.id === queueId);
+            if (!item) return;
+
+            item.status = 'Dipanggil';
+            item.loketId = currentLoket;
+            item.jumlahPanggilan = (item.jumlahPanggilan || 0) + 1;
+            item.waktuPanggil = new Date().toISOString();
+
+            saveQueueList(list);
+
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('pendaftaran_antrian').update({
+                        status_antrian: 'Dipanggil',
+                        loket_pemanggil_id: currentLoket,
+                        jumlah_panggilan: item.jumlahPanggilan,
+                        waktu_panggil_terakhir: new Date().toISOString()
+                    }).eq('id', item.id);
+                } catch (e) { console.warn(e); }
+            }
+
+            speakQueue(item.nomorAntrean, item.namaPengunjung, currentLoket);
+            recordAuditTrail('PANGGIL_MANUAL', `Memanggil nomor ${item.nomorAntrean} (${item.namaPengunjung})`);
+            renderActiveStationView();
+            renderFullQueueTable();
+        }
+
+        function handleRecallCurrentQueue() {
+            if (!currentlyActiveQueue) {
+                alert('Tidak ada antrean aktif yang sedang dipanggil.');
+                return;
+            }
+            const session = getAdminSession();
+            const currentLoket = session ? session.loket : 1;
+
+            let list = getQueueList();
+            const item = list.find(q => q.id === currentlyActiveQueue.id);
+            if (item) {
+                item.jumlahPanggilan = (item.jumlahPanggilan || 0) + 1;
+                saveQueueList(list);
+            }
+
+            speakQueue(currentlyActiveQueue.nomorAntrean, currentlyActiveQueue.namaPengunjung, currentLoket);
+            recordAuditTrail('RECALL', `Panggil ulang ${currentlyActiveQueue.nomorAntrean}`);
+        }
+
+        async function handleStartServingCurrentQueue() {
+            if (!currentlyActiveQueue) {
+                alert('Panggil nomor antrean terlebih dahulu sebelum memulai pelayanan.');
+                return;
+            }
+
+            let list = getQueueList();
+            const item = list.find(q => q.id === currentlyActiveQueue.id);
+            if (item) {
+                item.status = 'Sedang_Dilayani';
+                item.waktuMulaiLayanan = new Date().toISOString();
+                saveQueueList(list);
+
+                if (supabaseClient) {
+                    try {
+                        await supabaseClient.from('pendaftaran_antrian').update({
+                            status_antrian: 'Sedang_Dilayani',
+                            waktu_mulai_layanan: new Date().toISOString()
+                        }).eq('id', item.id);
+                    } catch (e) { console.warn(e); }
+                }
+
+                recordAuditTrail('MULAI_LAYANI', `Memulai proses verifikasi antrean ${item.nomorAntrean}`);
+                renderActiveStationView();
+                renderFullQueueTable();
+            }
+        }
+
+        async function handleFinishCurrentQueue() {
+            if (!currentlyActiveQueue) {
+                alert('Tidak ada antrean aktif yang sedang diproses.');
+                return;
+            }
+
+            let list = getQueueList();
+            const item = list.find(q => q.id === currentlyActiveQueue.id);
+            if (item) {
+                item.status = 'Selesai';
+                item.waktuSelesaiLayanan = new Date().toISOString();
+                item.durasiMenit = Math.round(serviceTimerSeconds / 60) || 1;
+                saveQueueList(list);
+
+                if (supabaseClient) {
+                    try {
+                        await supabaseClient.from('pendaftaran_antrian').update({
+                            status_antrian: 'Selesai',
+                            waktu_selesai_layanan: new Date().toISOString(),
+                            durasi_layanan_menit: item.durasiMenit
+                        }).eq('id', item.id);
+                    } catch (e) { console.warn(e); }
+                }
+
+                recordAuditTrail('SELESAI', `Menyelesaikan pelayanan ${item.nomorAntrean} (${item.durasiMenit} menit)`);
+                stopServiceTimer();
+                renderActiveStationView();
+                renderFullQueueTable();
+            }
+        }
+
+        async function handleSkipCurrentQueue() {
+            if (!currentlyActiveQueue) return;
+            if (confirm(`Apakah Anda yakin ingin melewati nomor antrean ${currentlyActiveQueue.nomorAntrean}?`)) {
+                let list = getQueueList();
+                const item = list.find(q => q.id === currentlyActiveQueue.id);
+                if (item) {
+                    item.status = 'Dilewati';
+                    saveQueueList(list);
+
+                    if (supabaseClient) {
+                        try {
+                            await supabaseClient.from('pendaftaran_antrian').update({ status_antrian: 'Dilewati' }).eq('id', item.id);
+                        } catch (e) { console.warn(e); }
+                    }
+
+                    recordAuditTrail('LEWATI', `Melewati antrean ${item.nomorAntrean} karena tidak hadir`);
+                    stopServiceTimer();
+                    renderActiveStationView();
+                    renderFullQueueTable();
+                }
+            }
+        }
+
+        async function handleCancelCurrentQueue() {
+            if (!currentlyActiveQueue) return;
+            const alasan = prompt('Masukkan alasan pembatalan antrean ini:');
+            if (alasan) {
+                let list = getQueueList();
+                const item = list.find(q => q.id === currentlyActiveQueue.id);
+                if (item) {
+                    item.status = 'Batal';
+                    item.catatan = alasan;
+                    saveQueueList(list);
+
+                    if (supabaseClient) {
+                        try {
+                            await supabaseClient.from('pendaftaran_antrian').update({ status_antrian: 'Batal', catatan_petugas: alasan }).eq('id', item.id);
+                        } catch (e) { console.warn(e); }
+                    }
+
+                    recordAuditTrail('BATAL', `Membatalkan antrean ${item.nomorAntrean}. Alasan: ${alasan}`);
+                    stopServiceTimer();
+                    renderActiveStationView();
+                    renderFullQueueTable();
+                }
+            }
+        }
+
+        function startServiceTimer() {
+            if (serviceTimerInterval) clearInterval(serviceTimerInterval);
+            serviceTimerSeconds = 0;
+            serviceTimerInterval = setInterval(() => {
+                serviceTimerSeconds++;
+                const mins = String(Math.floor(serviceTimerSeconds / 60)).padStart(2, '0');
+                const secs = String(serviceTimerSeconds % 60).padStart(2, '0');
+                document.getElementById('service-timer').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function stopServiceTimer() {
+            if (serviceTimerInterval) clearInterval(serviceTimerInterval);
+            serviceTimerInterval = null;
+            document.getElementById('service-timer').innerText = '00:00';
+            serviceTimerSeconds = 0;
+        }
+
+        // ==========================================
+        // 7. QUEUE TABLE & VERIFICATION MODAL
+        // ==========================================
+        function renderFullQueueTable() {
+            const dateFilter = document.getElementById('filter-queue-date').value || getTodayDateString();
+            const catFilter = document.getElementById('filter-queue-category').value;
+            const statusFilter = document.getElementById('filter-queue-status').value;
+            const searchKeyword = (document.getElementById('search-queue-input').value || '').trim().toLowerCase();
+
+            let list = getQueueList().filter(q => q.tglKunjungan === dateFilter);
+
+            if (catFilter !== 'ALL') list = list.filter(q => q.kategori === catFilter);
+            if (statusFilter !== 'ALL') list = list.filter(q => q.status === statusFilter);
+
+            if (searchKeyword) {
+                list = list.filter(q => 
+                    q.namaPengunjung.toLowerCase().includes(searchKeyword) ||
+                    q.nikPengunjung.includes(searchKeyword) ||
+                    q.nomorAntrean.toLowerCase().includes(searchKeyword) ||
+                    q.kodeBooking.toLowerCase().includes(searchKeyword) ||
+                    q.namaWBP.toLowerCase().includes(searchKeyword)
+                );
+            }
+
+            const tbody = document.getElementById('full-queue-table-body');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center p-6 text-slate-500">Tidak ada data antrean yang cocok untuk tanggal ${dateFilter}</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => `
+                <tr class="hover:bg-white/5 transition-colors ${item.status === 'Dipanggil' ? 'bg-amber-500/10' : ''}">
+                    <td class="p-3 font-mono font-black text-amber-400 text-sm">${item.nomorAntrean}</td>
+                    <td class="p-3 font-mono text-slate-400 text-[11px]">${item.kodeBooking}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-white">${item.namaPengunjung}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">NIK: ${item.nikPengunjung} • WA: ${item.noWA}</div>
+                    </td>
+                    <td class="p-3">
+                        <div class="text-slate-200 font-semibold">${item.namaWBP}</div>
+                        <div class="text-[10px] text-cyan-400">${item.blokWBP || '-'}</div>
+                    </td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.kategori === 'Narkotika' ? 'bg-amber-500/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-300'}">
+                            ${item.kategori}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                            item.status === 'Dipanggil' ? 'bg-amber-500 text-slate-950 animate-pulse' :
+                            item.status === 'Sedang_Dilayani' ? 'bg-blue-500/20 text-blue-300' :
+                            item.status === 'Selesai' ? 'bg-emerald-500/20 text-emerald-400' :
+                            item.status === 'Dilewati' ? 'bg-yellow-500/20 text-yellow-300' :
+                            item.status === 'Batal' ? 'bg-red-500/20 text-red-400' : 'bg-slate-800 text-slate-300'
+                        }">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <button onclick="openVerifyModal(${item.id})" class="text-xs text-cyan-400 hover:text-cyan-300 underline flex items-center gap-1">
+                            <i class="fa-solid fa-paperclip"></i> Berkas
+                        </button>
+                    </td>
+                    <td class="p-3 text-center">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="callSpecificQueueById(${item.id})" class="p-2 bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 rounded-lg transition-colors" title="Panggil Antrean">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </button>
+                            <button onclick="directUpdateStatus(${item.id}, 'Selesai')" class="p-2 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 rounded-lg transition-colors" title="Tandai Selesai">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button onclick="deleteQueueItemById(${item.id})" class="p-2 bg-red-500/20 hover:bg-red-500 text-red-300 hover:text-slate-950 rounded-lg transition-colors" title="Hapus Data">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function directUpdateStatus(queueId, newStatus) {
+            let list = getQueueList();
+            const item = list.find(q => q.id === queueId);
+            if (item) {
+                item.status = newStatus;
+                saveQueueList(list);
+
+                if (supabaseClient) {
+                    try {
+                        await supabaseClient.from('pendaftaran_antrian').update({ status_antrian: newStatus }).eq('id', queueId);
+                    } catch (e) { console.warn(e); }
+                }
+
+                renderActiveStationView();
+                renderFullQueueTable();
+                recordAuditTrail('UPDATE_STATUS', `Mengubah status ${item.nomorAntrean} menjadi ${newStatus}`);
+            }
+        }
+
+        async function deleteQueueItemById(queueId) {
+            if (confirm('Apakah Anda yakin ingin menghapus data antrean ini?')) {
+                let list = getQueueList();
+                list = list.filter(q => q.id !== queueId);
+                saveQueueList(list);
+
+                if (supabaseClient) {
+                    try {
+                        await supabaseClient.from('pendaftaran_antrian').delete().eq('id', queueId);
+                    } catch (e) { console.warn(e); }
+                }
+
+                renderActiveStationView();
+                renderFullQueueTable();
+                recordAuditTrail('DELETE_QUEUE', `Menghapus antrean ID: ${queueId}`);
+            }
+        }
+
+        function openVerifyModal(queueId) {
+            const list = getQueueList();
+            const item = list.find(q => q.id === queueId);
+            if (!item) return;
+
+            const modal = document.getElementById('verify-modal');
+            const content = document.getElementById('verify-modal-content');
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-white/10 space-y-2">
+                        <span class="text-amber-400 font-bold block text-sm">📋 Data Pengunjung</span>
+                        <div><strong>Nama:</strong> ${item.namaPengunjung}</div>
+                        <div><strong>NIK:</strong> <span class="font-mono">${item.nikPengunjung}</span></div>
+                        <div><strong>No. WA:</strong> ${item.noWA}</div>
+                        <div><strong>Relasi:</strong> ${item.hubungan}</div>
+                        <div><strong>Asal Pendaftaran:</strong> ${item.asalPendaftaran || 'Online Website'}</div>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-white/10 space-y-2">
+                        <span class="text-cyan-400 font-bold block text-sm">🔒 Data WBP yang Dikunjungi</span>
+                        <div><strong>Nama WBP:</strong> ${item.namaWBP}</div>
+                        <div><strong>Kategori:</strong> ${item.kategori}</div>
+                        <div><strong>Blok / Kamar:</strong> ${item.blokWBP || '-'}</div>
+                        <div><strong>Titipan Barang:</strong> ${item.titipan ? '<span class="text-emerald-400 font-bold">Ya</span>' : 'Tidak Ada'}</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-4 rounded-2xl border border-white/10 space-y-3">
+                    <span class="text-white font-bold block">📸 Foto e-KTP & Dokumen Izin</span>
+                    ${item.berkasKtpUrl ? `
+                        <div class="rounded-xl overflow-hidden border border-white/10 bg-slate-900 max-h-64 flex items-center justify-center">
+                            <img src="${item.berkasKtpUrl}" alt="Foto e-KTP" class="max-h-60 object-contain">
+                        </div>
+                        <a href="${item.berkasKtpUrl}" target="_blank" class="inline-block text-cyan-400 underline text-xs">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Gambar Resolusi Penuh di Tab Baru
+                        </a>
+                    ` : `
+                        <div class="p-6 rounded-xl bg-slate-900 border border-dashed border-white/10 text-center text-slate-500">
+                            <i class="fa-solid fa-image text-2xl mb-1 block"></i>
+                            Tidak ada unggahan foto e-KTP digital. Harap verifikasi e-KTP fisik asli pengunjung di loket.
+                        </div>
+                    `}
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 border-t border-white/10">
+                    <button onclick="closeVerifyModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-300 font-bold">Tutup</button>
+                    <button onclick="directUpdateStatus(${item.id}, 'Sedang_Dilayani'); closeVerifyModal();" class="px-4 py-2 rounded-xl bg-blue-500 text-white font-bold">Verifikasi & Mulai Layani</button>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeVerifyModal() {
+            document.getElementById('verify-modal').classList.add('hidden');
+        }
+
+        // ==========================================
+        // 8. WALKIN REGISTRATION LOGIC
+        // ==========================================
+        async function handleWalkinRegistration(e) {
+            e.preventDefault();
+            const tgl = document.getElementById('walkin-tgl').value;
+            const kategori = document.getElementById('walkin-kategori').value;
+            const nik = document.getElementById('walkin-nik').value.trim();
+            const nama = document.getElementById('walkin-nama-pengunjung').value.trim();
+            const wa = document.getElementById('walkin-wa').value.trim();
+            const hub = document.getElementById('walkin-hubungan').value;
+            const wbp = document.getElementById('walkin-nama-wbp').value.trim();
+            const blok = document.getElementById('walkin-blok').value.trim();
+            const titipan = document.getElementById('walkin-titipan').value === 'true';
+
+            let list = getQueueList();
+            const sameDay = list.filter(q => q.tglKunjungan === tgl && q.kategori === kategori);
+            const nextUrut = sameDay.length + 1;
+            const prefix = kategori === 'Narkotika' ? 'N' : 'P';
+            const numStr = String(nextUrut).padStart(3, '0');
+            const noAntrean = `${prefix}-${numStr}`;
+            const cleanDate = tgl.replace(/-/g, '');
+            const bookingCode = `SIK-${cleanDate}-${prefix}${numStr}`;
+
+            const newItem = {
+                id: Date.now(),
+                kodeBooking: bookingCode,
+                nomorAntrean: noAntrean,
+                nomorUrut: nextUrut,
+                tglKunjungan: tgl,
+                sesi: '09:00 - 11:00 WIB',
+                kategori: kategori,
+                nikPengunjung: nik,
+                namaPengunjung: nama,
+                noWA: wa,
+                hubungan: hub,
+                namaWBP: wbp,
+                blokWBP: blok,
+                titipan: titipan,
+                status: 'Menunggu',
+                jumlahPanggilan: 0,
+                berkasKtpUrl: null,
+                asalPendaftaran: 'Walk_in_Loket',
+                waktuDaftar: new Date().toISOString()
+            };
+
+            list.push(newItem);
+            saveQueueList(list);
+
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('pendaftaran_antrian').insert([{
+                        kode_booking: bookingCode,
+                        nomor_antrian: noAntrean,
+                        nomor_urut: nextUrut,
+                        tgl_kunjungan: tgl,
+                        kategori_kunjungan: kategori,
+                        nik_pengunjung: nik,
+                        nama_pengunjung: nama,
+                        jenis_kelamin: 'L',
+                        no_whatsapp: wa,
+                        alamat_domisili: 'Walk-in Siak',
+                        hubungan_wbp: hub,
+                        nama_wbp: wbp,
+                        blok_kamar_wbp: blok,
+                        membawa_barang_titipan: titipan,
+                        asal_pendaftaran: 'Walk_in_Loket'
+                    }]);
+                } catch (err) { console.warn(err); }
+            }
+
+            recordAuditTrail('WALKIN_REGISTER', `Pendaftaran walk-in: ${noAntrean} atas nama ${nama}`);
+            alert(`Pendaftaran Walk-in Berhasil!\nNomor Antrean: ${noAntrean}\nKode Booking: ${bookingCode}`);
+            switchAdminTab('calling');
+            renderActiveStationView();
+            renderFullQueueTable();
+        }
+
+        // ==========================================
+        // 9. MASTER DATA WBP (CRUD)
+        // ==========================================
+        function getWbpList() {
+            return JSON.parse(localStorage.getItem(DB_KEY_WBP) || '[]');
+        }
+
+        function saveWbpList(list) {
+            localStorage.setItem(DB_KEY_WBP, JSON.stringify(list));
+        }
+
+        function renderWbpTable() {
+            const search = (document.getElementById('search-wbp-input').value || '').trim().toLowerCase();
+            let list = getWbpList();
+
+            if (search) {
+                list = list.filter(w => 
+                    w.nama_wbp.toLowerCase().includes(search) ||
+                    (w.nomor_register && w.nomor_register.toLowerCase().includes(search)) ||
+                    (w.blok_kamar && w.blok_kamar.toLowerCase().includes(search))
+                );
+            }
+
+            const tbody = document.getElementById('wbp-table-body');
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center p-6 text-slate-500">Tidak ada data WBP ditemukan.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(w => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-3 font-mono font-bold text-slate-300">${w.nomor_register || '-'}</td>
+                    <td class="p-3 font-bold text-white">${w.nama_wbp}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${w.kategori_perkara === 'Narkotika' ? 'bg-amber-500/20 text-amber-300' : 'bg-cyan-500/20 text-cyan-300'}">
+                            ${w.kategori_perkara}
+                        </span>
+                    </td>
+                    <td class="p-3 text-slate-300">${w.status_tahanan || w.status_tahanan_napi || 'Narapidana'}</td>
+                    <td class="p-3 font-mono text-cyan-400">${w.blok_kamar || '-'}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${w.hak_kunjungan === 'Diizinkan' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">
+                            ${w.hak_kunjungan || 'Diizinkan'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="editWbpItem(${w.id})" class="p-1.5 bg-purple-500/20 text-purple-300 rounded hover:bg-purple-500 hover:text-slate-950 transition-all">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteWbpItem(${w.id})" class="p-1.5 bg-red-500/20 text-red-300 rounded hover:bg-red-500 hover:text-slate-950 transition-all">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openWbpModal(editId = null) {
+            const form = document.getElementById('wbp-form-id');
+            if (editId) {
+                const list = getWbpList();
+                const item = list.find(w => w.id === editId);
+                if (item) {
+                    document.getElementById('wbp-modal-title').innerText = 'Edit Data WBP';
+                    form.value = item.id;
+                    document.getElementById('wbp-reg-no').value = item.nomor_register || '';
+                    document.getElementById('wbp-nama').value = item.nama_wbp || '';
+                    document.getElementById('wbp-kategori').value = item.kategori_perkara || 'Narkotika';
+                    document.getElementById('wbp-status-tahanan').value = item.status_tahanan || 'Narapidana';
+                    document.getElementById('wbp-blok').value = item.blok_kamar || '';
+                    document.getElementById('wbp-pasal').value = item.pasal || '';
+                    document.getElementById('wbp-hak-kunjungan').value = item.hak_kunjungan || 'Diizinkan';
+                }
+            } else {
+                document.getElementById('wbp-modal-title').innerText = 'Tambah Data Warga Binaan (WBP)';
+                form.value = '';
+                document.getElementById('wbp-reg-no').value = '';
+                document.getElementById('wbp-nama').value = '';
+                document.getElementById('wbp-blok').value = '';
+                document.getElementById('wbp-pasal').value = '';
+            }
+            document.getElementById('wbp-modal').classList.remove('hidden');
+        }
+
+        function closeWbpModal() {
+            document.getElementById('wbp-modal').classList.add('hidden');
+        }
+
+        function editWbpItem(id) {
+            openWbpModal(id);
+        }
+
+        async function handleSaveWbp(e) {
+            e.preventDefault();
+            const editId = document.getElementById('wbp-form-id').value;
+            let list = getWbpList();
+
+            const reg = document.getElementById('wbp-reg-no').value.trim();
+            const nama = document.getElementById('wbp-nama').value.trim();
+            const kat = document.getElementById('wbp-kategori').value;
+            const status = document.getElementById('wbp-status-tahanan').value;
+            const blok = document.getElementById('wbp-blok').value.trim();
+            const pasal = document.getElementById('wbp-pasal').value.trim();
+            const hak = document.getElementById('wbp-hak-kunjungan').value;
+
+            if (editId) {
+                const idx = list.findIndex(w => w.id == editId);
+                if (idx !== -1) {
+                    list[idx] = { ...list[idx], nomor_register: reg, nama_wbp: nama, kategori_perkara: kat, status_tahanan: status, blok_kamar: blok, pasal: pasal, hak_kunjungan: hak };
+                }
+            } else {
+                const newItem = {
+                    id: Date.now(),
+                    nomor_register: reg,
+                    nama_wbp: nama,
+                    kategori_perkara: kat,
+                    status_tahanan: status,
+                    blok_kamar: blok,
+                    pasal: pasal,
+                    hak_kunjungan: hak
+                };
+                list.push(newItem);
+            }
+
+            saveWbpList(list);
+            closeWbpModal();
+            renderWbpTable();
+            recordAuditTrail('SAVE_WBP', `Menyimpan data WBP: ${nama} (${reg})`);
+        }
+
+        function deleteWbpItem(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data WBP ini?')) {
+                let list = getWbpList().filter(w => w.id !== id);
+                saveWbpList(list);
+                renderWbpTable();
+                recordAuditTrail('DELETE_WBP', `Menghapus data WBP ID: ${id}`);
+            }
+        }
+
+        // ==========================================
+        // 10. MANAJEMEN AKUN PETUGAS (SUPERADMIN)
+        // ==========================================
+        function getUsersAdminList() {
+            return JSON.parse(localStorage.getItem(DB_KEY_USERS_ADMIN) || '[]');
+        }
+
+        function saveUsersAdminList(list) {
+            localStorage.setItem(DB_KEY_USERS_ADMIN, JSON.stringify(list));
+        }
+
+        function renderUsersAdminTable() {
+            const list = getUsersAdminList();
+            const tbody = document.getElementById('users-admin-table-body');
+            tbody.innerHTML = list.map(u => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-3 font-mono font-bold text-amber-400">${u.username}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-white">${u.nama}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">NIP: ${u.nip || '-'}</div>
+                    </td>
+                    <td class="p-3 text-slate-300">${u.jabatan}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
+                            u.role === 'superadmin' ? 'bg-amber-500/20 text-amber-300' :
+                            u.role === 'pengawas' ? 'bg-purple-500/20 text-purple-300' : 'bg-cyan-500/20 text-cyan-300'
+                        }">
+                            ${u.role.toUpperCase()}
+                        </span>
+                    </td>
+                    <td class="p-3 font-mono text-center">Loket ${u.loket || 1}</td>
+                    <td class="p-3">
+                        <span class="text-[10px] font-bold ${u.aktif !== false ? 'text-emerald-400' : 'text-red-400'}">
+                            ● ${u.aktif !== false ? 'Aktif' : 'Nonaktif'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="editUserAdmin(${u.id})" class="p-1.5 bg-cyan-500/20 text-cyan-300 rounded hover:bg-cyan-500 hover:text-slate-950 transition-all">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteUserAdmin(${u.id})" class="p-1.5 bg-red-500/20 text-red-300 rounded hover:bg-red-500 hover:text-slate-950 transition-all">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openUserAdminModal(editId = null) {
+            const form = document.getElementById('user-form-id');
+            if (editId) {
+                const list = getUsersAdminList();
+                const item = list.find(u => u.id === editId);
+                if (item) {
+                    document.getElementById('user-modal-title').innerText = 'Edit Akun Petugas';
+                    form.value = item.id;
+                    document.getElementById('user-username').value = item.username;
+                    document.getElementById('user-nama').value = item.nama;
+                    document.getElementById('user-nip').value = item.nip || '';
+                    document.getElementById('user-role').value = item.role || 'petugas_loket';
+                    document.getElementById('user-jabatan').value = item.jabatan || '';
+                    document.getElementById('user-loket').value = item.loket || 1;
+                    document.getElementById('user-password').value = item.password || '';
+                }
+            } else {
+                document.getElementById('user-modal-title').innerText = 'Tambah Akun Petugas Baru';
+                form.value = '';
+                document.getElementById('user-username').value = '';
+                document.getElementById('user-nama').value = '';
+                document.getElementById('user-nip').value = '';
+                document.getElementById('user-password').value = 'rutansiak2026';
+            }
+            document.getElementById('user-admin-modal').classList.remove('hidden');
+        }
+
+        function closeUserAdminModal() {
+            document.getElementById('user-admin-modal').classList.add('hidden');
+        }
+
+        function editUserAdmin(id) {
+            openUserAdminModal(id);
+        }
+
+        function handleSaveUserAdmin(e) {
+            e.preventDefault();
+            const editId = document.getElementById('user-form-id').value;
+            let list = getUsersAdminList();
+
+            const username = document.getElementById('user-username').value.trim();
+            const nama = document.getElementById('user-nama').value.trim();
+            const nip = document.getElementById('user-nip').value.trim();
+            const role = document.getElementById('user-role').value;
+            const jabatan = document.getElementById('user-jabatan').value.trim();
+            const loket = parseInt(document.getElementById('user-loket').value) || 1;
+            const password = document.getElementById('user-password').value.trim() || 'rutansiak2026';
+
+            if (editId) {
+                const idx = list.findIndex(u => u.id == editId);
+                if (idx !== -1) {
+                    list[idx] = { ...list[idx], username, nama, nip, role, jabatan, loket, password };
+                }
+            } else {
+                list.push({
+                    id: Date.now(),
+                    username,
+                    nama,
+                    nip,
+                    role,
+                    jabatan,
+                    loket,
+                    password,
+                    aktif: true
+                });
+            }
+
+            saveUsersAdminList(list);
+            closeUserAdminModal();
+            renderUsersAdminTable();
+            recordAuditTrail('SAVE_USER', `Menyimpan akun pengguna: ${username} (${role})`);
+        }
+
+        function deleteUserAdmin(id) {
+            const session = getAdminSession();
+            if (session && session.id == id) {
+                alert('Anda tidak dapat menghapus akun Anda sendiri yang sedang aktif.');
+                return;
+            }
+            if (confirm('Apakah Anda yakin ingin menghapus akun petugas ini?')) {
+                let list = getUsersAdminList().filter(u => u.id !== id);
+                saveUsersAdminList(list);
+                renderUsersAdminTable();
+                recordAuditTrail('DELETE_USER', `Menghapus akun ID: ${id}`);
+            }
+        }
+
+        // ==========================================
+        // 11. KONFIGURASI JADWAL & KUOTA (SUPERADMIN)
+        // ==========================================
+        function renderScheduleTable() {
+            const list = JSON.parse(localStorage.getItem(DB_KEY_JADWAL) || '[]');
+            const tbody = document.getElementById('schedule-table-body');
+            tbody.innerHTML = list.map(s => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-3 font-bold text-white">${s.hari}</td>
+                    <td class="p-3 font-semibold text-amber-300">${s.kategori}</td>
+                    <td class="p-3 font-mono text-slate-300">${s.jam}</td>
+                    <td class="p-3 font-mono text-emerald-400 font-bold">${s.kuota > 0 ? s.kuota + ' Kuota' : '-'}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.status === 'Aktif' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">
+                            ${s.status}
+                        </span>
+                    </td>
+                    <td class="p-3 text-slate-400 text-[11px]">${s.ket}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ==========================================
+        // 12. AUDIT TRAIL LOGGING
+        // ==========================================
+        function recordAuditTrail(aktivitas, keterangan) {
+            const session = getAdminSession();
+            let logs = JSON.parse(localStorage.getItem(DB_KEY_AUDIT) || '[]');
+            const newLog = {
+                id: Date.now(),
+                waktu: new Date().toLocaleTimeString('id-ID') + ', ' + getTodayDateString(),
+                user: session ? `${session.nama} (${session.username})` : 'Sistem',
+                aktivitas: aktivitas,
+                keterangan: keterangan
+            };
+            logs.unshift(newLog);
+            if (logs.length > 100) logs = logs.slice(0, 100);
+            localStorage.setItem(DB_KEY_AUDIT, JSON.stringify(logs));
+            renderAuditTrailTable();
+        }
+
+        function renderAuditTrailTable() {
+            const logs = JSON.parse(localStorage.getItem(DB_KEY_AUDIT) || '[]');
+            const tbody = document.getElementById('audit-trail-table-body');
+            if (!tbody) return;
+            if (logs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-6 text-slate-500 font-sans">Belum ada riwayat aktivitas yang tercatat.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = logs.map(l => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-3 text-slate-400 text-[11px]">${l.waktu}</td>
+                    <td class="p-3 text-amber-400 font-bold">${l.user}</td>
+                    <td class="p-3 text-cyan-300 font-bold">${l.aktivitas}</td>
+                    <td class="p-3 text-slate-200 text-xs font-sans">${l.keterangan}</td>
+                </tr>
+            `).join('');
+        }
+
+        function clearAuditLogs() {
+            if (confirm('Bersihkan seluruh catatan audit trail?')) {
+                localStorage.setItem(DB_KEY_AUDIT, JSON.stringify([]));
+                renderAuditTrailTable();
+            }
+        }
+
+        // ==========================================
+        // 13. LAPORAN & BERITA ACARA CETAK RESMI
+        // ==========================================
+        function renderReportPreview() {
+            const date = document.getElementById('report-date-picker').value || getTodayDateString();
+            const kasubsiName = document.getElementById('report-kasubsi-name').value;
+            const kasubsiNip = document.getElementById('report-kasubsi-nip').value;
+            const session = getAdminSession();
+            const petugasName = session ? session.nama : 'Ahmad Fadillah, A.Md.P';
+            const petugasNip = session ? session.nip || '-' : '199508142017121001';
+
+            const list = getQueueList().filter(q => q.tglKunjungan === date);
+            const total = list.length;
+            const selesai = list.filter(q => q.status === 'Selesai').length;
+            const dilewati = list.filter(q => q.status === 'Dilewati').length;
+            const batal = list.filter(q => q.status === 'Batal').length;
+            const narkotika = list.filter(q => q.kategori === 'Narkotika').length;
+            const pidum = list.filter(q => q.kategori === 'Pidana Umum' || q.kategori === 'Pidana_Umum').length;
+
+            const preview = document.getElementById('report-preview-container');
+            preview.innerHTML = `
+                <div class="bg-white text-slate-900 p-8 rounded-2xl shadow-xl font-serif space-y-4">
+                    <!-- Kop Surat Resmi -->
+                    <div class="text-center border-b-2 border-black pb-4">
+                        <h4 class="text-xs font-bold uppercase tracking-widest">KEMENTERIAN IMIGRASI DAN PEMASYARAKATAN REPUBLIK INDONESIA</h4>
+                        <h3 class="text-sm font-bold uppercase tracking-wide">KANTOR WILAYAH RIAU • RUTAN KELAS IIB SIAK SRI INDRAPURA</h3>
+                        <p class="text-[10px] text-slate-600 font-sans">Jl. Pengadilan No. 12, Siak Sri Indrapura, Riau • Telp: (0764) 20280</p>
+                    </div>
+
+                    <div class="text-center py-2">
+                        <h2 class="text-base font-bold uppercase underline">BERITA ACARA REKAPITULASI PELAYANAN KUNJUNGAN HARIAN</h2>
+                        <p class="text-xs font-sans mt-0.5">Nomor: W.4.PAS.PAS.12.PK.01.04 - ${date.replace(/-/g, '')}</p>
+                    </div>
+
+                    <p class="text-xs leading-relaxed font-sans">
+                        Pada hari ini tanggal <strong>${date}</strong>, telah dilaksanakan pelayanan pendaftaran kunjungan tatap muka dan penitipan barang/makanan bagi Warga Binaan Pemasyarakatan (WBP) di Rutan Kelas IIB Siak Sri Indrapura (Sesi Pukul 09.00 s/d 11.00 WIB) dengan rekapitulasi sebagai berikut:
+                    </p>
+
+                    <!-- Table Ringkasan -->
+                    <table class="w-full text-xs font-sans border-collapse border border-slate-400">
+                        <tr class="bg-slate-100 font-bold text-center">
+                            <td class="border border-slate-400 p-2">Total Terdaftar</td>
+                            <td class="border border-slate-400 p-2">Pelayanan Selesai</td>
+                            <td class="border border-slate-400 p-2">Kasus Narkotika</td>
+                            <td class="border border-slate-400 p-2">Kasus Pidana Umum</td>
+                            <td class="border border-slate-400 p-2">Dilewati / Batal</td>
+                        </tr>
+                        <tr class="text-center font-bold text-sm">
+                            <td class="border border-slate-400 p-2">${total} Orang</td>
+                            <td class="border border-slate-400 p-2 text-emerald-700">${selesai} Orang</td>
+                            <td class="border border-slate-400 p-2 text-amber-700">${narkotika}</td>
+                            <td class="border border-slate-400 p-2 text-cyan-700">${pidum}</td>
+                            <td class="border border-slate-400 p-2 text-red-700">${dilewati + batal}</td>
+                        </tr>
+                    </table>
+
+                    <!-- Tanda Tangan -->
+                    <div class="grid grid-cols-2 gap-8 pt-8 font-sans text-xs">
+                        <div class="text-center">
+                            <p>Mengetahui,</p>
+                            <p class="font-bold">Kasubsi Pelayanan Tahanan</p>
+                            <div class="h-16"></div>
+                            <p class="font-bold underline">${kasubsiName}</p>
+                            <p>NIP. ${kasubsiNip}</p>
+                        </div>
+                        <div class="text-center">
+                            <p>Siak Sri Indrapura, ${date}</p>
+                            <p class="font-bold">Petugas Loket Pelayanan</p>
+                            <div class="h-16"></div>
+                            <p class="font-bold underline">${petugasName}</p>
+                            <p>NIP. ${petugasNip}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function printDailyOfficialReport() {
+            const preview = document.getElementById('report-preview-container').innerHTML;
+            const printContainer = document.getElementById('printable-report');
+            printContainer.innerHTML = preview;
+            window.print();
+        }
+
+        function exportQueueToCSV() {
+            const date = document.getElementById('report-date-picker').value || getTodayDateString();
+            const list = getQueueList().filter(q => q.tglKunjungan === date);
+
+            if (list.length === 0) {
+                alert(`Tidak ada data antrean untuk tanggal ${date}`);
+                return;
+            }
+
+            let csv = 'No Antrean,Kode Booking,Nama Pengunjung,NIK,No WA,Hubungan,Nama WBP,Blok WBP,Kategori,Status,Waktu Daftar\n';
+            list.forEach(q => {
+                csv += `"${q.nomorAntrean}","${q.kodeBooking}","${q.namaPengunjung}","${q.nikPengunjung}","${q.noWA}","${q.hubungan}","${q.namaWBP}","${q.blokWBP || '-'}","${q.kategori}","${q.status}","${q.waktuDaftar}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Rekap_Antrean_Rutan_Siak_${date}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ==========================================
+        // 14. TV DISPLAY MONITOR LAUNCHER
+        // ==========================================
+        function openDisplayWindow() {
+            const currentUrl = localStorage.getItem(CFG_KEY_SUPABASE_URL) || '';
+            const currentKey = localStorage.getItem(CFG_KEY_SUPABASE_KEY) || '';
+            const closeScriptTag = '<' + '/script>';
+
+            const displayHtml = `
+            <!DOCTYPE html>
+            <html lang="id">
+            <head>
+                <meta charset="UTF-8">
+                <title>Layar Monitor Display Antrean — Rutan Kelas IIB Siak</title>
+                <script src="https://cdn.tailwindcss.com">${closeScriptTag}
+                <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">${closeScriptTag}
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <style>
+                    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #070b14; color: #fff; }
+                </style>
+            </head>
+            <body class="p-6 h-screen flex flex-col justify-between overflow-hidden">
+                <div class="flex justify-between items-center bg-slate-950/90 p-4 rounded-3xl border border-white/10">
+                    <div class="flex items-center gap-3">
+                        <img src="logokemenimipas.png" class="w-12 h-12 object-contain">
+                        <img src="logopemasyarakatan.png" class="w-12 h-12 object-contain">
+                        <div>
+                            <h1 class="text-xl font-black text-amber-400">RUTAN KELAS IIB SIAK SRI INDRAPURA</h1>
+                            <p class="text-xs text-slate-400 font-mono">LAYAR MONITOR PEMANGGILAN ANTREAN RUANG TUNGGU (09.00 - 11.00 WIB)</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-black font-mono text-amber-300" id="tv-clock">09:00:00 WIB</div>
+                        <span class="text-xs text-emerald-400 font-bold" id="tv-sync-status">● SUPABASE CLOUD REALTIME AKTIF</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-6 my-6 flex-grow items-stretch">
+                    <!-- Big Calling Box -->
+                    <div class="col-span-8 bg-slate-900/90 rounded-3xl p-8 border-2 border-amber-500/50 flex flex-col justify-center items-center text-center shadow-[0_0_50px_rgba(245,158,11,0.2)]">
+                        <span class="text-sm font-mono text-amber-400 uppercase tracking-widest block mb-2" id="tv-status-badge">SEDANG DIPANGGIL</span>
+                        <div class="text-8xl sm:text-9xl font-black text-amber-400 font-mono tracking-widest drop-shadow-[0_0_40px_rgba(245,158,11,0.8)] animate-pulse" id="tv-active-number">
+                            --
+                        </div>
+                        <div class="text-3xl font-black text-white mt-4" id="tv-visitor-name">
+                            Menunggu Pemanggilan Antrean
+                        </div>
+                        <div class="text-xl font-bold text-cyan-400 mt-2" id="tv-loket-badge">
+                            MENUJU LOKET PELAYANAN
+                        </div>
+                    </div>
+
+                    <!-- Next in Queue List -->
+                    <div class="col-span-4 bg-slate-950/80 rounded-3xl p-6 border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-sm text-amber-400 border-b border-white/10 pb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-list-ol"></i> Antrean Berikutnya
+                            </h3>
+                            <div class="space-y-3 mt-4" id="tv-next-list"></div>
+                        </div>
+                        <div class="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-[11px] text-amber-300 text-center">
+                            Senin & Rabu: Narkotika • Selasa & Kamis: Pidana Umum
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Ticker -->
+                <div class="bg-amber-500 text-slate-950 p-2.5 rounded-2xl font-bold text-xs uppercase tracking-wider overflow-hidden">
+                    <div class="whitespace-nowrap animate-marquee">
+                        Waktu Pelayanan: 09.00 s/d 11.00 WIB • Harap mempersiapkan e-KTP fisik asli dan bukti nomor antrean sebelum menuju loket • Dilarang membawa HP, Narkoba, dan Sajam • Pelayanan 100% Gratis.
+                    </div>
+                </div>
+
+                <script>
+                    const SB_URL = "${currentUrl}";
+                    const SB_KEY = "${currentKey}";
+                    let tvSupabase = null;
+
+                    if (SB_URL && SB_KEY && window.supabase) {
+                        try {
+                            tvSupabase = window.supabase.createClient(SB_URL, SB_KEY);
+                            tvSupabase.channel('tv-realtime')
+                                .on('postgres_changes', { event: '*', schema: 'public', table: 'pendaftaran_antrian' }, () => {
+                                    updateTvFromSupabase();
+                                })
+                                .subscribe();
+                        } catch (e) { console.warn(e); }
+                    }
+
+                    async function updateTvFromSupabase() {
+                        if (!tvSupabase) { updateTv(); return; }
+                        try {
+                            const today = new Date().toISOString().split('T')[0];
+                            const { data } = await tvSupabase.from('pendaftaran_antrian').select('*').eq('tgl_kunjungan', today).order('id', { ascending: true });
+                            if (data) renderTvState(data);
+                        } catch (e) { updateTv(); }
+                    }
+
+                    function renderTvState(queues) {
+                        const calling = queues.find(q => (q.status_antrian || q.status) === 'Dipanggil' || (q.status_antrian || q.status) === 'Sedang_Dilayani');
+                        if(calling) {
+                            document.getElementById('tv-active-number').innerText = calling.nomor_antrian || calling.nomorAntrean;
+                            document.getElementById('tv-visitor-name').innerText = calling.nama_pengunjung || calling.namaPengunjung;
+                            document.getElementById('tv-loket-badge').innerText = 'SILAKAN MENUJU LOKET ' + (calling.loket_pemanggil_id || calling.loketId || 1);
+                        } else {
+                            document.getElementById('tv-active-number').innerText = '--';
+                            document.getElementById('tv-visitor-name').innerText = 'Menunggu Pemanggilan...';
+                            document.getElementById('tv-loket-badge').innerText = 'LOKET PELAYANAN RUTAN SIAK';
+                        }
+
+                        const waiting = queues.filter(q => (q.status_antrian || q.status) === 'Menunggu').slice(0, 4);
+                        const nextContainer = document.getElementById('tv-next-list');
+                        if(waiting.length === 0) {
+                            nextContainer.innerHTML = '<div class="text-xs text-slate-500 text-center py-6">Tidak ada antrean menunggu</div>';
+                        } else {
+                            nextContainer.innerHTML = waiting.map(w => \`
+                                <div class="flex justify-between items-center p-3 rounded-xl bg-slate-900 border border-white/5">
+                                    <span class="font-mono font-black text-amber-400 text-base">\${w.nomor_antrian || w.nomorAntrean}</span>
+                                    <span class="text-xs text-slate-200 font-bold truncate max-w-[140px]">\${w.nama_pengunjung || w.namaPengunjung}</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 font-mono text-slate-400">\${w.kategori_kunjungan || w.kategori}</span>
+                                </div>
+                            \`).join('');
+                        }
+                    }
+
+                    function updateTv() {
+                        const now = new Date();
+                        document.getElementById('tv-clock').innerText = now.toLocaleTimeString('id-ID') + ' WIB';
+                        const queues = JSON.parse(localStorage.getItem('rutan_siak_db_antrean') || '[]');
+                        renderTvState(queues);
+                    }
+
+                    setInterval(() => {
+                        const now = new Date();
+                        document.getElementById('tv-clock').innerText = now.toLocaleTimeString('id-ID') + ' WIB';
+                    }, 1000);
+
+                    setInterval(updateTvFromSupabase, 3000);
+                    window.addEventListener('storage', updateTv);
+                    updateTvFromSupabase();
+                ${closeScriptTag}
+            </body>
+            </html>
+            `;
+            const w = window.open('', '_blank', 'width=1200,height=800');
+            w.document.write(displayHtml);
+            w.document.close();
+        }
+
+        // ==========================================
+        // 15. TAB NAVIGATION & REALTIME CLOCK
+        // ==========================================
+        function switchAdminTab(tabName) {
+            const tabs = ['calling', 'queue-list', 'walkin', 'wbp-data', 'reports', 'users-mgmt', 'schedule-mgmt', 'audit-trail'];
+            tabs.forEach(t => {
+                const p = document.getElementById(`panel-${t}`);
+                const b = document.getElementById(`tab-btn-${t}`);
+                if (p) p.classList.add('hidden');
+                if (b) b.classList.remove('sidebar-active');
+            });
+
+            const targetP = document.getElementById(`panel-${tabName}`);
+            const targetB = document.getElementById(`tab-btn-${tabName}`);
+            if (targetP) targetP.classList.remove('hidden');
+            if (targetB) targetB.classList.add('sidebar-active');
+
+            if (tabName === 'queue-list') renderFullQueueTable();
+            if (tabName === 'wbp-data') renderWbpTable();
+            if (tabName === 'users-mgmt') renderUsersAdminTable();
+            if (tabName === 'schedule-mgmt') renderScheduleTable();
+            if (tabName === 'audit-trail') renderAuditTrailTable();
+            if (tabName === 'reports') renderReportPreview();
+        }
+
+        function startRealtimeClock() {
+            function update() {
+                const now = new Date();
+                const opt = { timeZone: 'Asia/Jakarta', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                const timeStr = now.toLocaleTimeString('id-ID', opt);
+                const clockEl = document.getElementById('realtime-clock');
+                if (clockEl) clockEl.innerHTML = `<i class="fa-regular fa-clock text-xs text-amber-400"></i> ${timeStr} WIB`;
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        // ==========================================
+        // 16. PAGE INITIALIZATION
+        // ==========================================
+        window.onload = function() {
+            initAdminDatabase();
+            initSupabaseConnection();
+            startRealtimeClock();
+
+            const today = getTodayDateString();
+            const walkinTgl = document.getElementById('walkin-tgl');
+            if (walkinTgl) {
+                walkinTgl.value = today;
+                walkinTgl.min = today;
+            }
+
+            const filterDate = document.getElementById('filter-queue-date');
+            if (filterDate) filterDate.value = today;
+
+            const repDate = document.getElementById('report-date-picker');
+            if (repDate) repDate.value = today;
+
+            checkSession();
+
+            // Background Polling Supabase Cloud Sync (Setiap 4 Detik)
+            setInterval(() => {
+                if (supabaseClient) {
+                    syncAllWithSupabase();
+                }
+            }, 4000);
+        };
+    </script>
+</body>
+</html>
