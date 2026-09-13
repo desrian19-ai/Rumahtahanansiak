@@ -101,7 +101,7 @@ export default async function AdminDashboardPage() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {antreanHariIni && antreanHariIni.length > 0 ? (
-                  antreanHariIni.map((item) => (
+                  antreanHariIni.map((item: any) => (
                     <tr key={item.id} className="hover:bg-white/5 transition font-sans">
                       <td className="p-4 font-mono font-black text-amber-400 text-sm">{item.nomor_antrean}</td>
                       <td className="p-4 font-mono font-bold text-white">{item.kode_booking}</td>
