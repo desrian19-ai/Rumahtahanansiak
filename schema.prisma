@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StatusKunjungan {
+  MENUNGGU
+  DISETUJUI
+  SEDANG_BERKUNJUNG
+  SELESAI
+  DITOLAK
+  BATAL
+}
+
+enum KategoriPerkara {
+  NARKOTIKA
+  PIDANA_UMUM
+  TIPIKOR
+  TERORISME
+  LAINNYA
+}
+
+enum HubunganKeluarga {
+  ORANG_TUA
+  SUAMI_ISTRI
+  ANAK_KANDUNG
+  SAUDARA_KANDUNG
+  KUASA_HUKUM
+  KERABAT_LAIN
+}
+
+model WargaBinaan {
+  id              String           @id @default(uuid())
+  nomorRegister   String           @unique @map("nomor_register")
+  namaLengkap     String           @map("nama_lengkap")
+  blokKamar       String           @map("blok_kamar")
+  kategoriPerkara KategoriPerkara  @default(PIDANA_UMUM) @map("kategori_perkara")
+  statusTahanan   String           @default("NARAPIDANA") @map("status_tahanan")
+  hakKunjungan    Boolean          @default(true) @map("hak_kunjungan")
+  createdAt       DateTime         @default(now()) @map("created_at")
+
+  kunjungan       PendaftaranKunjungan[]
+
+  @@map("warga_binaan")
+}
+
+model PendaftaranKunjungan {
+  id                String           @id @default(uuid())
+  kodeBooking       String           @unique @map("kode_booking")
+  nomorAntrean      String           @map("nomor_antrean")
+  nomorUrut         Int              @map("nomor_urut")
+
+  // Pengunjung
+  nikPengunjung     String           @map("nik_pengunjung")
+  namaPengunjung    String           @map("nama_pengunjung")
+  noWhatsapp        String           @map("no_whatsapp")
+  jenisKelamin      String           @map("jenis_kelamin")
+  alamatLengkap     String           @map("alamat_lengkap")
+  hubunganWbp       HubunganKeluarga @map("hubungan_wbp")
+  fotoKtpUrl        String?          @map("foto_ktp_url")
+
+  // WBP
+  wbpId             String?          @map("wbp_id")
+  wbp               WargaBinaan?     @relation(fields: [wbpId], references: [id], onDelete: SetNull)
+  namaWbp           String           @map("nama_wbp")
+  blokKamarWbp      String?          @map("blok_kamar_wbp")
+  kategoriPerkara   KategoriPerkara  @map("kategori_perkara")
+
+  // Jadwal
+  tanggalKunjungan  DateTime         @db.Date @map("tanggal_kunjungan")
+  sesiKunjungan     String           @map("sesi_kunjungan")
+
+  // Pengikut & Titipan
+  jumlahPengikut    Int              @default(0) @map("jumlah_pengikut")
+  daftarPengikut    Json             @default("[]") @map("daftar_pengikut")
+  membawaTitipan    Boolean          @default(false) @map("membawa_titipan")
+  deskripsiTitipan  String?          @map("deskripsi_titipan")
+
+  // Status
+  status            StatusKunjungan  @default(MENUNGGU)
+  catatanPetugas    String?          @map("catatan_petugas")
+  petugasVerifikator String?         @map("petugas_verifikator")
+  waktuVerifikasi   DateTime?        @map("waktu_verifikasi")
+
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  @@index([tanggalKunjungan, sesiKunjungan])
+  @@index([nikPengunjung])
+  @@index([kodeBooking])
+  @@map("pendaftaran_kunjungan")
+}
