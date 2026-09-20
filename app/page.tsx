@@ -19,6 +19,13 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <a
+              href="/index.html#galeri"
+              className="px-4 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-amber-300 hover:text-amber-200 font-semibold text-xs border border-amber-500/30 transition flex items-center gap-1.5"
+              title="Galeri Elektronik & Retail Karya Warga Binaan Rutan Siak"
+            >
+              <span>Gerai RuSi (E-Catalog)</span>
+            </a>
             <Link
               href="/daftar"
               className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20"
