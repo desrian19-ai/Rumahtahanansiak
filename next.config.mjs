@@ -15,6 +15,20 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/gerai-rusi',
+        destination: '/index.html#galeri',
+        permanent: false,
+      },
+      {
+        source: '/galeri',
+        destination: '/index.html#galeri',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
@@ -28,14 +42,6 @@ const nextConfig = {
       {
         source: '/berita',
         destination: '/berita.html',
-      },
-      {
-        source: '/gerai-rusi',
-        destination: '/index.html#galeri',
-      },
-      {
-        source: '/galeri',
-        destination: '/index.html#galeri',
       },
     ];
   },
