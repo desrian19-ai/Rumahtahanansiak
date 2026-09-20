@@ -525,7 +525,7 @@
                         <p class="text-slate-400 text-[11px] leading-relaxed">
                             Jika mengalami kendala jadwal atau membutuhkan informasi izin kunjungan tahanan, silakan hubungi tim Pelayanan Tahanan Rutan Siak.
                         </p>
-                        <a href="https://wa.me/6282176420280" target="_blank" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                        <a href="https://wa.me/6285249423056" target="_blank" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
                             <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Hotline Pelayanan
                         </a>
                     </div>
@@ -1020,9 +1020,25 @@
                 if (error) throw error;
                 if (data) {
                     const mappedList = data.map(mapSupabaseRowToQueueItem);
+                    // Pertahankan antrean lokal yang belum tersinkron ke cloud
+                    const localQueues = getQueueData();
+                    const unSynced = localQueues.filter(l => !mappedList.some(m => m.kodeBooking === l.kodeBooking || m.id === l.id));
+
+                    for (const un of unSynced) {
+                        try {
+                            const row = mapQueueItemToSupabaseRow(un);
+                            const { data: ins } = await window.supabaseClient.from('pendaftaran_antrian').insert([row]).select();
+                            if (ins && ins[0]) {
+                                un.id = ins[0].id;
+                                mappedList.push(un);
+                            }
+                        } catch (e) {
+                            mappedList.push(un);
+                        }
+                    }
+
                     saveQueueData(mappedList);
-                    renderAdminQueueTable();
-                    updateAdminStats();
+                    renderPublicLoketStatus();
                     console.log(`✅ Berhasil menyinkronkan ${mappedList.length} data antrean dari Supabase Cloud.`);
                 }
             } catch (err) {
@@ -1031,6 +1047,7 @@
         }
 
         function mapSupabaseRowToQueueItem(row) {
+            const isPidana = (row.kategori_kunjungan === 'Pidana_Umum' || row.kategori_kunjungan === 'Pidana Umum');
             return {
                 id: row.id,
                 kodeBooking: row.kode_booking,
@@ -1038,7 +1055,7 @@
                 nomorUrut: row.nomor_urut,
                 tglKunjungan: row.tgl_kunjungan,
                 sesi: row.sesi_kunjungan || '09:00 - 11:00 WIB',
-                kategori: row.kategori_kunjungan,
+                kategori: isPidana ? 'Pidana Umum' : 'Narkotika',
                 namaPengunjung: row.nama_pengunjung,
                 nikPengunjung: row.nik_pengunjung,
                 jk: row.jenis_kelamin,
@@ -1051,40 +1068,42 @@
                 blokWBP: row.blok_kamar_wbp || 'Umum',
                 suratIzin: row.nomor_surat_izin || '-',
                 bawaBarang: row.membawa_barang_titipan ? 1 : 0,
+                titipan: row.membawa_barang_titipan,
                 rincianBarang: row.rincian_barang_titipan || '-',
                 status: row.status_antrian || 'Menunggu',
                 jumlahPanggilan: row.jumlah_panggilan || 0,
                 waktuDaftar: row.waktu_daftar || new Date().toISOString(),
-                loketId: row.loket_pemanggil_id || 1,
+                loketId: row.loket_pemanggil_id || null,
                 berkasKtpUrl: row.berkas_ktp_url || null,
                 berkasSuratIzinUrl: row.berkas_surat_izin_url || null
             };
         }
 
         function mapQueueItemToSupabaseRow(item) {
+            const isPidana = (item.kategori === 'Pidana Umum' || item.kategori === 'Pidana_Umum');
             return {
                 kode_booking: item.kodeBooking,
                 nomor_antrian: item.nomorAntrean,
                 nomor_urut: item.nomorUrut,
                 tgl_kunjungan: item.tglKunjungan,
                 sesi_kunjungan: item.sesi || '09:00 - 11:00 WIB',
-                kategori_kunjungan: item.kategori,
+                kategori_kunjungan: isPidana ? 'Pidana_Umum' : 'Narkotika',
                 nik_pengunjung: item.nikPengunjung,
                 nama_pengunjung: item.namaPengunjung,
-                jenis_kelamin: item.jk,
+                jenis_kelamin: item.jk || 'L',
                 no_whatsapp: item.noWA,
-                alamat_domisili: item.alamat,
+                alamat_domisili: item.alamat || 'Siak',
                 hubungan_wbp: item.hubungan,
-                jumlah_pengikut_dewasa: item.pengikutDewasa,
-                jumlah_pengikut_anak: item.pengikutAnak,
+                jumlah_pengikut_dewasa: item.pengikutDewasa || 0,
+                jumlah_pengikut_anak: item.pengikutAnak || 0,
                 nama_wbp: item.namaWBP,
-                blok_kamar_wbp: item.blokWBP,
-                nomor_surat_izin: item.suratIzin,
-                membawa_barang_titipan: item.bawaBarang === 1,
-                rincian_barang_titipan: item.rincianBarang,
-                status_antrian: item.status,
-                jumlah_panggilan: item.jumlahPanggilan,
-                loket_pemanggil_id: item.loketId || 1,
+                blok_kamar_wbp: item.blokWBP || 'Umum',
+                nomor_surat_izin: item.suratIzin || '-',
+                membawa_barang_titipan: item.bawaBarang === 1 || item.bawaBarang === true || item.titipan === true,
+                rincian_barang_titipan: item.rincianBarang || '-',
+                status_antrian: item.status || 'Menunggu',
+                jumlah_panggilan: item.jumlahPanggilan || 0,
+                loket_pemanggil_id: item.loketId && item.loketId > 0 ? item.loketId : null,
                 berkas_ktp_url: item.berkasKtpUrl || null,
                 berkas_surat_izin_url: item.berkasSuratIzinUrl || null,
                 asal_pendaftaran: 'Online_Website'
@@ -1525,9 +1544,13 @@
                 }
 
                 // Prefix: N = Narkotika, P = Pidana Umum
-                const prefix = (kategori === 'Narkotika') ? 'N' : 'P';
+                const isPidana = (kategori === 'Pidana Umum' || kategori === 'Pidana_Umum');
+                const prefix = isPidana ? 'P' : 'N';
                 const allQueues = getQueueData();
-                const sameDayQueues = allQueues.filter(q => q.tglKunjungan === tglKunjungan && q.kategori === kategori);
+                const sameDayQueues = allQueues.filter(q => {
+                    const qIsPidana = (q.kategori === 'Pidana Umum' || q.kategori === 'Pidana_Umum');
+                    return q.tglKunjungan === tglKunjungan && (isPidana ? qIsPidana : !qIsPidana);
+                });
                 const nextUrut = sameDayQueues.length + 1;
                 const formattedNumber = `${prefix}-${String(nextUrut).padStart(3, '0')}`;
                 const cleanDate = tglKunjungan.replace(/-/g, '');
