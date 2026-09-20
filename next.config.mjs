@@ -29,6 +29,14 @@ const nextConfig = {
         source: '/berita',
         destination: '/berita.html',
       },
+      {
+        source: '/gerai-rusi',
+        destination: '/index.html#galeri',
+      },
+      {
+        source: '/galeri',
+        destination: '/index.html#galeri',
+      },
     ];
   },
 };
