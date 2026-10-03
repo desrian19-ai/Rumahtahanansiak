@@ -1481,10 +1481,34 @@
             else el.classList.add('hidden');
         }
 
-        function updateQuotaCounter(dateVal) {
-            const allQueues = getQueueData().filter(q => q.tglKunjungan === dateVal);
-            const count = allQueues.length;
+        async function updateQuotaCounter(dateVal) {
+            let count = 0;
             const qEl = document.getElementById('quota-sesi-utama');
+            if(qEl) qEl.innerText = `Menghitung...`;
+
+            if (window.supabaseClient) {
+                try {
+                    const { count: sbCount, error } = await window.supabaseClient
+                        .from('pendaftaran_antrian')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('tgl_kunjungan', dateVal)
+                        .neq('status_antrian', 'Batal');
+                        
+                    if (!error && sbCount !== null) {
+                        count = sbCount;
+                    } else {
+                        const allQueues = getQueueData().filter(q => q.tglKunjungan === dateVal);
+                        count = allQueues.length;
+                    }
+                } catch (e) {
+                    const allQueues = getQueueData().filter(q => q.tglKunjungan === dateVal);
+                    count = allQueues.length;
+                }
+            } else {
+                const allQueues = getQueueData().filter(q => q.tglKunjungan === dateVal);
+                count = allQueues.length;
+            }
+            
             if(qEl) qEl.innerText = `Tersedia: ${Math.max(0, 60 - count)} / 60`;
         }
 
